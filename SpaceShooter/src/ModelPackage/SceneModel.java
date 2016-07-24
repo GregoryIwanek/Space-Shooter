@@ -2,8 +2,6 @@ package ModelPackage;
 
 import java.util.ArrayList;
 
-import ViewPackage.Enemy;
-
 public class SceneModel 
 {
 	int xObject;

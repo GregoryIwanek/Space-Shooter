@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.Random;
 
-import ViewPackage.Bullet;
-import ViewPackage.Enemy;
-
 public class EnemyModel 
 {
 	private int xCurrentPosition;

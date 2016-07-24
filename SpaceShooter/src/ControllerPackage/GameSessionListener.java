@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import ModelPackage.Bullet;
 import ModelPackage.GameModel;
 import ModelPackage.PlayerModel;
-import ViewPackage.Bullet;
+import ModelPackage.PlayerView;
 import ViewPackage.GameInterfaceView;
 import ViewPackage.GameSceneView;
-import ViewPackage.PlayerView;
 
 public class GameSessionListener implements ActionListener, KeyListener
 {

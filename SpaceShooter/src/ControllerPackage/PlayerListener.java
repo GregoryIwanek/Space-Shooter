@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.swing.*;
 
 import ModelPackage.PlayerModel;
-import ViewPackage.PlayerView;
+import ModelPackage.PlayerView;
 
 public class PlayerListener implements ActionListener, KeyListener
 {

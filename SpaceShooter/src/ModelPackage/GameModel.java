@@ -6,10 +6,6 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import ViewPackage.Bullet;
-import ViewPackage.Enemy;
-import ViewPackage.PlayerView;
-
 public class GameModel 
 {
 	static private SceneModel sceneModel;

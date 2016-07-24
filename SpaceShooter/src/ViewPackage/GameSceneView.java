@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import ModelPackage.Bullet;
+import ModelPackage.Enemy;
+import ModelPackage.PlayerView;
+
 public class GameSceneView extends JPanel
 {
 	static private PlayerView playerView;
