@@ -9,12 +9,12 @@ import java.util.Map;
 import javax.swing.*;
 
 import ModelPackage.PlayerModel;
-import ModelPackage.PlayerView;
+import ModelPackage.Player;
 
 public class PlayerListener implements ActionListener, KeyListener
 {
 	private PlayerModel playerModel;
-	private PlayerView playerView;
+	private Player playerView;
 	
 	private Map<String, Dimension> directionMap;
 	

@@ -11,13 +11,11 @@ import javax.swing.JPanel;
 
 import ModelPackage.Bullet;
 import ModelPackage.Enemy;
-import ModelPackage.PlayerView;
+import ModelPackage.Player;
 
 public class GameSceneView extends JPanel
 {
-	static private PlayerView playerView;
-	private Enemy enemy;
-	private Bullet bullet;
+	static private Player playerView;
 	static private ArrayList<Enemy> listOfEnemyShips;
 	static private ArrayList<Bullet> listOfBullets;
 	static private ArrayList<Bullet> listOfPlayerBullets;
@@ -26,9 +24,7 @@ public class GameSceneView extends JPanel
 	{
 		this.setPreferredSize(new Dimension(width, height));
 		
-		playerView = new PlayerView();
-		enemy = new Enemy();
-		bullet = new Bullet();
+		playerView = new Player();
 		
 		listOfEnemyShips = new ArrayList<Enemy>();
 		listOfBullets = new ArrayList<Bullet>();
@@ -78,7 +74,7 @@ public class GameSceneView extends JPanel
 		}
 	}
 	
-	public PlayerView getPlayerViewView()
+	public Player getPlayerViewView()
 	{
 		return playerView;
 	}

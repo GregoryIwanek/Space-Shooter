@@ -1,130 +1,126 @@
 package ModelPackage;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class PlayerModel 
 {
-	private int xCurrentPosition = 0;
-	private int yCurrentPosition = 0;
-	private int width, height;
-	private int shield = 100, hp = 100;
+
+	public PlayerModel(){}
 	
-	public PlayerModel(int xCurrentPosition, int yCurrentPosition)
+	public void setShieldToDisplay(Player player, int points)
 	{
-		this.xCurrentPosition = xCurrentPosition;
-		this.yCurrentPosition = yCurrentPosition;
-	}
-	
-	public void setSize(int width, int height)
-	{
-		this.width = width;
-		this.height = height;
-	}
-	
-	public void setShieldToDisplay(int points)
-	{
+		int shield = player.getPlayerShield();
 		if (shield >= 0 && shield <= 100)
 		{
 			shield += points;
-			
+
 			if (shield < 0) shield = 0;
 			else if (shield > 100) shield = 100;
 		}
+		
+		player.setShield(shield);
 	}
-	public void setLifeToDisplay(int points)
+	public void setLifeToDisplay(Player player, int points)
 	{
-		if (shield == 0)
+		int hp = player.getPlayerLife();
+		
+		if (player.getPlayerShield() == 0)
 		{
-			if (points < 0)
-			{
-				hp += points;
-			}		
+			if (points < 0) hp += points;
+			if (hp < 0) hp = 0;
 		}
-		if (hp < 0)
-		{
-			hp = 0;
-		}
+				
+		player.setLife(hp);
 	}
 	
-	public void calculateMovementOfPlayer(ArrayList<Integer> listOfPressedKeys)
+	public void calculateMovementOfPlayer(Player player, ArrayList<Integer> listOfPressedKeys)
 	{
 		//if contains LEFT BUTTON 
 		if (listOfPressedKeys.size() < 3 && listOfPressedKeys.contains(37) == true)
 		{
-			updateX(false);
-			//and if contains UP/DOWN buttons
-			if (listOfPressedKeys.contains(38) == true) updateY(false);
-			else if (listOfPressedKeys.contains(40) == true) updateY(true);
+			updateX(player, false);
+			//and if contains UP/DOWN buttons, move LEFT UP/DOWN
+			if (listOfPressedKeys.contains(38) == true) updateY(player, false);
+			else if (listOfPressedKeys.contains(40) == true) updateY(player, true);
 		}
 		//if contains UP BUTTON
 		else if (listOfPressedKeys.size() < 3 && listOfPressedKeys.contains(38) == true)
 		{
-			updateY(false);
-			//and if contains LEFT/RIGHT button
-			if (listOfPressedKeys.contains(37) == true) updateX(false);
-			else if (listOfPressedKeys.contains(39) == true) updateX(true);
+			updateY(player, false);
+			//and if contains LEFT/RIGHT button move UP LEFT/RIGHT
+			if (listOfPressedKeys.contains(37) == true) updateX(player, false);
+			else if (listOfPressedKeys.contains(39) == true) updateX(player, true);
 		}
 		//if contains RIGHT button
 		else if (listOfPressedKeys.size() < 3 && listOfPressedKeys.contains(39) == true)
 		{
-			updateX(true);
-			//and if contains UP/DOWN button
-			if (listOfPressedKeys.contains(38) == true) updateY(false);
-			else if (listOfPressedKeys.contains(40) == true) updateY(true);
+			updateX(player, true);
+			//and if contains UP/DOWN button move RIGHT UP/DOWN
+			if (listOfPressedKeys.contains(38) == true) updateY(player, false);
+			else if (listOfPressedKeys.contains(40) == true) updateY(player, true);
 		}
 		//if contains DOWN button
 		else if (listOfPressedKeys.size() < 3 && listOfPressedKeys.contains(40) == true)
 		{
-			updateY(true);
-			//and if contains LEFT/RIGHT button
-			if (listOfPressedKeys.contains(37) == true) updateX(false);
-			else if (listOfPressedKeys.contains(39) == true) updateX(true);
+			updateY(player, true);
+			//and if contains LEFT/RIGHT button move DOWN LEFT/RIGHT
+			if (listOfPressedKeys.contains(37) == true) updateX(player, false);
+			else if (listOfPressedKeys.contains(39) == true) updateX(player, true);
 		}
 	}
-	
-	public void updateX(boolean isIncreasing)
+
+	public void updateX(Player player, boolean isIncreasing)
 	{
-		if (isIncreasing == true && xCurrentPosition < 585)
+		if (isIncreasing == true && player.getLocation().x < 585)
 		{
-			xCurrentPosition += 5;
+			player.setLocation(player.getLocation().x+5, player.getLocation().y);
 		}
-		else if (isIncreasing == false && xCurrentPosition > 0)
+		else if (isIncreasing == false && player.getLocation().x > 0)
 		{
-			xCurrentPosition -= 5;
+			player.setLocation(player.getLocation().x-5, player.getLocation().y);
 		}
 	}
-	public void updateY(boolean isIncreasing)
+
+	public void updateY(Player player, boolean isIncreasing)
 	{
-		if (isIncreasing == true && yCurrentPosition < 585)
+		if (isIncreasing == true && player.getLocation().y  < 585)
 		{
-			yCurrentPosition += 5;
+			player.setLocation(player.getLocation().x, player.getLocation().y+5);
 		}
-		else if (isIncreasing == false && yCurrentPosition > 0)
+		else if (isIncreasing == false && player.getLocation().y > 0)
 		{
-			yCurrentPosition -= 5;
+			player.setLocation(player.getLocation().x, player.getLocation().y-5);
 		}
 	}
-	public void updatePosition()
+	public void updatePoints(Player player, int points)
 	{
-		
+		int newPoints = player.getPoints();
+		player.setPoints(newPoints + points);
 	}
-	
-	public Point getNewPosition()
+//////
+	public Point getNewPosition(Player player)
 	{
-		return new Point(xCurrentPosition, yCurrentPosition);
+		return player.getLocation();
 	}
-	
-	public Point getCenter()
+	public Point getCenter(Player player)
 	{
-		return new Point(xCurrentPosition+width/2, yCurrentPosition+height/2);
+		int xCenter = player.getLocation().x + player.getBounds().width/2;
+		int yCenter = player.getLocation().y + player.getBounds().height/2;
+		return new Point(xCenter, yCenter);
 	}
-	public int getShield()
+	public int getShield(Player player)
 	{
-		return shield;
+		return player.getPlayerShield();
 	}
-	public int getLife()
+	public int getLife(Player player)
 	{
-		return hp;
+		return player.getPlayerLife();
+	}
+	public int getPoints(Player player)
+	{
+		return player.getPoints();
 	}
 }

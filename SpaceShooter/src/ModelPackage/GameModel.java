@@ -8,18 +8,18 @@ import java.util.ListIterator;
 
 public class GameModel 
 {
-	static private SceneModel sceneModel;
 	static private PlayerModel playerModel;
 	static private EnemyModel enemyModel;
 	private BulletsModel bulletsModel;
+	static private Player player;
 	static private ArrayList<Enemy> listOfEnemyShips;
 	static private ArrayList<Bullet> listOfBullets;
 	static private ArrayList<Bullet> listOfPlayerBullets;
 
 	public GameModel()
 	{
-		sceneModel = new SceneModel();
-		playerModel = new PlayerModel(500,500);
+		playerModel = new PlayerModel();
+		player = new Player();
 		enemyModel = new EnemyModel(200,200);
 		bulletsModel = new BulletsModel();
 		listOfEnemyShips = new ArrayList<Enemy>();
@@ -64,7 +64,7 @@ public class GameModel
 			}
 		}
 	}
-	public void checkIfEnemyInCollision(PlayerView player)
+	public void checkIfEnemyInCollision(Player player)
 	{
 		ListIterator<Enemy> enemyIterator = listOfEnemyShips.listIterator();
 		while (enemyIterator.hasNext())
@@ -73,8 +73,8 @@ public class GameModel
 			if (player.intersects(enemyRectangle))
 			{
 				enemyIterator.remove();
-				playerModel.setShieldToDisplay(-25);
-				playerModel.setLifeToDisplay(-25);
+				playerModel.setShieldToDisplay(player, -25);
+				playerModel.setLifeToDisplay(player, -25);
 			}
 		}
 	}
@@ -85,12 +85,12 @@ public class GameModel
 		{
 			Bullet newBullet = new Bullet();
 			newBullet.setImageOfBullet("/Bullet.png");
+			newBullet.setPowerOfBullet(5);
 			listOfBullets.add(newBullet);
 			bulletsModel.calculateMovementOfBullet(enemy.getCenter().x, enemy.getCenter().y,
-					playerModel.getCenter().x, playerModel.getCenter().y );
+					playerModel.getCenter(player).x, playerModel.getCenter(player).y );
 			newBullet.setDeltasOfBullet(bulletsModel.deltaX, bulletsModel.deltaY);
 			newBullet.setLocation(enemy.getCenter().x, enemy.getCenter().y);
-			newBullet.setOnwer("ENEMY");
 		}
 	}
 	public void setNewPositionOfBullets()
@@ -133,9 +133,9 @@ public class GameModel
 				listOfPlayerBulletsIterator.remove();
 			}
 		}
-		
+
 	}
-	public void checkIfBulletInCollision(PlayerView player)
+	public void checkIfBulletInCollision(Player player)
 	{
 		ListIterator<Bullet> bulletIterator = listOfBullets.listIterator();
 		while ( bulletIterator.hasNext())
@@ -144,25 +144,104 @@ public class GameModel
 			if (player.intersects(bulletRectangle))
 			{
 				bulletIterator.remove();
-				playerModel.setShieldToDisplay(-5);
-				playerModel.setLifeToDisplay(-5);
+				playerModel.setShieldToDisplay(player, -5);
+				playerModel.setLifeToDisplay(player, -5);
 			}
 		}
 	}
 	public void setNewBulletsOfPlayer()
 	{
-		Bullet newBullet = new Bullet();
-		newBullet.setImageOfBullet("/BulletBlaster.png");
-		listOfPlayerBullets.add(newBullet);
-		newBullet.setDeltasOfBullet(0, 1);
-		newBullet.setLocation(playerModel.getCenter().x, playerModel.getCenter().y);
-		newBullet.setOnwer("PLAYER");
+		int type = 1;
+		switch (type){
+		case 1:
+			setMisilesBullets();
+			break;
+		case 2:
+			setDefinitionBlasterBullets();
+			break;
+		case 3:
+			setLaserBullets();
+			break;
+		case 4:
+			setBombBullets();
+			break;
+		default:
+			setDefinitionBlasterBullets();
+			break;
+		}
+		Bullet newBulletLeft = new Bullet();
+		newBulletLeft.setPowerOfBullet(500);
+		newBulletLeft.setImageOfBullet("/BulletBlaster.png");
+		listOfPlayerBullets.add(newBulletLeft);
+		newBulletLeft.setDeltasOfBullet(0, 1);
+		newBulletLeft.setLocation(playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);
+
+		Bullet newBulletRight = new Bullet();
+		newBulletRight.setPowerOfBullet(500);
+		newBulletRight.setImageOfBullet("/BulletBlaster.png");
+		listOfPlayerBullets.add(newBulletRight);
+		newBulletRight.setDeltasOfBullet(0, 1);
+		newBulletRight.setLocation(playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);
+	}
+	public void setMisilesBullets()
+	{
+
+	}
+	public void setDefinitionBlasterBullets()
+	{
+		int levelOfWeapon = player.getLevelOfWeapon("lvlOfBlaster");
+		switch (levelOfWeapon)
+		{
+		case 1:
+			setNewBlasterBullets(2, 500, 0, 1);
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		default:
+			break;
+		}
+	}
+	public void setNewBlasterBullets(int number, int power, double deltaX, double deltaY)
+	{
+		for (int i=0; i<2; ++i)
+		{
+			Bullet newBullet = new Bullet();
+			newBullet.setPowerOfBullet(power);
+			newBullet.setImageOfBullet("/BulletBlaster.png");
+			listOfPlayerBullets.add(newBullet);
+			newBullet.setDeltasOfBullet(deltaX, deltaY);
+			if (i == 0) newBullet.setLocation(playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);
+			else newBullet.setLocation(playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);
+		}
+
+		for (int i=0; i<2; ++i)
+		{
+			Bullet newBullet = new Bullet();
+			newBullet.setPowerOfBullet(power);
+			newBullet.setImageOfBullet("/BulletBlaster.png");
+			listOfPlayerBullets.add(newBullet);
+			newBullet.setDeltasOfBullet(deltaX, deltaY);
+			if (i == 0) newBullet.setLocation(playerModel.getCenter(player).x-5, playerModel.getCenter(player).y-5);
+			else newBullet.setLocation(playerModel.getCenter(player).x-5, playerModel.getCenter(player).y+5);
+		}
+	}
+	public void setLaserBullets()
+	{
+
+	}
+	public void setBombBullets()
+	{
+
 	}
 	public void updatePositionOfPlayerBullets()
 	{
 		for (Bullet bulletToMove : listOfPlayerBullets)
 		{
-			bulletToMove.setLocation(bulletToMove.getLocation().x, bulletToMove.getLocation().y-5);
+			int stepX = (int)(8 *bulletToMove.deltaX);
+			int stepY = (int)(8*bulletToMove.deltaY);
+			bulletToMove.setLocation(bulletToMove.getLocation().x+stepX, bulletToMove.getLocation().y-8);
 		}
 	}
 	public void checkIfPlayerBulletInCollision()
@@ -170,31 +249,42 @@ public class GameModel
 		ListIterator<Bullet> bulletIterator = listOfPlayerBullets.listIterator();
 		while ( bulletIterator.hasNext())
 		{
-			Rectangle bulletRectangle =  bulletIterator.next().getBounds();
+			Bullet bulletRectangle =  bulletIterator.next();
 			ListIterator<Enemy> enemyIterator = listOfEnemyShips.listIterator();
 			while(enemyIterator.hasNext())
 			{
-				Rectangle enemyRectangle = enemyIterator.next().getBounds();
-				if (bulletRectangle.intersects(enemyRectangle))
+				Enemy enemyRectangle = enemyIterator.next();
+				if (bulletRectangle.getBounds().intersects(enemyRectangle.getBounds()))
 				{
+					updateEnemyLife(enemyRectangle, bulletRectangle.getPowerOfBullet());
 					bulletIterator.remove();
-					enemyIterator.remove();
-					playerModel.setShieldToDisplay(5);
+					checkIfDestroyEnemy(enemyIterator, enemyRectangle);
 				}
 			}
 		}
 	}
-
-
-	public void setSizeToModel(int width, int height)
+	public void updateEnemyLife(Enemy enemy, int bulletPower)
 	{
-		playerModel.setSize(width, height);
+		enemy.updateLife(bulletPower);
+	}
+	public void checkIfDestroyEnemy(ListIterator<Enemy> enemyIterator, Enemy enemy)
+	{
+		if (enemy.isDestroyed() == true)
+		{
+			enemyIterator.remove();
+			updatePlayerStats();
+		}
+	}
+	public void updatePlayerStats()
+	{
+		playerModel.setShieldToDisplay(player, 5);
+		playerModel.updatePoints(player, 1);
 	}
 	//GETTERS
 	//--------------------------------------------------------------------------------------------------------
-	public SceneModel getSceneModel()
+	public Player getPlayer()
 	{
-		return sceneModel;
+		return player;
 	}
 	public PlayerModel getPlayerModel()
 	{

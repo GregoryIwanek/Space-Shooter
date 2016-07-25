@@ -32,7 +32,6 @@ public class GameInterfaceView extends JPanel
 	private JLabel labelHP;
 	private JLabel labelShield;
 	private JLabel labelPoints;
-	private JLabel labelMapName;
 	private JLabel labelLevel;
 
 	//data container
@@ -92,9 +91,6 @@ public class GameInterfaceView extends JPanel
 		labelHP = new JLabel("100");
 		labelMap.put("labelHP", labelHP);
 
-		labelMapName = new JLabel("DEEP SPACE");
-		labelMap.put("labelMapName", labelMapName);
-
 		labelLevel = new JLabel("1");
 		labelMap.put("labelLevel", labelLevel);
 
@@ -104,7 +100,8 @@ public class GameInterfaceView extends JPanel
 	
 	public void updateLabels(String name, int value)
 	{
-		labelMap.get(name).setText(new Integer(value).toString());
+		String textToDisplay = name.substring(5);
+		labelMap.get(name).setText(textToDisplay +" "+ new Integer(value).toString());
 	}
 
 	private void setsPanels()
@@ -123,7 +120,6 @@ public class GameInterfaceView extends JPanel
 		statusPanel.setPreferredSize(new Dimension(630, 100));
 		statusPanel.setBackground(Color.green);
 		statusPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
-		statusPanel.add(labelMapName, BorderLayout.EAST);
 		statusPanel.add(labelPoints, BorderLayout.EAST);
 		statusPanel.add(labelLevel, BorderLayout.EAST);
 		statusPanel.add(labelHP, BorderLayout.EAST);

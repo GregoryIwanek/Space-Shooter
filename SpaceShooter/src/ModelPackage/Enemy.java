@@ -13,46 +13,27 @@ public class Enemy extends Rectangle
 {
 	private int x;
 	private int y;
+	private int hp = 1000;
 	private BufferedImage imageOfEnemy;
-	private ArrayList<Bullet> listOfBullets;
 
 	public Enemy() 
 	{
-		listOfBullets = new ArrayList<Bullet>();
 		this.setSize(new Dimension(35, 50));
 		setImageOfEnemy();
 	}
-
-	public void setPosition(int x, int y)
+	public void updateLife(int points)
 	{
-		//this.x = x;
-		//this.y = y;
+		hp -= points;
 	}
-
-	public void setPosition(double x, double y)
+	public boolean isDestroyed()
 	{
-		//this.x = (int) x;
-		//this.y = (int) y;
+		if (hp<=0) return true;
+		else return false;
 	}
-
-	public Point getPosition()
-	{
-		return new Point(this.getLocation());
-	}
+	//gets center of the enemy by global coordinates system, not local center
 	public Point getCenter()
 	{
 		return new Point(this.getLocation().x+this.getBounds().width/2, this.getLocation().y+this.getBounds().height/2);
-		//return new Point(x+this.getBounds().width/2, y + this.getBounds().height/2);
-	}
-
-	public void setNewBullet()
-	{
-
-	}
-
-	public ArrayList<Bullet> getListOfBullets()
-	{
-		return listOfBullets;
 	}
 
 	public void setImageOfEnemy()
