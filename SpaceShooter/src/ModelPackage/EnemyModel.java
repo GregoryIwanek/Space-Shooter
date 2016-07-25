@@ -25,7 +25,7 @@ public class EnemyModel
 	
 	public int getRandomStartingPos()
 	{
-		return randomGenerator.nextInt(580);
+		return randomGenerator.nextInt(600);
 	}
 	
 	public void calculateMovementOfEnemy(int xEnemy, int yEnemy, int xPlayer, int yPlayer)

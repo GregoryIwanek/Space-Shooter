@@ -46,7 +46,7 @@ public class GameModel
 	{
 		for (Enemy enemy : listOfEnemyShips)
 		{
-			if (enemy.getLocation().y < 550) //650 is a bottom of a panel
+			if (enemy.getLocation().y < 650) //650 is a bottom of a panel
 			{
 				enemy.setLocation(enemy.getLocation().x, enemy.getLocation().y+1);
 			}
@@ -58,7 +58,7 @@ public class GameModel
 		while (listOfEnemyShipsIterator.hasNext())
 		{ 
 			Enemy enemyToCheck = listOfEnemyShipsIterator.next();
-			if (enemyToCheck.getLocation().y > 500)
+			if (enemyToCheck.getLocation().y > 660)
 			{
 				listOfEnemyShipsIterator.remove();
 			}
@@ -71,7 +71,7 @@ public class GameModel
 		{
 			Rectangle enemyRectangle = enemyIterator.next().getBounds();
 			if (player.intersects(enemyRectangle))
-			{
+			{	
 				enemyIterator.remove();
 				playerModel.setShieldToDisplay(player, -25);
 				playerModel.setLifeToDisplay(player, -25);
@@ -84,7 +84,7 @@ public class GameModel
 		for (Enemy enemy : listOfEnemyShips)
 		{
 			Bullet newBullet = new Bullet();
-			newBullet.setImageOfBullet("/Bullet.png");
+			bulletsModel.setImageOfBullet(newBullet, "/Bullet.png");
 			newBullet.setPowerOfBullet(5);
 			listOfBullets.add(newBullet);
 			bulletsModel.calculateMovementOfBullet(enemy.getCenter().x, enemy.getCenter().y,
@@ -103,10 +103,11 @@ public class GameModel
 	{
 		for (Bullet bulletToMove : listOfBullets)
 		{	
-			int deltaX = (int)(bulletToMove.deltaX*3);
-			int deltaY = (int)(bulletToMove.deltaY*3);
-			bulletToMove.setLocation(bulletToMove.getLocation().x+deltaX, 
-					bulletToMove.getLocation().y+deltaY);
+			int deltaX = (int)(bulletsModel.getDeltaXOfBullet(bulletToMove)*3);
+			int deltaY = (int)(bulletsModel.getDeltaYOfBullet(bulletToMove)*3);
+			int x = bulletsModel.getLocationOfBullet(bulletToMove).x + deltaX;
+			int y = bulletsModel.getLocationOfBullet(bulletToMove).y + deltaY;
+			bulletsModel.setLocationOfBullet(bulletToMove, x, y);
 		}
 	}
 	public void checkIfBulletsOutOfScene()
@@ -116,8 +117,8 @@ public class GameModel
 		while (listOfBulletsIterator.hasNext())
 		{ 
 			Bullet bulletToCheck = listOfBulletsIterator.next();
-			if (bulletToCheck.getLocation().y > 580 || bulletToCheck.getLocation().y < 0 
-					||bulletToCheck.getLocation().x > 580 || bulletToCheck.getLocation().x < 0)
+			if (bulletToCheck.getLocation().y > 650 || bulletToCheck.getLocation().y < 0 
+					||bulletToCheck.getLocation().x > 630 || bulletToCheck.getLocation().x < 0)
 			{
 				listOfBulletsIterator.remove();
 			}
@@ -127,8 +128,8 @@ public class GameModel
 		while (listOfPlayerBulletsIterator.hasNext())
 		{
 			Bullet bulletToCheck = listOfPlayerBulletsIterator.next();
-			if (bulletToCheck.getLocation().y > 580 || bulletToCheck.getLocation().y < 0 
-					||bulletToCheck.getLocation().x > 580 || bulletToCheck.getLocation().x < 0)
+			if (bulletToCheck.getLocation().y > 650 || bulletToCheck.getLocation().y < 0
+					||bulletToCheck.getLocation().x > 630 || bulletToCheck.getLocation().x < 0)
 			{
 				listOfPlayerBulletsIterator.remove();
 			}
@@ -170,18 +171,18 @@ public class GameModel
 			break;
 		}
 		Bullet newBulletLeft = new Bullet();
-		newBulletLeft.setPowerOfBullet(500);
-		newBulletLeft.setImageOfBullet("/BulletBlaster.png");
+		bulletsModel.setPowerOfBullet(newBulletLeft, 500);
+		bulletsModel.setImageOfBullet(newBulletLeft, "/BulletBlaster.png");
+		bulletsModel.setDeltasOfBullet(newBulletLeft, 0, 1);
+		bulletsModel.setLocationOfBullet(newBulletLeft, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);
 		listOfPlayerBullets.add(newBulletLeft);
-		newBulletLeft.setDeltasOfBullet(0, 1);
-		newBulletLeft.setLocation(playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);
 
 		Bullet newBulletRight = new Bullet();
-		newBulletRight.setPowerOfBullet(500);
-		newBulletRight.setImageOfBullet("/BulletBlaster.png");
+		bulletsModel.setPowerOfBullet(newBulletRight, 500);
+		bulletsModel.setImageOfBullet(newBulletRight, "/BulletBlaster.png");
+		bulletsModel.setDeltasOfBullet(newBulletRight, 0, 1);
+		bulletsModel.setLocationOfBullet(newBulletRight, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);
 		listOfPlayerBullets.add(newBulletRight);
-		newBulletRight.setDeltasOfBullet(0, 1);
-		newBulletRight.setLocation(playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);
 	}
 	public void setMisilesBullets()
 	{
@@ -208,23 +209,23 @@ public class GameModel
 		for (int i=0; i<2; ++i)
 		{
 			Bullet newBullet = new Bullet();
-			newBullet.setPowerOfBullet(power);
-			newBullet.setImageOfBullet("/BulletBlaster.png");
+			bulletsModel.setPowerOfBullet(newBullet, power);
+			bulletsModel.setDeltasOfBullet(newBullet, deltaX, deltaY);
+			bulletsModel.setImageOfBullet(newBullet, "/BulletBlaster.png");
 			listOfPlayerBullets.add(newBullet);
-			newBullet.setDeltasOfBullet(deltaX, deltaY);
-			if (i == 0) newBullet.setLocation(playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);
-			else newBullet.setLocation(playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);
+			if (i == 0)  bulletsModel.setLocationOfBullet(newBullet, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);
+			else  bulletsModel.setLocationOfBullet(newBullet, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);
 		}
 
 		for (int i=0; i<2; ++i)
 		{
 			Bullet newBullet = new Bullet();
-			newBullet.setPowerOfBullet(power);
-			newBullet.setImageOfBullet("/BulletBlaster.png");
+			bulletsModel.setPowerOfBullet(newBullet, power);
+			bulletsModel.setImageOfBullet(newBullet, "/BulletBlaster.png");
+			bulletsModel.setDeltasOfBullet(newBullet, deltaX, deltaY);
 			listOfPlayerBullets.add(newBullet);
-			newBullet.setDeltasOfBullet(deltaX, deltaY);
-			if (i == 0) newBullet.setLocation(playerModel.getCenter(player).x-5, playerModel.getCenter(player).y-5);
-			else newBullet.setLocation(playerModel.getCenter(player).x-5, playerModel.getCenter(player).y+5);
+			if (i == 0) bulletsModel.setLocationOfBullet(newBullet, playerModel.getCenter(player).x-5, playerModel.getCenter(player).y-5); 
+			else bulletsModel.setLocationOfBullet(newBullet, playerModel.getCenter(player).x-5, playerModel.getCenter(player).y+5);
 		}
 	}
 	public void setLaserBullets()
@@ -239,9 +240,11 @@ public class GameModel
 	{
 		for (Bullet bulletToMove : listOfPlayerBullets)
 		{
-			int stepX = (int)(8 *bulletToMove.deltaX);
-			int stepY = (int)(8*bulletToMove.deltaY);
-			bulletToMove.setLocation(bulletToMove.getLocation().x+stepX, bulletToMove.getLocation().y-8);
+			int stepX = (int)(8 *bulletsModel.getDeltaXOfBullet(bulletToMove));
+			int stepY = (int)(8*bulletsModel.getDeltaYOfBullet(bulletToMove));
+			int x = bulletsModel.getLocationOfBullet(bulletToMove).x + stepX;
+			int y = bulletsModel.getLocationOfBullet(bulletToMove).y-8;
+			bulletsModel.setLocationOfBullet(bulletToMove, x, y);
 		}
 	}
 	public void checkIfPlayerBulletInCollision()
@@ -256,7 +259,7 @@ public class GameModel
 				Enemy enemyRectangle = enemyIterator.next();
 				if (bulletRectangle.getBounds().intersects(enemyRectangle.getBounds()))
 				{
-					updateEnemyLife(enemyRectangle, bulletRectangle.getPowerOfBullet());
+					updateEnemyLife(enemyRectangle, bulletsModel.getPowerOfBullet(bulletRectangle));
 					bulletIterator.remove();
 					checkIfDestroyEnemy(enemyIterator, enemyRectangle);
 				}

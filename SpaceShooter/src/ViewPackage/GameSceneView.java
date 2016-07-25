@@ -45,7 +45,6 @@ public class GameSceneView extends JPanel
 	}
 	public void updatePlayerViewPosition(Point position)
 	{
-		//playerView.setPosition(position.x, position.y);
 		playerView.setLocation(position);
 	}
 	

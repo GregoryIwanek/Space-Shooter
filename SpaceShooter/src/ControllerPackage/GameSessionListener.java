@@ -26,6 +26,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 	private Timer timer;
 	private int timeCumulated = 0;
 	private int timeCumulatedBulletSpawn = 0;
+	int rechargeTime = 0;
 	
 	boolean isAlreadyOnList = false;
 	
@@ -80,13 +81,13 @@ public class GameSessionListener implements ActionListener, KeyListener
 			gameSceneView.updateListOfBullets(gameModel.getListOfBullets());
 			timeCumulatedBulletSpawn = 0;
 		}
-		
 		gameSceneView.repaint();
 		
 		updateLabelsInGameInterface();
 		
 		timeCumulated += timer.getDelay();
 		timeCumulatedBulletSpawn += timer.getDelay();
+		rechargeTime += timer.getDelay();
 	}
 	
 	//update texts in labels in interface ( points, players hp etc)
@@ -108,8 +109,11 @@ public class GameSessionListener implements ActionListener, KeyListener
 		switch (code) {
 		case 32:
 			//space pressed, player shoots bullets
-			gameModel.setNewBulletsOfPlayer();
-			gameSceneView.updateListOfPlayerBullets(gameModel.getListOfPlayerBullets());
+			if (rechargeTime > 250){
+				gameModel.setNewBulletsOfPlayer();
+				gameSceneView.updateListOfPlayerBullets(gameModel.getListOfPlayerBullets());
+				rechargeTime = 0;
+			}
 			break;
 		case 37:
 			//left button pressed

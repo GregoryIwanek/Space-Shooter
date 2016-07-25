@@ -10,8 +10,8 @@ import javax.imageio.ImageIO;
 
 public class Bullet extends Rectangle
 {
-	public double deltaX = 0;
-	public double deltaY = 0;
+	private double deltaX = 0;
+	private double deltaY = 0;
 	private int power = 0;
 	private BufferedImage imageOfBullet;
 	
@@ -28,14 +28,9 @@ public class Bullet extends Rectangle
 		this.deltaX = deltaX;
 		this.deltaY = deltaY;
 	}
-	public void setImageOfBullet(String path)
+	public void setImageOfBullet(BufferedImage imageOfBullet)
 	{
-		try {
-			imageOfBullet = ImageIO.read(getClass().getResourceAsStream(path));
-		}
-		catch (IOException e){
-			e.printStackTrace();
-		}
+		this.imageOfBullet = imageOfBullet;
 	}
 	//GETTERS
 	//-------------------------------------------------------------------------------------------------
@@ -50,6 +45,14 @@ public class Bullet extends Rectangle
 	public int getPowerOfBullet()
 	{
 		return power;
+	}
+	public double getDeltaXOfBullet()
+	{
+		return deltaX;
+	}
+	public double getDeltaYBullet()
+	{
+		return deltaY;
 	}
 	
 }
