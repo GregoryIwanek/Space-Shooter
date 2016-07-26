@@ -27,6 +27,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 	private int timeCumulated = 0;
 	private int timeCumulatedBulletSpawn = 0;
 	int rechargeTime = 0;
+	int collisionTime = 0;
 	
 	boolean isAlreadyOnList = false;
 	
@@ -63,10 +64,10 @@ public class GameSessionListener implements ActionListener, KeyListener
 		gameModel.setNewPositionOfShips();
 		gameModel.setNewPositionOfBullets();
 		
-		gameModel.checkIfEnemyInCollision(gameModel.getPlayer());
-		gameModel.checkIfBulletInCollision(gameModel.getPlayer());
-		gameModel.checkIfPlayerBulletInCollision();
-		
+			gameModel.checkIfEnemyInCollision(gameModel.getPlayer());
+			gameModel.checkIfBulletInCollision(gameModel.getPlayer());
+			gameModel.checkIfPlayerBulletInCollision();
+	
 		if (timeCumulated > 1500)
 		{
 			gameModel.setNewEnemyShip();
