@@ -22,46 +22,65 @@ public class MainMenuView extends JPanel
 	//panel with buttons
 	private JPanel mainMenuPanel;
 
-	//buttons
+	//main menu buttons
 	private JButton startButton;
 	private JButton quitButton;
 	
+	//image in main menu
 	private BufferedImage imageOfMenu;
-	private BufferedImage imageOfRest;
 
 	//default constructor
 	public MainMenuView()
 	{	
-		//initiation of panel with picture
+		//methods to define sub-panels of main menu section
+		setImagesOfMenu(imageOfMenu, "/welcome_image.jpg");
+		setPanelWithPicture();
+		setMainMenuPanel();
+		setButtons();
+		addButtons();
+
+		//adds sub-panels to main panel
+		add(picturePanel);
+		add(mainMenuPanel);
+	}
+	
+	public void setPanelWithPicture()
+	{
+		//initiation of panel with a picture
 		picturePanel = new JLabel();
-		picturePanel.setBackground(Color.green);
 		picturePanel.setPreferredSize(new Dimension(530, 760));
-		
-		//initiation of main menu buttons and container (panel)
+	}
+	
+	//sets panel with a buttons
+	public void setMainMenuPanel()
+	{
+		//initiation of main menu buttons container
 		mainMenuPanel = new JPanel();
+		mainMenuPanel.setBackground(Color.blue);
+		mainMenuPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 50));
+		mainMenuPanel.setPreferredSize(new Dimension(250,760));
+	}
+	
+	//sets buttons in main menu panel
+	public void setButtons()
+	{
 		startButton = new JButton("START GAME");
 		startButton.setName("START GAME");
 		quitButton = new JButton("QUIT");
 		quitButton.setName("QUIT");
 		startButton.setBackground(Color.CYAN);
 		quitButton.setBackground(Color.CYAN);
-
-		//definition of this panel
-		mainMenuPanel.setBackground(Color.blue);
-		mainMenuPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 50));
-		mainMenuPanel.setPreferredSize(new Dimension(250,760));
-		
+	}
+	
+	//puts buttons in main menu panel
+	public void addButtons()
+	{
 		//adding components to the panel
 		mainMenuPanel.add(startButton);
 		mainMenuPanel.add(quitButton);	
-
-		add(picturePanel);
-		add(mainMenuPanel);
-		
-		setImagesOfMenu(imageOfRest, "/welcome_image.jpg");
 	}
 	
-	//setting size of buttons
+	//setting size of buttons, called from parent class
 	public void setGeometryOfButtons(int widthFrame, int heightFrame)
 	{
 		//set size of buttons
@@ -80,17 +99,19 @@ public class MainMenuView extends JPanel
 	public void setImagesOfMenu(BufferedImage image, String path)
 	{
 		try {
-			imageOfRest = ImageIO.read(getClass().getResourceAsStream("/welcome_image.jpg"));
+			//sets image to given picture path
+			imageOfMenu = ImageIO.read(getClass().getResourceAsStream("/welcome_image.jpg"));
 		}
 		catch (IOException e){
 			e.printStackTrace();
 		}
 	}
 	
+	//paints image in picture panel
 	@Override public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(imageOfRest, picturePanel.getX(), picturePanel.getY(),
+		g2.drawImage(imageOfMenu, picturePanel.getX(), picturePanel.getY(),
 				picturePanel.getSize().width, picturePanel.getSize().height, null);
 	}
 }

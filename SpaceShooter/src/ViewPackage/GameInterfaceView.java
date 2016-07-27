@@ -52,7 +52,7 @@ public class GameInterfaceView extends JPanel
 
 	private void setsButtons()
 	{
-		//setting buttons
+		//setting buttons information
 		buttonStart = new JButton("START");
 		defineButton(buttonStart, "START", new Dimension(120,40), false);
 
@@ -72,6 +72,7 @@ public class GameInterfaceView extends JPanel
 		defineButton(buttonWeaponBomb , "BOMB", new Dimension(120,120), false);
 	}
 	
+	//define buttons of game interface menu
 	public void defineButton(JButton button, String name, Dimension size, boolean makeFocusable)
 	{
 		button.setName(name);
@@ -79,12 +80,13 @@ public class GameInterfaceView extends JPanel
 		button.setFocusable(makeFocusable);
 	}
 
+	//sets labels of game interface menu (info texts)
 	private void setsLabels()
 	{
 		//initiation of map container
 		labelMap = new HashMap<String,JLabel>();
 
-		//setting labels and adding them to map
+		//setting labels with information and adding them to map
 		labelPoints = new JLabel("0");
 		labelMap.put("labelPoints", labelPoints);
 
@@ -98,16 +100,19 @@ public class GameInterfaceView extends JPanel
 		labelMap.put("labelShield", labelShield);
 	}
 	
+	//updating labels texts, checked every trigger of Timer in controller
 	public void updateLabels(String name, int value)
 	{
+		//sets text to display
 		String textToDisplay = name.substring(5);
 		labelMap.get(name).setText(textToDisplay +" "+ new Integer(value).toString());
 	}
 
+	//setting sup-panels of this panel
 	private void setsPanels()
 	{
 		//setting panels and adding components to them
-		//weapons panel
+		//weapons panel, contains buttons with possible choice of weapons
 		weaponsPanel = new JPanel();
 		weaponsPanel.setPreferredSize(new Dimension (130,650));
 		weaponsPanel.setBackground(Color.red);
@@ -116,6 +121,7 @@ public class GameInterfaceView extends JPanel
 		weaponsPanel.add(buttonWeaponLaser);
 		weaponsPanel.add(buttonWeaponBomb);
 
+		//status panel, contains labels to show information
 		statusPanel = new JPanel();
 		statusPanel.setPreferredSize(new Dimension(630, 100));
 		statusPanel.setBackground(Color.green);
@@ -125,17 +131,20 @@ public class GameInterfaceView extends JPanel
 		statusPanel.add(labelHP, BorderLayout.EAST);
 		statusPanel.add(labelShield, BorderLayout.EAST);
 
+		//menu panel, contains button start and back
 		menuPanel = new JPanel();
 		menuPanel.setPreferredSize(new Dimension(130, 100));
 		menuPanel.setBackground(Color.yellow);
 		menuPanel.add(buttonStart);
 		menuPanel.add(buttonBack);
 
+		//game scene panel, here we pain our game
 		gameScenePanel = new GameSceneView(630, 650);
 		gameScenePanel.setPreferredSize(new Dimension(630, 650));
 		gameScenePanel.setBackground(new Color(8445951));
 	}
 
+	//adding sub-panels to main panel
 	private void fillWindow()
 	{
 		//adds panels to view
@@ -145,6 +154,7 @@ public class GameInterfaceView extends JPanel
 		this.add(menuPanel);
 	}
 
+	//set action listener for buttons in all panels
 	public void addActionListenerGameInterface(ActionListener actionListener)
 	{
 		//sets listeners for buttons
@@ -153,6 +163,7 @@ public class GameInterfaceView extends JPanel
 		buttonWeaponMisiles.addActionListener(actionListener);
 	}
 	
+	//adds key listener for THIS main panel, it will read pressed/released keys
 	public void addKeyListenerGameInterface(KeyListener keyListenerGameInterface)
 	{
 		this.addKeyListener(keyListenerGameInterface);
@@ -160,10 +171,14 @@ public class GameInterfaceView extends JPanel
 
 	//GETTERS
 	//--------------------------------------------------------------------------------------------------------------------------------------
+	
+	//gets label to display new information
 	public JLabel getLabel(String labelToGet)
 	{
 		return labelMap.get(labelToGet);
 	}
+	
+	//gets scene of a game
 	public GameSceneView getScenePanel()
 	{
 		return gameScenePanel;

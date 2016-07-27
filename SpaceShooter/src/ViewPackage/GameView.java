@@ -60,12 +60,14 @@ public class GameView extends JFrame
 	//switch between game mode and main menu mode
 	public void startEndSession()
 	{
+		//if game section invisible, set visible and hide main menu
 		if (gameInterfaceView.isVisible() == false)
 		{
 			this.add(gameInterfaceView);
 			mainMenuView.setVisible(false);
 			gameInterfaceView.setVisible(true);
 		}
+		//if game section visible, set invisible, show main menu and stop a Timer in controller
 		else 
 		{
 			gameInterfaceView.setVisible(false);
@@ -74,6 +76,7 @@ public class GameView extends JFrame
 		}
 	}
 	
+	//gets game interface
 	public GameInterfaceView getInterface()
 	{
 		return gameInterfaceView;
