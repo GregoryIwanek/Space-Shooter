@@ -12,7 +12,7 @@ public class GameController
 	
 	public GameController(GameView gameView, GameModel gameModel) 
 	{
-		//setting view and model;
+		//setting main view and model;
 		GameController.gameView = gameView;
 		GameController.gameModel = gameModel;
 		
@@ -24,7 +24,7 @@ public class GameController
 		GameController.gameView.addActionListenerGameInterface(gameInterfaceListener);
 		GameController.gameView.addKeyListenerGame(gameInterfaceListener.getGameSessionListener());
 		
-		GameController.gameInterfaceListener.getGameSessionListener().setPlayerViewAndModel(gameView.getInterface().getScenePanel().getPlayerViewView(),
+		GameController.gameInterfaceListener.getGameSessionListener().setPlayerViewAndModel(gameView.getInterface().getScenePanel().getPlayerView(),
 				gameModel.getPlayerModel());
 		GameController.gameInterfaceListener.getGameSessionListener().setGameInterfaceView(gameView.getInterface());
 	}

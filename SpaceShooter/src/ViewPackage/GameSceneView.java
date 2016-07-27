@@ -1,5 +1,6 @@
 package ViewPackage;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,16 +16,19 @@ import ModelPackage.Player;
 
 public class GameSceneView extends JPanel
 {
-	static private Player playerView;
+	static private Player player;
 	static private ArrayList<Enemy> listOfEnemyShips;
 	static private ArrayList<Bullet> listOfBullets;
 	static private ArrayList<Bullet> listOfPlayerBullets;
+	static private Color colorBullet;
 	
 	public GameSceneView(int width, int height) 
 	{
 		this.setPreferredSize(new Dimension(width, height));
 		
-		playerView = new Player();
+		 colorBullet = new Color(255,0,0);
+		
+		player = new Player();
 		
 		listOfEnemyShips = new ArrayList<Enemy>();
 		listOfBullets = new ArrayList<Bullet>();
@@ -43,16 +47,19 @@ public class GameSceneView extends JPanel
 	{
 		GameSceneView.listOfPlayerBullets = listOfPlayerBullets;
 	}
-	public void updatePlayerViewPosition(Point position)
+	public void setPlayer (Player player)
 	{
-		playerView.setLocation(position);
+		GameSceneView.player = player;
 	}
 	
 	@Override public void paintComponent(Graphics g){
+		
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(playerView.getImageOfPlayer(), playerView.getLocation().x, playerView.getLocation().y,
-				playerView.getSize().width, playerView.getSize().height, null);
+		g2.setColor(colorBullet);
+		
+		g2.drawImage(player.getImageOfPlayer(), player.getLocation().x, player.getLocation().y,
+				player.getSize().width, player.getSize().height, null);
 		
 		for (Enemy enemy : listOfEnemyShips)
 		{
@@ -62,19 +69,17 @@ public class GameSceneView extends JPanel
 		
 		for (Bullet bullet : listOfBullets)
 		{
-			g2.drawImage(bullet.getImageOfBullet(), bullet.getLocation().x, bullet.getLocation().y,
-					bullet.getSize().width, bullet.getSize().height, null);
+			g2.fillRect(bullet.getLocation().x, bullet.getLocation().y, bullet.getSize().width, bullet.getSize().height);
 		}
 		
 		for (Bullet bullet : listOfPlayerBullets)
 		{
-			g2.drawImage(bullet.getImageOfBullet(), bullet.getLocation().x, bullet.getLocation().y,
-					bullet.getSize().width, bullet.getSize().height, null);
+			g2.fillRect(bullet.getLocation().x, bullet.getLocation().y, bullet.getSize().width, bullet.getSize().height);
 		}
 	}
 	
-	public Player getPlayerViewView()
+	public Player getPlayerView()
 	{
-		return playerView;
+		return player;
 	}
 }

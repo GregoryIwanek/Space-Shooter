@@ -1,31 +1,43 @@
 package ModelPackage;
 
+import java.awt.Dimension;
 import java.awt.Point;
-import java.math.*;
-import java.util.ArrayList;
-import java.util.ListIterator;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 public class EnemyModel 
 {
-	private int xCurrentPosition;
-	private int yCurrentPosition;
-	double deltaX=0, deltaY=0;
-	private int hp;
 	Random randomGenerator;
-	
-	
-	public EnemyModel(int xCurrentPosition, int yCurrentPosition) 
+
+	public EnemyModel() 
 	{
-		this.xCurrentPosition = xCurrentPosition;
-		this.yCurrentPosition = yCurrentPosition;
 		randomGenerator = new Random();
-		hp = 1;
 	}
 	
 	public int getRandomStartingPos()
 	{
 		return randomGenerator.nextInt(600);
+	}
+	
+	public void setEnemySize(Enemy enemy, Dimension size)
+	{
+		enemy.setSize(size);
+	}
+	public void setImageOfEnemy(Enemy enemy, String path)
+	{
+		BufferedImage image = null;
+		
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream(path));
+		}
+		catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		enemy.setImage(image);
 	}
 	
 	public void calculateMovementOfEnemy(int xEnemy, int yEnemy, int xPlayer, int yPlayer)
@@ -34,16 +46,8 @@ public class EnemyModel
 //		 deltaX = Math.sin(angle);
 //		 deltaY = Math.cos(angle);
 	}
-	public void updateX()
-	{
-		
-	}
-	public void updateY()
-	{
-		yCurrentPosition += 5;
-	}
 	
-	public void setNewPosition(int x, int y, Enemy enemy)
+	public void setNewPosition(Enemy enemy, int x, int y)
 	{
 		enemy.setLocation(x, y);
 	}
@@ -51,8 +55,9 @@ public class EnemyModel
 	{
 		return new Enemy();
 	}
-	public Point getNewPosition()
+	
+	public Point getCenterOfEnemy(Enemy enemy)
 	{
-		return new Point(xCurrentPosition, yCurrentPosition);
+		return enemy.getCenter();
 	}
 }

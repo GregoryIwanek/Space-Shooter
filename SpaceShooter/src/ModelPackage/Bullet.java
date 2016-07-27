@@ -17,7 +17,7 @@ public class Bullet extends Rectangle
 	
 	public Bullet() 
 	{
-		setSize(new Dimension(6,6));
+		
 	}
 	public void setPowerOfBullet(int power)
 	{
@@ -28,7 +28,7 @@ public class Bullet extends Rectangle
 		this.deltaX = deltaX;
 		this.deltaY = deltaY;
 	}
-	public void setImageOfBullet(BufferedImage imageOfBullet)
+	public void setImage(BufferedImage imageOfBullet)
 	{
 		this.imageOfBullet = imageOfBullet;
 	}

@@ -38,6 +38,9 @@ public class GameSessionListener implements ActionListener, KeyListener
 		listOfBullets = new ArrayList<Bullet>();
 		timer = new Timer(30, this);
 		this.gameModel = gameModel;
+		
+		//___________________________________________________________--to kick out
+		gameSceneView.setPlayer(gameModel.getPlayer());
 	}
 	
 	public void setPlayerViewAndModel(Player playerView, PlayerModel playerModel)
@@ -59,7 +62,6 @@ public class GameSessionListener implements ActionListener, KeyListener
 	public void actionPerformed(ActionEvent e) 
 	{
 		playerModel.calculateMovementOfPlayer(gameModel.getPlayer(), listOfPressedKeys);
-		gameSceneView.updatePlayerViewPosition(playerModel.getNewPosition(gameModel.getPlayer()));
 		
 		gameModel.setNewPositionOfShips();
 		gameModel.setNewPositionOfBullets();
@@ -94,10 +96,10 @@ public class GameSessionListener implements ActionListener, KeyListener
 	//update texts in labels in interface ( points, players hp etc)
 	public void updateLabelsInGameInterface()
 	{
-		gameInterfaceView.updateLabels("labelHP", playerModel.getLife(gameModel.getPlayer()));
-		gameInterfaceView.updateLabels("labelShield", playerModel.getShield(gameModel.getPlayer()));
-		gameInterfaceView.updateLabels("labelPoints", playerModel.getPoints(gameModel.getPlayer()));
-		gameInterfaceView.updateLabels("labelLevel", playerModel.getPoints(gameModel.getPlayer())/50+1);
+		gameInterfaceView.updateLabels("labelHP", playerModel.getPlayersLife(gameModel.getPlayer()));
+		gameInterfaceView.updateLabels("labelShield", playerModel.getPlayersShield(gameModel.getPlayer()));
+		gameInterfaceView.updateLabels("labelPoints", playerModel.getPlayersPoints(gameModel.getPlayer()));
+		gameInterfaceView.updateLabels("labelLevel", playerModel.getPlayersPoints(gameModel.getPlayer())/50+1);
 	}
 
 	@Override

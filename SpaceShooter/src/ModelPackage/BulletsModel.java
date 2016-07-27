@@ -1,5 +1,6 @@
 package ModelPackage;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -13,6 +14,11 @@ public class BulletsModel
 	public BulletsModel() 
 	{
 		
+	}
+	
+	public void setBulletSize(Bullet bullet, Dimension size)
+	{
+		bullet.setSize(size);
 	}
 	
 	public void calculateMovementAsBlaster()
@@ -57,7 +63,7 @@ public class BulletsModel
 		catch (IOException e){
 			e.printStackTrace();
 		}
-		bullet.setImageOfBullet(image);
+		bullet.setImage(image);
 	}
 	public int getPowerOfBullet(Bullet bullet)
 	{

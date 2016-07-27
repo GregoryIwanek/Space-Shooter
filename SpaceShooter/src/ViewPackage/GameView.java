@@ -20,11 +20,12 @@ public class GameView extends JFrame
 		//definition of basic information about starting position of window
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
-		//definition of main frame ( window with scene to pain on)
+		//definition of main frame ( window with scene to paint on), fixed size
 		this.setName("Space Shooter");
 		this.setSize(800,800);
 		this.setResizable(false);
-		//setting starting location of window
+		
+		//setting starting location of window on the screen
 		this.setLocation(dimension.width/2 - this.getWidth()/2,
 				dimension.height/2 - this.getHeight()/2);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,15 +1,10 @@
 package ModelPackage;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
-import javax.swing.JLabel;
 
 public class Player extends Rectangle
 {
@@ -23,9 +18,7 @@ public class Player extends Rectangle
 
 	public Player() 
 	{
-		this.setSize(new Dimension(45, 65));
 		setMap();
-		setImageOfPlayer();
 	}
 	private void setMap()
 	{
@@ -49,15 +42,6 @@ public class Player extends Rectangle
 	public void setImageOfPlayer(BufferedImage imageOfPlayer)
 	{
 		this.imageOfPlayer = imageOfPlayer;
-	}
-	public void setImageOfPlayer()
-	{
-		try {
-			imageOfPlayer = ImageIO.read(getClass().getResourceAsStream("/Player.png"));
-		}
-		catch (IOException e){
-			e.printStackTrace();
-		}
 	}
 	public Point getCenter()
 	{

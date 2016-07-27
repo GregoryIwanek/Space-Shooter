@@ -1,15 +1,19 @@
 package ModelPackage;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 public class PlayerModel 
 {
 
 	public PlayerModel(){}
-	
+
 	public void setShieldToDisplay(Player player, int points)
 	{
 		int shield = player.getPlayerShield();
@@ -20,22 +24,22 @@ public class PlayerModel
 			if (shield < 0) shield = 0;
 			else if (shield > 100) shield = 100;
 		}
-		
+
 		player.setShield(shield);
 	}
 	public void setLifeToDisplay(Player player, int points)
 	{
 		int hp = player.getPlayerLife();
-		
+
 		if (player.getPlayerShield() == 0)
 		{
 			if (points < 0) hp += points;
 			if (hp < 0) hp = 0;
 		}
-				
+
 		player.setLife(hp);
 	}
-	
+
 	public void calculateMovementOfPlayer(Player player, ArrayList<Integer> listOfPressedKeys)
 	{
 		//if contains LEFT BUTTON 
@@ -100,7 +104,22 @@ public class PlayerModel
 		int newPoints = player.getPoints();
 		player.setPoints(newPoints + points);
 	}
-//////
+	public void setImageOfPlayer(Player player, String path)
+	{
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream(path));
+		}
+		catch (IOException e){
+			e.printStackTrace();
+		}
+		player.setImageOfPlayer(image);
+	}
+	public void setSizeOfPlayer(Player player, Dimension size)
+	{
+		player.setSize(size);
+	}
+	//////
 	public Point getNewPosition(Player player)
 	{
 		return player.getLocation();
@@ -111,15 +130,15 @@ public class PlayerModel
 		int yCenter = player.getLocation().y + player.getBounds().height/2;
 		return new Point(xCenter, yCenter);
 	}
-	public int getShield(Player player)
+	public int getPlayersShield(Player player)
 	{
 		return player.getPlayerShield();
 	}
-	public int getLife(Player player)
+	public int getPlayersLife(Player player)
 	{
 		return player.getPlayerLife();
 	}
-	public int getPoints(Player player)
+	public int getPlayersPoints(Player player)
 	{
 		return player.getPoints();
 	}
