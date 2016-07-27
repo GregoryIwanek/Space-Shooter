@@ -81,7 +81,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 		{
 			gameModel.setNewBullets();
 			//gameModel.setNewBlasterBullets(2, 500, 0.5, 1);
-			gameSceneView.updateListOfBullets(gameModel.getListOfBullets());
+			gameSceneView.updateListOfBullets(gameModel.getListOfEnemyBullets());
 			timeCumulatedBulletSpawn = 0;
 		}
 		gameSceneView.repaint();

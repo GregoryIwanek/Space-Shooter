@@ -16,7 +16,7 @@ public class PlayerModel
 	//calculate current shield power of a player
 	public void setShieldToDisplay(Player player, int points)
 	{
-		int shield = player.getPlayerShield();
+		int shield = player.getShield();
 		
 		//calculate only if current shield is in range 0-100
 		if (shield >= 0 && shield <= 100)
@@ -35,10 +35,10 @@ public class PlayerModel
 	//calculate current amount of life of a player
 	public void setLifeToDisplay(Player player, int points)
 	{
-		int hp = player.getPlayerLife();
+		int hp = player.getLife();
 
 		//calculate only if shield power of player is 0
-		if (player.getPlayerShield() == 0)
+		if (player.getShield() == 0)
 		{
 			//subtract life value only if given points are < 0
 			if (points < 0) hp += points;
@@ -155,21 +155,19 @@ public class PlayerModel
 	//gets center of player in global coordinate system
 	public Point getCenter(Player player)
 	{
-		int xCenter = player.getLocation().x + player.getBounds().width/2;
-		int yCenter = player.getLocation().y + player.getBounds().height/2;
-		return new Point(xCenter, yCenter);
+		return player.getCenter();
 	}
 	
 	//gets power of shield of player
 	public int getPlayersShield(Player player)
 	{
-		return player.getPlayerShield();
+		return player.getShield();
 	}
 	
 	//gets life amount of player
 	public int getPlayersLife(Player player)
 	{
-		return player.getPlayerLife();
+		return player.getLife();
 	}
 	
 	//gets points of player
