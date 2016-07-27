@@ -7,18 +7,16 @@ public class GameController
 	static GameView gameView;
 	static GameModel gameModel;
 	
-	static GameMenuListener gameMenuListener;
+	static GameMainMenuListener gameMainMenuListener;
 	static GameInterfaceListener gameInterfaceListener;
 	
 	public GameController(GameView gameView, GameModel gameModel) 
 	{
-		//setting main view and model;
-		GameController.gameView = gameView;
-		GameController.gameModel = gameModel;
+		setViewAndModel(gameView, gameModel);
 		
 		//setting listeners
-		gameMenuListener = new GameMenuListener(gameView, gameModel);
-		GameController.gameView.addActionListenerMainMenu(gameMenuListener);
+		gameMainMenuListener = new GameMainMenuListener(gameView, gameModel);
+		GameController.gameView.addActionListenerMainMenu(gameMainMenuListener);
 		
 		gameInterfaceListener = new GameInterfaceListener(gameView, gameModel);
 		GameController.gameView.addActionListenerGameInterface(gameInterfaceListener);
@@ -27,5 +25,16 @@ public class GameController
 		GameController.gameInterfaceListener.getGameSessionListener().setPlayerViewAndModel(gameView.getInterface().getScenePanel().getPlayerView(),
 				gameModel.getPlayerModel());
 		GameController.gameInterfaceListener.getGameSessionListener().setGameInterfaceView(gameView.getInterface());
+	}
+	
+	public void setViewAndModel(GameView gameView, GameModel gameModel)
+	{
+		//setting main view and main model;
+		GameController.gameView = gameView;
+		GameController.gameModel = gameModel;
+	}
+	public void setListeners()
+	{
+		
 	}
 }

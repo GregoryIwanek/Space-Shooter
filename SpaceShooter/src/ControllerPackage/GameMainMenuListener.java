@@ -8,12 +8,12 @@ import javax.swing.JButton;
 import ModelPackage.GameModel;
 import ViewPackage.GameView;
 
-public class GameMenuListener implements ActionListener 
+public class GameMainMenuListener implements ActionListener 
 {
 	GameView gameView;
 	GameModel gameModel;
 	
-	public GameMenuListener(GameView gameView, GameModel gameModel) 
+	public GameMainMenuListener(GameView gameView, GameModel gameModel) 
 	{
 		//setting view and model;
 		this.gameView = gameView;
