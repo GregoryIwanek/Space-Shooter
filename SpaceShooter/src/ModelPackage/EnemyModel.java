@@ -17,25 +17,57 @@ public class EnemyModel
 	{
 		randomGenerator = new Random();
 	}
-	
+
 	//gets random position of enemy ( used as X axis)
 	public int getRandomStartingPos()
 	{
 		return randomGenerator.nextInt(600);
 	}
-	
+
 	//sets size of an enemy object
 	public void setEnemySize(Enemy enemy, Dimension size)
 	{
 		enemy.setSize(size);
 	}
+
+	//sets life of an object
+	public void setEnemyLife(Enemy enemy, int life)
+	{
+		enemy.setLife(life);
+	}
 	
+	//sets if enemy object is asteroid
+	public void setEnemyIfAsteroid(Enemy enemy, boolean isAsteroid)
+	{
+		enemy.setIfAsteroid(isAsteroid);
+	}
+
+	//sets speed of an enemy
+	public void setEnemySpeed(Enemy enemy, int speed, boolean isAsteroid)
+	{
+		//if speed 
+		if (isAsteroid == true)
+		{
+			//for fast enemies, not depending on lvl of game
+			enemy.setSpeed(speed);
+		}
+		else 
+		{
+			//put limit on max speed, speed depends on lvl of a game
+			if (speed > 3)
+			{
+				enemy.setSpeed(3);
+			}
+			else enemy.setSpeed(speed);
+		}
+	}
+
 	//sets image of an enemy object to paint
 	public void setImageOfEnemy(Enemy enemy, String path)
 	{
 		//initiation of image variable
 		BufferedImage image = null;
-		
+
 		try {
 			//sets image by given path
 			image = ImageIO.read(getClass().getResourceAsStream(path));
@@ -43,34 +75,46 @@ public class EnemyModel
 		catch (IOException e){
 			e.printStackTrace();
 		}
-		
+
 		//sets image to an object
 		enemy.setImage(image);
 	}
-	
-//	//
-//	public void calculateMovementOfEnemy(int xEnemy, int yEnemy, int xPlayer, int yPlayer)
-//	{		
-////		double angle = Math.atan2(xPlayer - xEnemy, yPlayer - yEnemy);
-////		 deltaX = Math.sin(angle);
-////		 deltaY = Math.cos(angle);
-//	}
-	
+
+	//	//
+	//	public void calculateMovementOfEnemy(int xEnemy, int yEnemy, int xPlayer, int yPlayer)
+	//	{		
+	////		double angle = Math.atan2(xPlayer - xEnemy, yPlayer - yEnemy);
+	////		 deltaX = Math.sin(angle);
+	////		 deltaY = Math.cos(angle);
+	//	}
+
 	//set new position of enemy object
 	public void setNewPosition(Enemy enemy, int x, int y)
 	{
 		enemy.setLocation(x, y);
 	}
-	
+
 	//gets center of enemy object in global coordinate system
 	public Point getCenterOfEnemy(Enemy enemy)
 	{
 		return enemy.getCenter();
 	}
-	
+
 	//gets current position of an enemy in global coordinate system
 	public Point getPositionOfEnemy(Enemy enemy)
 	{
 		return enemy.getLocation();
+	}
+
+	//gets speed of given enemy object
+	public int getSpeedOfEnemy(Enemy enemy)
+	{
+		return enemy.getSpeed();
+	}
+	
+	//gets if enemy object is an asteroid
+	public boolean getIfEnemyAsteroid(Enemy enemy)
+	{
+		return enemy.getIfAsteroid();
 	}
 }

@@ -15,7 +15,7 @@ public class PlayerModel
 	public void setShieldToDisplay(Player player, int points)
 	{
 		int shield = player.getShield();
-		
+
 		//calculate only if current shield is in range 0-100
 		if (shield >= 0 && shield <= 100)
 		{
@@ -29,7 +29,7 @@ public class PlayerModel
 		//set calculated value to a player object
 		player.setShield(shield);
 	}
-	
+
 	//calculate current amount of life of a player
 	public void setLifeToDisplay(Player player, int points)
 	{
@@ -113,20 +113,20 @@ public class PlayerModel
 			player.setLocation(player.getLocation().x, player.getLocation().y-5);
 		}
 	}
-	
+
 	//sets new amount of points ( shoot down enemies) of a player
 	public void updatePoints(Player player, int points)
 	{
 		//sets points as current points + given points
 		player.setPoints(player.getPoints()+ points);
 	}
-	
+
 	//sets image for a given player object
 	public void setImageOfPlayer(Player player, String path)
 	{
 		//initiation of image variable
 		BufferedImage image = null;
-		
+
 		try {
 			//sets image by using String path
 			image = ImageIO.read(getClass().getResourceAsStream(path));
@@ -137,37 +137,37 @@ public class PlayerModel
 		//sets image to a player object
 		player.setImageOfPlayer(image);
 	}
-	
+
 	//sets size of player object
 	public void setSizeOfPlayer(Player player, Dimension size)
 	{
 		player.setSize(size);
 	}
-	
+
 	//gets position in global coordinates system of a player object
 	public Point getNewPosition(Player player)
 	{
 		return player.getLocation();
 	}
-	
+
 	//gets center of player in global coordinate system
 	public Point getCenter(Player player)
 	{
 		return player.getCenter();
 	}
-	
+
 	//gets power of shield of player
 	public int getPlayersShield(Player player)
 	{
 		return player.getShield();
 	}
-	
+
 	//gets life amount of player
 	public int getPlayersLife(Player player)
 	{
 		return player.getLife();
 	}
-	
+
 	//gets points of player
 	public int getPlayersPoints(Player player)
 	{

@@ -36,9 +36,11 @@ public class GameController
 		gameMainMenuListener = new GameMainMenuListener();
 		GameController.gameView.addActionListenerMainMenu(gameMainMenuListener);
 		
-		//setting and assigning game interface and game session listener
+		//setting and assigning game interface listener
 		gameInterfaceListener = new GameInterfaceListener();
 		GameController.gameView.addActionListenerGameInterface(gameInterfaceListener);
+		
+		//setting and assigning game session listener
 		gameSessionListener = new GameSessionListener();
 		GameController.gameView.addKeyListenerGame(gameSessionListener);
 	}

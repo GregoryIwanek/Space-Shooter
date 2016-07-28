@@ -7,9 +7,17 @@ import java.awt.image.BufferedImage;
 public class Enemy extends Rectangle
 {
 	private int hp = 1000; //life of an enemy
+	private int speed = 1;
+	private boolean isAsteroid = false;
 	private BufferedImage imageOfEnemy;
 
 	public Enemy(){}
+	
+	//sets life of an object
+	public void setLife(int hp)
+	{
+		this.hp = hp;
+	}
 	
 	//sets new amount of life of an enemy object
 	public void updateLife(int points)
@@ -17,7 +25,19 @@ public class Enemy extends Rectangle
 		hp -= points;
 	}
 	
-	//sets information if enemy was destroyed and can be removed from scene
+	//sets speed of an object
+	public void setSpeed(int speed)
+	{
+		this.speed = speed;
+	}
+	
+	//sets if object is asteroid ( fast moving enemy)
+	public void setIfAsteroid(boolean isAsteroid)
+	{
+		this.isAsteroid = isAsteroid;
+	}
+	
+	//gets information if enemy was destroyed and can be removed from scene
 	public boolean isDestroyed()
 	{
 		if (hp<=0) return true;
@@ -40,5 +60,17 @@ public class Enemy extends Rectangle
 	public BufferedImage getImageOfEnemy()
 	{
 		return imageOfEnemy;
+	}
+	
+	//gets speed of an object
+	public int getSpeed()
+	{
+		return speed;
+	}
+	
+	//gets if object is an asteroid
+	public boolean getIfAsteroid()
+	{
+		return isAsteroid;
 	}
 }

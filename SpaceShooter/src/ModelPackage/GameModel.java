@@ -10,6 +10,7 @@ public class GameModel
 	static private PlayerModel playerModel;
 	static private EnemyModel enemyModel;
 	private BulletsModel bulletsModel;
+	static private int lvlOfGame = 1;
 	static private Player player;
 	static private ArrayList<Enemy> listOfEnemyShips;
 	static private ArrayList<Bullet> listOfEnemyBullets;
@@ -53,6 +54,24 @@ public class GameModel
 		enemyModel.setEnemySize(newEnemy, new Dimension(35,50));
 		enemyModel.setImageOfEnemy(newEnemy, "/Enemy_ship_1.png");
 		enemyModel.setNewPosition(newEnemy, enemyModel.getRandomStartingPos(), 0);
+		enemyModel.setEnemyLife(newEnemy, 800+lvlOfGame*200);
+		enemyModel.setEnemySpeed(newEnemy, 1+lvlOfGame/4, false);
+		
+		//adds to painting list 
+		listOfEnemyShips.add(newEnemy);
+	}
+	
+	public void setNewEnemyShipAsteroid()
+	{
+		Enemy newEnemy = new Enemy();
+		
+		//sets enemy object data
+		enemyModel.setEnemySize(newEnemy, new Dimension(35,50));
+		enemyModel.setImageOfEnemy(newEnemy, "/rock.png");
+		enemyModel.setNewPosition(newEnemy, enemyModel.getRandomStartingPos(), 0);
+		enemyModel.setEnemyIfAsteroid(newEnemy, true);
+		enemyModel.setEnemyLife(newEnemy, 5000);
+		enemyModel.setEnemySpeed(newEnemy, 10, true);
 		
 		//adds to painting list 
 		listOfEnemyShips.add(newEnemy);
@@ -68,13 +87,14 @@ public class GameModel
 	
 	//update position of enemy ships after Timers tick
 	public void updatePositionOfShips()
-	{
+	{	
 		//update position of every enemy ships on a list 
 		for (Enemy enemy : listOfEnemyShips)
 		{
 			if (enemyModel.getPositionOfEnemy(enemy).y < 700) //650 is a bottom of a panel
 			{
-				enemyModel.setNewPosition(enemy, enemyModel.getPositionOfEnemy(enemy).x, enemyModel.getPositionOfEnemy(enemy).y+1);
+				enemyModel.setNewPosition(enemy, enemyModel.getPositionOfEnemy(enemy).x,
+						enemyModel.getPositionOfEnemy(enemy).y+enemyModel.getSpeedOfEnemy(enemy));
 			}
 		}
 	}
@@ -120,18 +140,22 @@ public class GameModel
 		//create bullet for all objects on a list
 		for (Enemy enemy : listOfEnemyShips)
 		{
-			Bullet newBullet = new Bullet();
-			
-			//sets bullet data
-			bulletsModel.setBulletSize(newBullet, new Dimension(6,6));
-			bulletsModel.setPowerOfBullet(newBullet, 5);
-			bulletsModel.calculateDeltasOfBullet(newBullet, enemyModel.getCenterOfEnemy(enemy).x, enemyModel.getCenterOfEnemy(enemy).y,
-					playerModel.getCenter(player).x, playerModel.getCenter(player).y );
-			bulletsModel.setDeltasOfBullet(newBullet, bulletsModel.getDeltaXOfBullet(newBullet), bulletsModel.getDeltaYOfBullet(newBullet));
-			bulletsModel.setLocationOfBullet(newBullet, enemyModel.getCenterOfEnemy(enemy).x, enemyModel.getCenterOfEnemy(enemy).y);
-			
-			//adds bullet to list to paint
-			listOfEnemyBullets.add(newBullet);
+			//enemies create bullets only if they are not asteroids ( very fast moving enemy)
+			if (enemyModel.getIfEnemyAsteroid(enemy) == false)
+			{
+				Bullet newBullet = new Bullet();
+				
+				//sets bullet data
+				bulletsModel.setBulletSize(newBullet, new Dimension(6,6));
+				bulletsModel.setPowerOfBullet(newBullet, 5);
+				bulletsModel.calculateDeltasOfBullet(newBullet, enemyModel.getCenterOfEnemy(enemy).x, enemyModel.getCenterOfEnemy(enemy).y,
+						playerModel.getCenter(player).x, playerModel.getCenter(player).y );
+				bulletsModel.setDeltasOfBullet(newBullet, bulletsModel.getDeltaXOfBullet(newBullet), bulletsModel.getDeltaYOfBullet(newBullet));
+				bulletsModel.setLocationOfBullet(newBullet, enemyModel.getCenterOfEnemy(enemy).x, enemyModel.getCenterOfEnemy(enemy).y);
+				
+				//adds bullet to list to paint
+				listOfEnemyBullets.add(newBullet);
+			}
 		}
 	}
 	
@@ -346,10 +370,11 @@ public class GameModel
 				{
 					//subtract enemy life by players bullet power
 					updateEnemyLife(enemyRectangle, bulletsModel.getPowerOfBullet(bulletRectangle));
-					//remove bullet
-					bulletIterator.remove();	
 					//check if enemy object destroyed, if yes, remove
 					checkIfDestroyEnemy(enemyIterator, enemyRectangle);
+					//remove bullet
+					bulletIterator.remove();
+					break;
 				}
 			}
 		}
@@ -374,11 +399,26 @@ public class GameModel
 		}
 	}
 	
+	//update current lvl of game
+	public void updateLevelOfGame()
+	{
+		//sets current lvl of game
+		if (playerModel.getPlayersPoints(player) < 50)
+		{
+			lvlOfGame = 1;
+		}
+		else
+		{
+			lvlOfGame= playerModel.getPlayersPoints(player)/50+1;
+		}
+	}
+	
 	//update stats of player after destruction of an enemy
 	public void updatePlayerStats()
 	{
 		playerModel.setShieldToDisplay(player, 5);
 		playerModel.updatePoints(player, 1);
+		updateLevelOfGame();
 	}
 	
 	//GETTERS
@@ -412,5 +452,11 @@ public class GameModel
 	public ArrayList<Bullet> getListOfPlayerBullets()
 	{
 		return listOfPlayerBullets;
+	}
+	
+	//gets lvl of game
+	public int getLvlOfGame()
+	{
+		return lvlOfGame;
 	}
 }
