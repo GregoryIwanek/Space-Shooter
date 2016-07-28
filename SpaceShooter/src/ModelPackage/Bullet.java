@@ -9,6 +9,8 @@ public class Bullet extends Rectangle
 	private double deltaX = 0; //factor for step on X axis
 	private double deltaY = 0; //factor for step on Y axis
 	private int power = 0; //power of bullet (damage)
+	private Enemy target; //for missile kind of bullet-> target to follow
+	private String typeOfBullet = "BLASTER";
 	private BufferedImage imageOfBullet;
 	
 	public Bullet(){}
@@ -17,6 +19,18 @@ public class Bullet extends Rectangle
 	public void setPowerOfBullet(int power)
 	{
 		this.power = power;
+	}
+	
+	//sets information about type of bullet
+	public void setTypeOfBullet(String typeOfBullet)
+	{
+		this.typeOfBullet = typeOfBullet;
+	}
+	
+	//sets target to follow for missile kind of bullet
+	public void setTargetForMissile(Enemy target)
+	{
+		this.target = target;
 	}
 	
 	//sets step factor of a bullet ( used for calculating step on X and Y axis on scene)
@@ -65,4 +79,15 @@ public class Bullet extends Rectangle
 		return deltaY;
 	}
 	
+	//gets information about type of bullet
+	public String getTypeOfBullet()
+	{
+		return typeOfBullet;
+	}
+	
+	//gets target of missile
+	public Enemy getTargetOfMissile()
+	{
+		return target;
+	}
 }

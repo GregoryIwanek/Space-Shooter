@@ -106,7 +106,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 	//check if can spawn new enemy ship
 	public void checkSpawnShip()
 	{
-		//spawns new enemy ship and resets time of spawn
+		//spawns new enemy ship and resets time of spawn, spawn every 1,5 sec
 		if (timeCumulated > 1500)
 		{
 			gameModel.setNewEnemyShip();
@@ -115,7 +115,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 		}
 	}
 	
-	//check if can spawn asteroid
+	//check if can spawn asteroid, spawn every 5 sec
 	public void checkSpawnAsteroid()
 	{
 		//spawns new asteroid
@@ -130,12 +130,15 @@ public class GameSessionListener implements ActionListener, KeyListener
 	//check if can spawn new enemy bullets
 	public void checkSpawnBullet()
 	{
-		//spawns new bullets of enemies, resets time between spawns
+		//spawns new bullets of enemies, resets time between spawns, spawn every 0.8 sec
 		if (timeCumulatedBulletSpawn > 800)
 		{
 			gameModel.setNewBullets();
 			gameSceneView.updateListOfBullets(gameModel.getListOfEnemyBullets());
 			timeCumulatedBulletSpawn = 0;
+			
+			
+			gameModel.setClosestEnemyToMissile();
 		}
 	}
 

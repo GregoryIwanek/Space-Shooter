@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.util.ArrayList;
 
+import javax.sound.sampled.Line;
 import javax.swing.JPanel;
 
 import ModelPackage.Bullet;
@@ -19,12 +21,14 @@ public class GameSceneView extends JPanel
 	static private ArrayList<Bullet> listOfBullets;
 	static private ArrayList<Bullet> listOfPlayerBullets;
 	static private Color colorBullet;
+	static private Color colorBulletPlayer;
 
 	public GameSceneView(int width, int height) 
 	{
 		setPreferredSize(new Dimension(width, height));
 
 		colorBullet = new Color(255,0,0);
+		colorBulletPlayer = new Color(255,255,0);
 
 		player = new Player();
 
@@ -32,7 +36,7 @@ public class GameSceneView extends JPanel
 		listOfBullets = new ArrayList<Bullet>();
 		listOfPlayerBullets = new ArrayList<Bullet>();
 	}
-
+	
 	public void updateListOfEnemyShips(ArrayList<Enemy> listOfEnemyShips)
 	{
 		GameSceneView.listOfEnemyShips = listOfEnemyShips;
@@ -58,7 +62,7 @@ public class GameSceneView extends JPanel
 
 		g2.drawImage(player.getImageOfPlayer(), player.getLocation().x, player.getLocation().y,
 				player.getSize().width, player.getSize().height, null);
-
+	
 		for (Enemy enemy : listOfEnemyShips)
 		{
 			g2.drawImage(enemy.getImageOfEnemy(), enemy.getLocation().x, enemy.getLocation().y,
@@ -70,6 +74,7 @@ public class GameSceneView extends JPanel
 			g2.fillRect(bullet.getLocation().x, bullet.getLocation().y, bullet.getSize().width, bullet.getSize().height);
 		}
 
+		g2.setColor(colorBulletPlayer);
 		for (Bullet bullet : listOfPlayerBullets)
 		{
 			g2.fillRect(bullet.getLocation().x, bullet.getLocation().y, bullet.getSize().width, bullet.getSize().height);
