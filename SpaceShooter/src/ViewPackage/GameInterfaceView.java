@@ -1,8 +1,5 @@
 package ViewPackage;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -44,6 +41,7 @@ public class GameInterfaceView extends JPanel
 		//sets size of parent panel
 		this.setPreferredSize(new Dimension(800,800));
 
+		//sets interface elements in panel
 		setsButtons();
 		setsLabels();
 		setsPanels();
@@ -52,7 +50,7 @@ public class GameInterfaceView extends JPanel
 
 	private void setsButtons()
 	{
-		//setting buttons information
+		//setting buttons in game interface
 		buttonStart = new JButton("START");
 		defineButton(buttonStart, "START", new Dimension(120,40), false);
 
@@ -87,16 +85,16 @@ public class GameInterfaceView extends JPanel
 		labelMap = new HashMap<String,JLabel>();
 
 		//setting labels with information and adding them to map
-		labelPoints = new JLabel("0");
+		labelPoints = new JLabel("Points 0");
 		labelMap.put("labelPoints", labelPoints);
 
-		labelHP = new JLabel("100");
+		labelHP = new JLabel("HP 100");
 		labelMap.put("labelHP", labelHP);
 
-		labelLevel = new JLabel("1");
+		labelLevel = new JLabel("Level 1");
 		labelMap.put("labelLevel", labelLevel);
 
-		labelShield = new JLabel("100");
+		labelShield = new JLabel("Shield 100");
 		labelMap.put("labelShield", labelShield);
 	}
 	

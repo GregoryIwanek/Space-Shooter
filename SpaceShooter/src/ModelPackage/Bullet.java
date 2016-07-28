@@ -1,12 +1,8 @@
 package ModelPackage;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 public class Bullet extends Rectangle
 {

@@ -1,18 +1,11 @@
 package ViewPackage;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class MainMenuView extends JPanel
@@ -108,7 +101,8 @@ public class MainMenuView extends JPanel
 	}
 	
 	//paints image in picture panel
-	@Override public void paintComponent(Graphics g){
+	@Override public void paintComponent(Graphics g)
+	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(imageOfMenu, picturePanel.getX(), picturePanel.getY(),

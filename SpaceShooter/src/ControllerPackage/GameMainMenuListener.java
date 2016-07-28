@@ -3,31 +3,21 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-
-import ModelPackage.GameModel;
-import ViewPackage.GameView;
-
 public class GameMainMenuListener implements ActionListener 
 {
-	GameView gameView;
-	GameModel gameModel;
 	
-	public GameMainMenuListener(GameView gameView, GameModel gameModel) 
-	{
-		//setting view and model;
-		this.gameView = gameView;
-		this.gameModel = gameModel;
-	}
+	public GameMainMenuListener(){}
 	
+	//triggered on button click in main menu
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		//starts game or exits program
+		//starts game after START GAME clicked
 		if (((Component) e.getSource()).getName() == "START GAME")
 		{
-			this.gameView.startEndSession();
+			GameController.getGameView().startEndGameSession();
 		}
+		//exits after QUIT clicked
 		else if (((Component) e.getSource()).getName() == "QUIT")
 		{
 			System.exit(0);

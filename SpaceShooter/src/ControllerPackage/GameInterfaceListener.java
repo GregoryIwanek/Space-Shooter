@@ -2,46 +2,25 @@ package ControllerPackage;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import javax.swing.Timer;
-import ModelPackage.GameModel;
-import ViewPackage.GameView;
 
 public class GameInterfaceListener implements ActionListener
 {
-	GameView gameView;
-	GameModel gameModel;
-	GameSessionListener gameSessionListener;
+	public GameInterfaceListener(){}
 
-	public GameInterfaceListener(GameView gameView, GameModel gameModel) 
-	{
-		//setting view and model;
-		this.gameView = gameView;
-		this.gameModel = gameModel;
-		//setting list of pressed keys
-
-		//setting game session listener
-		gameSessionListener = new GameSessionListener(gameView.getInterface().getScenePanel(), gameModel);
-	}
-
+	//triggered on button click in game interface in game section
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		//triggered after START clicked, starts timer and game
 		if (((Component) e.getSource()).getName() == "START")
 		{
-			gameSessionListener.setTimer(true);
+			GameController.gameSessionListener.setTimer(true);
 		}
+		//triggered after BACK clicked, stops game and hides game section
 		else if (((Component) e.getSource()).getName() == "BACK")
 		{
-			gameSessionListener.setTimer(false);
-			gameView.startEndSession();
+			GameController.gameSessionListener.setTimer(false);
+			GameController.getGameView().startEndGameSession();
 		}
-	}
-
-	public GameSessionListener getGameSessionListener()
-	{
-		return gameSessionListener;
 	}
 }
