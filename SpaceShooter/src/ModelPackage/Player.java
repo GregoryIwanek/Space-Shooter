@@ -12,23 +12,37 @@ public class Player extends Rectangle
 	private int points = 0; //default points
 	private BufferedImage imageOfPlayer;
 	private String typeOfWeapon = "BLASTER";
-	private int lvlOfBlaster = 1; //default level of weapon
+	
+	private int lvlOfBlaster = 1;
+	private int numberOfBulletsBlaster = 2;
 	private int lvlOfLaser = 1; 
+	private int numberOfBulletsLaser = 1;
 	private int lvlOfMisiles = 1;
-	private Map<String, Integer> levelOfWeaponsMap; //map contains access to weapons level
+	private int numberOfBulletsMissiles = 2;
+	private int numberOfBombs = 1;
+	private Map<String, Integer> weaponsMap; //map contains access to weapons level
 
 	public Player() 
 	{
 		setMap();
 	}
 	
-	//sets definition of a map
+	//sets definition of a map, assign keys to values
 	private void setMap()
 	{
-		levelOfWeaponsMap = new HashMap<String,Integer>();
-		levelOfWeaponsMap.put("lvlOfBlaster", lvlOfBlaster);
-		levelOfWeaponsMap.put("lvlOfLaser", lvlOfLaser);
-		levelOfWeaponsMap.put("lvlOfMisiles", lvlOfMisiles);
+		//initiate map
+		weaponsMap = new HashMap<String,Integer>();
+		
+		//assign weapons level
+		weaponsMap.put("lvlOfBlaster", lvlOfBlaster);
+		weaponsMap.put("lvlOfLaser", lvlOfLaser);
+		weaponsMap.put("lvlOfMisiles", lvlOfMisiles);
+		
+		//assign number of bullets
+		weaponsMap.put("numberOfBulletsBlaster", numberOfBulletsBlaster);
+		weaponsMap.put("numberOfBulletsMissiles", numberOfBulletsMissiles);
+		weaponsMap.put("numberOfBulletsLaser", numberOfBulletsLaser);
+		weaponsMap.put("numberOfBombs", numberOfBombs);
 	}
 	
 	//sets shield
@@ -76,7 +90,7 @@ public class Player extends Rectangle
 	//gets level of weapon
 	public int getLevelOfWeapon(String weaponName)
 	{
-		return levelOfWeaponsMap.get(weaponName);
+		return weaponsMap.get(weaponName);
 	}
 	
 	//gets power of shield

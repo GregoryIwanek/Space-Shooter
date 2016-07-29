@@ -22,6 +22,12 @@ public class BulletsModel
 	{
 
 	}
+	
+	//sets speed of bullet ( missiles and blaster bullets have different speed)
+	public void setSpeedOfBullet(Bullet bullet, int speed)
+	{
+		bullet.setSpeedOfBullet(speed);
+	}
 
 	//sets target for missile kind of bullet to follow
 	public void setTargetForMissile(Bullet bullet, Enemy target)
@@ -132,5 +138,11 @@ public class BulletsModel
 	public Enemy getTargetOfMissile(Bullet bullet)
 	{
 		return bullet.getTargetOfMissile();
+	}
+	
+	//gets speed of given bullet ( used to calculate step X Y)
+	public int getSpeedOfBullet(Bullet bullet)
+	{
+		return bullet.getSpeedOfBullet();
 	}
 }

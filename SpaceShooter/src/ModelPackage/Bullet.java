@@ -9,6 +9,7 @@ public class Bullet extends Rectangle
 	private double deltaX = 0; //factor for step on X axis
 	private double deltaY = 0; //factor for step on Y axis
 	private int power = 0; //power of bullet (damage)
+	private int speed = 8; //different speed for missiles and blaster, by default speed of blaster
 	private Enemy target; //for missile kind of bullet-> target to follow
 	private String typeOfBullet = "BLASTER";
 	private BufferedImage imageOfBullet;
@@ -19,6 +20,12 @@ public class Bullet extends Rectangle
 	public void setPowerOfBullet(int power)
 	{
 		this.power = power;
+	}
+	
+	//gets speed of bullet ( different speed for missiles and blaster)
+	public void setSpeedOfBullet(int speed)
+	{
+		this.speed = speed;
 	}
 	
 	//sets information about type of bullet
@@ -89,5 +96,11 @@ public class Bullet extends Rectangle
 	public Enemy getTargetOfMissile()
 	{
 		return target;
+	}
+	
+	//gets speed of bullet ( different speed for missiles and blaster)
+	public int getSpeedOfBullet()
+	{
+		return speed;
 	}
 }
