@@ -11,6 +11,7 @@ public class Player extends Rectangle
 	private int shield = 100, hp = 100; //default players shield and life
 	private int points = 0; //default points
 	private BufferedImage imageOfPlayer;
+	private String typeOfWeapon = "BLASTER";
 	private int lvlOfBlaster = 1; //default level of weapon
 	private int lvlOfLaser = 1; 
 	private int lvlOfMisiles = 1;
@@ -54,6 +55,12 @@ public class Player extends Rectangle
 		this.imageOfPlayer = imageOfPlayer;
 	}
 	
+	//sets used type of weapon
+	public void setTypeOfWeapon(String typeOfWeapon)
+	{
+		this.typeOfWeapon = typeOfWeapon;
+	}
+	
 	//gets center of an object in global coordinate system
 	public Point getCenter()
 	{
@@ -88,5 +95,11 @@ public class Player extends Rectangle
 	public int getPoints()
 	{
 		return points;
+	}
+	
+	//gets information about current type of weapon
+	public String getTypeOfWeapon()
+	{
+		return typeOfWeapon;
 	}
 }

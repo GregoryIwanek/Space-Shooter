@@ -40,35 +40,61 @@ public class GameModel
 		listOfEnemyBullets = new ArrayList<Bullet>();
 		listOfPlayerBullets = new ArrayList<Bullet>();
 	}
+	
+	//sets type of chosen weapon by player (missiles, blaster, bomb etc)
+	public void setTypeOfPlayerWeapon (String typeOfWeapon)
+	{
+		playerModel.setTypeOfWeapon(player, typeOfWeapon);
+	}
 
 	//sets true if player shoot missiles and they are present on a scene
 	public void setIfContainsMissiles(boolean ifContainsMissiles)
 	{
 		GameModel.ifContainsMissiles = ifContainsMissiles;
 	}
+	
+	//checks if given bullet is a MISSILE, update status if yes
+	public void checkIfMissilesOnScene(Bullet bullet)
+	{
+		if (bulletsModel.getTypeOfBullet(bullet) == "MISSILE")
+		{
+			setIfContainsMissiles(true);
+		}
+	}
+	
 
 	//assign closest enemy object to a missile
 	public void setClosestEnemyToMissile()
 	{
-		if (ifContainsMissiles == false)
+		//trigger only if missiles are on a list
+		if (ifContainsMissiles == true && listOfEnemyShips.size()>0)
 		{
+			//reset information about missiles on scene, will determine if they are there inside loop
+			setIfContainsMissiles(false);
+			
 			for (Bullet bullet : listOfPlayerBullets)
 			{
+				//sets closest enemy to a MISSILE bullet
 				defineClosestEnemy(bullet);
+				
+				/*update information about missiles on scene here;
+				 * if one of bullets on a list is a MISSILE, then loop will be activated on next timer tick;
+				 * otherwise, it won't be triggered */
+				checkIfMissilesOnScene(bullet);
 			}
 		}
 	}
 
 	public void defineClosestEnemy(Bullet bullet)
 	{
-		if (bullet.getTypeOfBullet() == "BLASTER")
+		if (bullet.getTypeOfBullet() == "MISSILE")
 		{
 			double longestDistance = 2000;
 			for (Enemy enemy :listOfEnemyShips)
 			{
 				double distanceToCheck = Math.sqrt(Math.pow(bullet.getCenterX() - enemy.getCenterX(), 2) +
 						Math.pow(bullet.getCenterY() - enemy.getCenterY(), 2));
-				
+
 				if (longestDistance > distanceToCheck)
 				{
 					longestDistance = distanceToCheck;
@@ -77,7 +103,7 @@ public class GameModel
 			}
 		}
 	}
-	
+
 	public void checkClosestDistance(Bullet bullet, Enemy enemy, double longest)
 	{
 
@@ -203,7 +229,7 @@ public class GameModel
 			}
 		}
 	}
-	
+
 	//methods to set new position of a bullets (triggered by Timer)
 	public void setNewPositionOfBullets()
 	{
@@ -284,87 +310,66 @@ public class GameModel
 
 	public void setNewBulletsOfPlayer()
 	{
-		int type = 1;
+		String type = playerModel.getTypeOfWeapon(player);
 		switch (type){
-		case 1:
+		case "MISSILES":
 			setMisilesBullets();
 			break;
-		case 2:
-			setDefinitionBlasterBullets();
+		case "BLASTER":
+			setBlasterBullets();
 			break;
-		case 3:
+		case "LASER":
 			setLaserBullets();
 			break;
-		case 4:
+		case "BOMB":
 			setBombBullets();
 			break;
 		default:
-			setDefinitionBlasterBullets();
+			setBlasterBullets();
 			break;
 		}
-		
-		Bullet newBulletLeft = new Bullet();
-		bulletsModel.setBulletSize(newBulletLeft, new Dimension(6,6));
-		bulletsModel.setPowerOfBullet(newBulletLeft, 200);
-		bulletsModel.setDeltasOfBullet(newBulletLeft, 0, 1);
-		bulletsModel.setLocationOfBullet(newBulletLeft, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);
-		listOfPlayerBullets.add(newBulletLeft);
-
-		Bullet newBulletRight = new Bullet();
-		bulletsModel.setBulletSize(newBulletRight, new Dimension(6,6));
-		bulletsModel.setPowerOfBullet(newBulletRight, 200);
-		bulletsModel.setDeltasOfBullet(newBulletRight, 0, 1);
-		bulletsModel.setLocationOfBullet(newBulletRight, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);
-		listOfPlayerBullets.add(newBulletRight);
-		
-		setClosestEnemyToMissile();
 	}
 
 	public void setMisilesBullets()
 	{
-
+		Bullet newBulletLeft = new Bullet();
+		bulletsModel.setTypeOfBullet(newBulletLeft, "MISSILE");
+		bulletsModel.setBulletSize(newBulletLeft, new Dimension(6,6));
+		bulletsModel.setPowerOfBullet(newBulletLeft, 200);
+		bulletsModel.setDeltasOfBullet(newBulletLeft, 0, -1);
+		bulletsModel.setLocationOfBullet(newBulletLeft, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y-10);
+		listOfPlayerBullets.add(newBulletLeft);
+		
+		Bullet newBulletRight = new Bullet();
+		bulletsModel.setTypeOfBullet(newBulletRight, "MISSILE");
+		bulletsModel.setBulletSize(newBulletRight, new Dimension(6,6));
+		bulletsModel.setPowerOfBullet(newBulletRight, 200);
+		//bulletsModel.setDeltasOfBullet(newBulletRight, 0, -1);
+		bulletsModel.setLocationOfBullet(newBulletRight, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y-10);
+		listOfPlayerBullets.add(newBulletRight);
+		
+		setIfContainsMissiles(true);
+		
+		setClosestEnemyToMissile();
 	}
 
-	public void setDefinitionBlasterBullets()
+	public void setBlasterBullets()
 	{
-		int levelOfWeapon = player.getLevelOfWeapon("lvlOfBlaster");
-		switch (levelOfWeapon)
-		{
-		case 1:
-			setNewBlasterBullets(2, 500, 0, 1);
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		default:
-			break;
-		}
-	}
+		Bullet newBulletLeft = new Bullet();
+		bulletsModel.setTypeOfBullet(newBulletLeft, "BLASTER");
+		bulletsModel.setBulletSize(newBulletLeft, new Dimension(6,6));
+		bulletsModel.setPowerOfBullet(newBulletLeft, 500);
+		bulletsModel.setDeltasOfBullet(newBulletLeft, 0, -1);
+		bulletsModel.setLocationOfBullet(newBulletLeft, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);
+		listOfPlayerBullets.add(newBulletLeft);
 
-	public void setNewBlasterBullets(int number, int power, double deltaX, double deltaY)
-	{
-		for (int i=0; i<2; ++i)
-		{
-			Bullet newBullet = new Bullet();
-			bulletsModel.setBulletSize(newBullet, new Dimension(6,6));
-			bulletsModel.setPowerOfBullet(newBullet, power);
-			bulletsModel.setDeltasOfBullet(newBullet, deltaX, deltaY);
-			listOfPlayerBullets.add(newBullet);
-			if (i == 0)  bulletsModel.setLocationOfBullet(newBullet, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);
-			else  bulletsModel.setLocationOfBullet(newBullet, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);
-		}
-
-		for (int i=0; i<2; ++i)
-		{
-			Bullet newBullet = new Bullet();
-			bulletsModel.setBulletSize(newBullet, new Dimension(6,6));
-			bulletsModel.setPowerOfBullet(newBullet, power);
-			bulletsModel.setDeltasOfBullet(newBullet, deltaX, deltaY);
-			listOfPlayerBullets.add(newBullet);
-			if (i == 0) bulletsModel.setLocationOfBullet(newBullet, playerModel.getCenter(player).x-5, playerModel.getCenter(player).y-5); 
-			else bulletsModel.setLocationOfBullet(newBullet, playerModel.getCenter(player).x-5, playerModel.getCenter(player).y+5);
-		}
+		Bullet newBulletRight = new Bullet();
+		bulletsModel.setTypeOfBullet(newBulletRight, "BLASTER");
+		bulletsModel.setBulletSize(newBulletRight, new Dimension(6,6));
+		bulletsModel.setPowerOfBullet(newBulletRight, 500);
+		bulletsModel.setDeltasOfBullet(newBulletRight, 0, -1);
+		bulletsModel.setLocationOfBullet(newBulletRight, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);
+		listOfPlayerBullets.add(newBulletRight);
 	}
 
 	public void setLaserBullets()
@@ -383,11 +388,11 @@ public class GameModel
 		//for all player bullets updates position
 		for (Bullet bulletToMove : listOfPlayerBullets)
 		{
-			if (bulletsModel.getTypeOfBullet(bulletToMove) == "BLASTER")
+			if (bulletsModel.getTypeOfBullet(bulletToMove) == "MISSILE")
 			{
 				bulletsModel.calculateMovementAsAMissile(bulletToMove, bulletsModel.getTargetOfMissile(bulletToMove));
 			}
-			
+
 			//takes into consideration factor step for X and Y axis
 			int stepX = (int)(8*bulletsModel.getDeltaXOfBullet(bulletToMove));
 			int stepY = (int)(8*bulletsModel.getDeltaYOfBullet(bulletToMove));

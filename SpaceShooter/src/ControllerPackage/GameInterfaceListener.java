@@ -11,16 +11,41 @@ public class GameInterfaceListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		//triggered after START clicked, starts timer and game
-		if (((Component) e.getSource()).getName() == "START")
+		//get name of clicked button ( names defined in view section)
+		String clickedButton = ((Component) e.getSource()).getName();
+		
+		switch (clickedButton) 
 		{
+		case "START":
+			//triggered after START clicked, starts timer and game
 			GameController.gameSessionListener.setTimer(true);
-		}
-		//triggered after BACK clicked, stops game and hides game section
-		else if (((Component) e.getSource()).getName() == "BACK")
-		{
+			break;
+		case "BACK":
+			//triggered after BACK clicked, stops game and hides game section
 			GameController.gameSessionListener.setTimer(false);
 			GameController.getGameView().startEndGameSession();
+			break;
+		case "MISSILES":
+			setTypeOfWeaponForPlayer("MISSILES");
+			break;
+		case "BLASTER":
+			setTypeOfWeaponForPlayer("BLASTER");
+			break;
+		case "BOMB":
+			setTypeOfWeaponForPlayer("BOMB");
+			break;
+		case "LASER":
+			setTypeOfWeaponForPlayer("LASER");
+			break;
+		default:
+			setTypeOfWeaponForPlayer("BLASTER");
+			break;
 		}
+	}
+	
+	//sets type of weapon depending on clicked button with weapons
+	public void setTypeOfWeaponForPlayer(String typeOfWeapon)
+	{
+		GameController.getGameModel().getPlayerModel().setTypeOfWeapon(GameController.getGameModel().getPlayer(), typeOfWeapon);
 	}
 }

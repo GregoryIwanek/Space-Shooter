@@ -38,11 +38,15 @@ public class BulletsModel
 	//calculating movement factors for missile weapons ( follows target)
 	public void calculateMovementAsAMissile( Bullet bullet, Enemy enemyTarget)
 	{
-		double angle = Math.atan2(enemyTarget.getCenterX() - bullet.getCenterX(), enemyTarget.getCenterY() - bullet.getCenterY());
-		double deltaX = Math.sin(angle);
-		double deltaY = Math.cos(angle);
-
-		bullet.setDeltasOfBullet(deltaX, deltaY);
+		//update deltas for missile ONLY if there are enemies on a scene
+		if (enemyTarget != null)
+		{
+			double angle = Math.atan2(enemyTarget.getCenterX() - bullet.getCenterX(), enemyTarget.getCenterY() - bullet.getCenterY());
+			double deltaX = Math.sin(angle);
+			double deltaY = Math.cos(angle);
+			
+			bullet.setDeltasOfBullet(deltaX, deltaY);
+		}
 	}
 
 	public void calculateMovementAsLaser()

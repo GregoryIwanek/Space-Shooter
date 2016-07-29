@@ -113,6 +113,12 @@ public class PlayerModel
 			player.setLocation(player.getLocation().x, player.getLocation().y-5);
 		}
 	}
+	
+	//sets type of weapon used by player
+	public void setTypeOfWeapon(Player player, String typeOfWeapon)
+	{
+		player.setTypeOfWeapon(typeOfWeapon);
+	}
 
 	//sets new amount of points ( shoot down enemies) of a player
 	public void updatePoints(Player player, int points)
@@ -172,5 +178,11 @@ public class PlayerModel
 	public int getPlayersPoints(Player player)
 	{
 		return player.getPoints();
+	}
+	
+	//gets current used type of weapon
+	public String getTypeOfWeapon(Player player)
+	{
+		return player.getTypeOfWeapon();
 	}
 }

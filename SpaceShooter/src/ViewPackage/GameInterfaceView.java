@@ -20,7 +20,7 @@ public class GameInterfaceView extends JPanel
 	//buttons
 	private JButton buttonStart;
 	private JButton buttonBack;
-	private JButton buttonWeaponMisiles;
+	private JButton buttonWeaponMissiles;
 	private JButton buttonWeaponLaser;
 	private JButton buttonWeaponBlaster;
 	private JButton buttonWeaponBomb;
@@ -57,8 +57,8 @@ public class GameInterfaceView extends JPanel
 		buttonBack = new JButton("BACK");
 		defineButton(buttonBack, "BACK", new Dimension(120,40), false);
 
-		buttonWeaponMisiles = new JButton("MISILES");
-		defineButton(buttonWeaponMisiles, "MISILES", new Dimension(120,120), false);
+		buttonWeaponMissiles = new JButton("MISSILES");
+		defineButton(buttonWeaponMissiles, "MISSILES", new Dimension(120,120), false);
 		
 		buttonWeaponLaser = new JButton("LASER");
 		defineButton(buttonWeaponLaser, "LASER", new Dimension(120,120), false);
@@ -114,7 +114,7 @@ public class GameInterfaceView extends JPanel
 		weaponsPanel = new JPanel();
 		weaponsPanel.setPreferredSize(new Dimension (130,650));
 		weaponsPanel.setBackground(Color.red);
-		weaponsPanel.add(buttonWeaponMisiles);
+		weaponsPanel.add(buttonWeaponMissiles);
 		weaponsPanel.add(buttonWeaponBlaster);
 		weaponsPanel.add(buttonWeaponLaser);
 		weaponsPanel.add(buttonWeaponBomb);
@@ -155,10 +155,13 @@ public class GameInterfaceView extends JPanel
 	//set action listener for buttons in all panels
 	public void addActionListenerGameInterface(ActionListener actionListener)
 	{
-		//sets listeners for buttons
+		//sets listeners to buttons in game interface
 		buttonStart.addActionListener(actionListener);
 		buttonBack.addActionListener(actionListener);
-		buttonWeaponMisiles.addActionListener(actionListener);
+		buttonWeaponMissiles.addActionListener(actionListener);
+		buttonWeaponBlaster.addActionListener(actionListener);
+		buttonWeaponBomb.addActionListener(actionListener);
+		buttonWeaponLaser.addActionListener(actionListener);
 	}
 	
 	//adds key listener for THIS main panel, it will read pressed/released keys
