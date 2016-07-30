@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.sound.sampled.Line;
 import javax.swing.JPanel;
 
+import ModelPackage.Bonus;
 import ModelPackage.Bullet;
 import ModelPackage.Enemy;
 import ModelPackage.Player;
@@ -20,6 +21,7 @@ public class GameSceneView extends JPanel
 	static private ArrayList<Enemy> listOfEnemyShips;
 	static private ArrayList<Bullet> listOfBullets;
 	static private ArrayList<Bullet> listOfPlayerBullets;
+	static private ArrayList<Bonus> listOfBonuses;
 	static private Color colorBullet;
 	static private Color colorBulletPlayer;
 
@@ -35,8 +37,9 @@ public class GameSceneView extends JPanel
 		listOfEnemyShips = new ArrayList<Enemy>();
 		listOfBullets = new ArrayList<Bullet>();
 		listOfPlayerBullets = new ArrayList<Bullet>();
+		listOfBonuses = new ArrayList<Bonus>();
 	}
-	
+
 	public void updateListOfEnemyShips(ArrayList<Enemy> listOfEnemyShips)
 	{
 		GameSceneView.listOfEnemyShips = listOfEnemyShips;
@@ -48,6 +51,10 @@ public class GameSceneView extends JPanel
 	public void updateListOfPlayerBullets(ArrayList<Bullet> listOfPlayerBullets)
 	{
 		GameSceneView.listOfPlayerBullets = listOfPlayerBullets;
+	}
+	public void updateListOfBonuses(ArrayList<Bonus> listOfBonuses)
+	{
+		GameSceneView.listOfBonuses = listOfBonuses;
 	}
 	public void setPlayer (Player player)
 	{
@@ -62,7 +69,7 @@ public class GameSceneView extends JPanel
 
 		g2.drawImage(player.getImageOfPlayer(), player.getLocation().x, player.getLocation().y,
 				player.getSize().width, player.getSize().height, null);
-	
+
 		for (Enemy enemy : listOfEnemyShips)
 		{
 			g2.drawImage(enemy.getImageOfEnemy(), enemy.getLocation().x, enemy.getLocation().y,
@@ -78,6 +85,12 @@ public class GameSceneView extends JPanel
 		for (Bullet bullet : listOfPlayerBullets)
 		{
 			g2.fillRect(bullet.getLocation().x, bullet.getLocation().y, bullet.getSize().width, bullet.getSize().height);
+		}
+
+		for (Bonus bonus : listOfBonuses)
+		{
+			g2.drawImage(bonus.getImageOfBonus(), bonus.getLocation().x, bonus.getLocation().y,
+					bonus.getSize().width, bonus.getSize().height, null);
 		}
 	}
 }

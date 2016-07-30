@@ -19,12 +19,6 @@ public class Enemy extends Rectangle
 		this.hp = hp;
 	}
 	
-	//sets new amount of life of an enemy object
-	public void updateLife(int points)
-	{
-		hp -= points;
-	}
-	
 	//sets speed of an object
 	public void setSpeed(int speed)
 	{
@@ -72,5 +66,10 @@ public class Enemy extends Rectangle
 	public boolean getIfAsteroid()
 	{
 		return isAsteroid;
+	}
+	
+	public int getEnemyLife()
+	{
+		return hp;
 	}
 }

@@ -31,9 +31,15 @@ public class EnemyModel
 	}
 
 	//sets life of an object
-	public void setEnemyLife(Enemy enemy, int life)
+	public void setEnemyLife(Enemy enemy, int points)
 	{
-		enemy.setLife(life);
+		enemy.setLife(points);
+	}
+	
+	//updates enemy life after hit by bullet
+	public void updateEnemyLife(Enemy enemy, int points)
+	{
+		enemy.setLife(enemy.getEnemyLife() - points);
 	}
 	
 	//sets if enemy object is asteroid
@@ -54,9 +60,9 @@ public class EnemyModel
 		else 
 		{
 			//put limit on max speed, speed depends on lvl of a game
-			if (speed > 3)
+			if (speed > 2)
 			{
-				enemy.setSpeed(3);
+				enemy.setSpeed(2);
 			}
 			else enemy.setSpeed(speed);
 		}
@@ -79,14 +85,6 @@ public class EnemyModel
 		//sets image to an object
 		enemy.setImage(image);
 	}
-
-	//	//
-	//	public void calculateMovementOfEnemy(int xEnemy, int yEnemy, int xPlayer, int yPlayer)
-	//	{		
-	////		double angle = Math.atan2(xPlayer - xEnemy, yPlayer - yEnemy);
-	////		 deltaX = Math.sin(angle);
-	////		 deltaY = Math.cos(angle);
-	//	}
 
 	//set new position of enemy object
 	public void setNewPosition(Enemy enemy, int x, int y)

@@ -9,18 +9,23 @@ import java.util.Map;
 public class Player extends Rectangle
 {
 	private int shield = 100, hp = 100; //default players shield and life
+	private int maxShield = 100; //default max value of shield
 	private int points = 0; //default points
+	
+	
+	private int numberOfBlaster = 2;
+	private int numberOfMissiles = 2;
+	private int numberOfLaser = 1;
+	private int numberOfBombs = 1;
+	private int powerBlaster = 500;
+	private int powerLaser = 20;
+	private int powerMissile = 150;
+	private int speedBlaster = 9;
+	private int speedMissile = 6;
+	private Map<String, Integer> weaponsMap; //map contains access to weapons level
+	
 	private BufferedImage imageOfPlayer;
 	private String typeOfWeapon = "BLASTER";
-	
-	private int lvlOfBlaster = 1;
-	private int numberOfBulletsBlaster = 2;
-	private int lvlOfLaser = 1; 
-	private int numberOfBulletsLaser = 1;
-	private int lvlOfMisiles = 1;
-	private int numberOfBulletsMissiles = 2;
-	private int numberOfBombs = 1;
-	private Map<String, Integer> weaponsMap; //map contains access to weapons level
 
 	public Player() 
 	{
@@ -33,16 +38,80 @@ public class Player extends Rectangle
 		//initiate map
 		weaponsMap = new HashMap<String,Integer>();
 		
-		//assign weapons level
-		weaponsMap.put("lvlOfBlaster", lvlOfBlaster);
-		weaponsMap.put("lvlOfLaser", lvlOfLaser);
-		weaponsMap.put("lvlOfMisiles", lvlOfMisiles);
-		
 		//assign number of bullets
-		weaponsMap.put("numberOfBulletsBlaster", numberOfBulletsBlaster);
-		weaponsMap.put("numberOfBulletsMissiles", numberOfBulletsMissiles);
-		weaponsMap.put("numberOfBulletsLaser", numberOfBulletsLaser);
+		weaponsMap.put("numberOfBlaster", numberOfBlaster);
+		weaponsMap.put("numberOfMissiles", numberOfMissiles);
+		weaponsMap.put("numberOfLaser", numberOfLaser);
 		weaponsMap.put("numberOfBombs", numberOfBombs);
+		weaponsMap.put("powerBlaster", powerBlaster);
+		weaponsMap.put("powerLaser", powerLaser);
+		weaponsMap.put("powerMissile", powerMissile);
+		weaponsMap.put("speedBlaster", speedBlaster);
+		weaponsMap.put("speedMissile", speedMissile);
+	}
+	
+	private void overrideMapValue(String key, int value)
+	{
+		weaponsMap.put(key, value);
+	}
+	
+	public void setNumberOfBulletsBlaster(int number)
+	{
+		this.numberOfBlaster = number;
+		overrideMapValue("numberOfBlaster", number);
+	}
+	
+	public void setNumberOfBulletsMissiles(int number)
+	{
+		this.numberOfMissiles = number;
+		overrideMapValue("numberOfMissiles", number);
+	}
+	
+	public void setNumberOfBulletsLaser(int number)
+	{
+		this.numberOfLaser = number;
+		overrideMapValue("numberOfLaser", number);
+	}
+	
+	public void setNumberOfBombs(int number)
+	{
+		this.numberOfBombs = number;
+		overrideMapValue("numberOfBombs", number);
+	}
+	
+	public void setPowerBlaster(int power)
+	{
+		this.powerBlaster = power;
+		overrideMapValue("powerBlaster", power);
+	}
+	
+	public void setPowerMissiles(int power)
+	{
+		this.powerMissile = power;
+		overrideMapValue("powerMissile", power);
+	}
+	
+	public void setPowerLaser(int power)
+	{
+		this.powerLaser = power;
+		overrideMapValue("powerLaser", power);
+	}
+	
+	public void setSpeedBlaster(int speed)
+	{
+		this.speedBlaster = speed;
+		overrideMapValue("speedBlaster", speed);
+	}
+	
+	public void setSpeedMissile(int speed)
+	{
+		this.speedMissile = speed;
+		overrideMapValue("speedMissile", speed);
+	}
+	
+	public void setMaxShield(int newShield)
+	{
+		this.maxShield = newShield;
 	}
 	
 	//sets shield
@@ -87,10 +156,15 @@ public class Player extends Rectangle
 		return imageOfPlayer;
 	}
 	
-	//gets level of weapon
-	public int getLevelOfWeapon(String weaponName)
+	//information about weapons
+	public int getWeaponInfo(String infoName)
 	{
-		return weaponsMap.get(weaponName);
+		return weaponsMap.get(infoName);
+	}
+	
+	public int getMaxShield()
+	{
+		return maxShield;
 	}
 	
 	//gets power of shield

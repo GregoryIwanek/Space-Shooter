@@ -10,11 +10,13 @@ public class GameModel
 	static private PlayerModel playerModel;
 	static private EnemyModel enemyModel;
 	static private BulletsModel bulletsModel;
+	static private BonusModel bonusModel;
 
 	static private Player player;
 	static private ArrayList<Enemy> listOfEnemyShips;
 	static private ArrayList<Bullet> listOfEnemyBullets;
 	static private ArrayList<Bullet> listOfPlayerBullets;
+	static private ArrayList<Bonus> listOfBonuses;
 
 	static private int lvlOfGame = 1;
 	static private boolean ifContainsMissiles = false;
@@ -34,14 +36,16 @@ public class GameModel
 		playerModel = new PlayerModel();
 		enemyModel = new EnemyModel();
 		bulletsModel = new BulletsModel();
+		bonusModel = new BonusModel();
 
 		//initiate lists
 		listOfEnemyShips = new ArrayList<Enemy>();
 		listOfEnemyBullets = new ArrayList<Bullet>();
 		listOfPlayerBullets = new ArrayList<Bullet>();
+		listOfBonuses = new ArrayList<Bonus>();
 	}
 
-	//sets type of chosen weapon by player (missiles, blaster, bomb etc)
+	//sets type of chosen by player weapon (missiles, blaster, bomb etc)
 	public void setTypeOfPlayerWeapon (String typeOfWeapon)
 	{
 		playerModel.setTypeOfWeapon(player, typeOfWeapon);
@@ -66,7 +70,7 @@ public class GameModel
 	//assign closest enemy object to a missile
 	public void setClosestEnemyToMissile()
 	{
-		//trigger only if missiles are on a list
+		//trigger only if missiles are on a list and they are enemies on a scene
 		if (ifContainsMissiles == true && listOfEnemyShips.size()>0)
 		{
 			//reset information about missiles on scene, will determine if they are there inside loop
@@ -92,8 +96,8 @@ public class GameModel
 			double longestDistance = 2000;
 			for (Enemy enemy :listOfEnemyShips)
 			{
-				if (enemyModel.getIfEnemyAsteroid(enemy) == false)
-				{
+				//if (enemyModel.getIfEnemyAsteroid(enemy) == false)
+				//{
 					double distanceToCheck = Math.sqrt(Math.pow(bullet.getCenterX() - enemy.getCenterX(), 2) +
 							Math.pow(bullet.getCenterY() - enemy.getCenterY(), 2));
 
@@ -102,14 +106,9 @@ public class GameModel
 						longestDistance = distanceToCheck;
 						bulletsModel.setTargetForMissile(bullet, enemy);
 					}
-				}
+				//} 
 			}
 		}
-	}
-
-	public void checkClosestDistance(Bullet bullet, Enemy enemy, double longest)
-	{
-
 	}
 
 	//sets player object information
@@ -126,7 +125,7 @@ public class GameModel
 
 		//sets enemy object data
 		enemyModel.setEnemySize(newEnemy, new Dimension(35,50));
-		enemyModel.setImageOfEnemy(newEnemy, "/bonusBlasterDamage.png");
+		enemyModel.setImageOfEnemy(newEnemy, "/Enemy_ship_1.png");
 		enemyModel.setNewPosition(newEnemy, enemyModel.getRandomStartingPos(), 0);
 		enemyModel.setEnemyLife(newEnemy, 800+lvlOfGame*200);
 		enemyModel.setEnemySpeed(newEnemy, 1+lvlOfGame/4, false);
@@ -135,6 +134,7 @@ public class GameModel
 		listOfEnemyShips.add(newEnemy);
 	}
 
+	//sets new asteroid object ( fast moving enemy object)
 	public void setNewEnemyShipAsteroid()
 	{
 		Enemy newEnemy = new Enemy();
@@ -144,11 +144,26 @@ public class GameModel
 		enemyModel.setImageOfEnemy(newEnemy, "/rock.png");
 		enemyModel.setNewPosition(newEnemy, enemyModel.getRandomStartingPos(), 0);
 		enemyModel.setEnemyIfAsteroid(newEnemy, true);
-		enemyModel.setEnemyLife(newEnemy, 5000);
+		enemyModel.setEnemyLife(newEnemy, 10000);
 		enemyModel.setEnemySpeed(newEnemy, 10, true);
 
 		//adds to painting list 
 		listOfEnemyShips.add(newEnemy);
+	}
+	
+	//sets new bonus object
+	public void setNewBonus()
+	{
+		Bonus bonus = new Bonus();
+		
+		//sets object data
+		bonusModel.setBonusSize(bonus, new Dimension(35,50));
+		bonusModel.rollTypeOfPowerBonus(bonus);
+		bonusModel.setNewPosition(bonus, bonusModel.getRandomStartingPos(), 0);
+		bonusModel.setImageOfBonus(bonus);
+		
+		//adds to painting list
+		listOfBonuses.add(bonus);
 	}
 
 	//sets position of an enemy ships ( triggered by Timer tick from controller)
@@ -171,6 +186,15 @@ public class GameModel
 						enemyModel.getPositionOfEnemy(enemy).y+enemyModel.getSpeedOfEnemy(enemy));
 			}
 		}
+		
+		//update position of every bonus on a list
+		for (Bonus bonus : listOfBonuses)
+		{
+			if (bonusModel.getPositionOfBonus(bonus).y < 700)
+			{
+				bonusModel.setNewPosition(bonus, bonusModel.getPositionOfBonus(bonus).x, bonusModel.getPositionOfBonus(bonus).y+1);
+			}
+		}
 	}
 
 	//check if enemy ship is out of scene and should be removed
@@ -183,6 +207,16 @@ public class GameModel
 			if (enemyModel.getPositionOfEnemy(enemyToCheck).y > 640) //650 bottom of panel
 			{
 				listOfEnemyShipsIterator.remove();
+			}
+		}
+		
+		ListIterator<Bonus> listOfBonusesIterator = listOfBonuses.listIterator();
+		while (listOfBonusesIterator.hasNext())
+		{
+			Bonus bonusToCheck = listOfBonusesIterator.next();
+			if (bonusModel.getPositionOfBonus(bonusToCheck).y > 640)
+			{
+				listOfBonusesIterator.remove();
 			}
 		}
 	}
@@ -206,6 +240,19 @@ public class GameModel
 				playerModel.setLifeToDisplay(player, -25);
 			}
 		}
+		
+		ListIterator<Bonus> bonusIterator = listOfBonuses.listIterator();
+		while (bonusIterator.hasNext())
+		{
+			Bonus bonus = bonusIterator.next();
+			if (player.intersects(bonus))
+			{
+				playerModel.setBonusUpgrade(bonus, player);
+				
+				//remove bonus object
+				bonusIterator.remove();
+			}
+		}
 	}
 
 	//sets new set of bullets for every enemy ship on a list, triggered by Timer (controller)
@@ -214,7 +261,7 @@ public class GameModel
 		//create bullet for all objects on a list
 		for (Enemy enemy : listOfEnemyShips)
 		{
-			//enemies create bullets only if they are not asteroids ( very fast moving enemy)
+			//enemies create bullets only if they are not asteroids
 			if (enemyModel.getIfEnemyAsteroid(enemy) == false)
 			{
 				Bullet newBullet = new Bullet();
@@ -226,6 +273,7 @@ public class GameModel
 						playerModel.getCenter(player).x, playerModel.getCenter(player).y );
 				bulletsModel.setDeltasOfBullet(newBullet, bulletsModel.getDeltaXOfBullet(newBullet), bulletsModel.getDeltaYOfBullet(newBullet));
 				bulletsModel.setLocationOfBullet(newBullet, enemyModel.getCenterOfEnemy(enemy).x, enemyModel.getCenterOfEnemy(enemy).y);
+				bulletsModel.setSpeedOfBullet(newBullet, 3);
 
 				//adds bullet to list to paint
 				listOfEnemyBullets.add(newBullet);
@@ -249,8 +297,8 @@ public class GameModel
 		for (Bullet bulletToMove : listOfEnemyBullets)
 		{	
 			//take into consideration factors of steps on X and Y axis
-			int deltaX = (int)(bulletsModel.getDeltaXOfBullet(bulletToMove)*3);
-			int deltaY = (int)(bulletsModel.getDeltaYOfBullet(bulletToMove)*3);
+			int deltaX = (int)(bulletsModel.getDeltaXOfBullet(bulletToMove)*bulletsModel.getSpeedOfBullet(bulletToMove));
+			int deltaY = (int)(bulletsModel.getDeltaYOfBullet(bulletToMove)*bulletsModel.getSpeedOfBullet(bulletToMove));
 
 			//define new location of bullet
 			int x = bulletsModel.getLocationOfBullet(bulletToMove).x + deltaX;
@@ -342,7 +390,7 @@ public class GameModel
 			bulletsModel.setTypeOfBullet(newBulletLeft, "MISSILE");
 			bulletsModel.setBulletSize(newBulletLeft, new Dimension(6,6));
 			bulletsModel.setSpeedOfBullet(newBulletLeft, 6);
-			bulletsModel.setPowerOfBullet(newBulletLeft, 150);
+			bulletsModel.setPowerOfBullet(newBulletLeft, playerModel.getWeaponInfo(player, "powerMissile"));
 			bulletsModel.setLocationOfBullet(newBulletLeft, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y-10);
 			listOfPlayerBullets.add(newBulletLeft);
 
@@ -350,7 +398,7 @@ public class GameModel
 			bulletsModel.setTypeOfBullet(newBulletRight, "MISSILE");
 			bulletsModel.setBulletSize(newBulletRight, new Dimension(6,6));
 			bulletsModel.setSpeedOfBullet(newBulletRight, 6);
-			bulletsModel.setPowerOfBullet(newBulletRight, 150);
+			bulletsModel.setPowerOfBullet(newBulletRight, playerModel.getWeaponInfo(player, "powerMissile"));
 			bulletsModel.setLocationOfBullet(newBulletRight, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y-10);
 			listOfPlayerBullets.add(newBulletRight);
 
@@ -366,7 +414,7 @@ public class GameModel
 		bulletsModel.setTypeOfBullet(newBulletLeft, "BLASTER");
 		bulletsModel.setBulletSize(newBulletLeft, new Dimension(6,6));
 		bulletsModel.setSpeedOfBullet(newBulletLeft, 9);
-		bulletsModel.setPowerOfBullet(newBulletLeft, 500);
+		bulletsModel.setPowerOfBullet(newBulletLeft, playerModel.getWeaponInfo(player, "powerBlaster"));
 		bulletsModel.setDeltasOfBullet(newBulletLeft, 0, -1);
 		bulletsModel.setLocationOfBullet(newBulletLeft, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);
 		listOfPlayerBullets.add(newBulletLeft);
@@ -375,7 +423,7 @@ public class GameModel
 		bulletsModel.setTypeOfBullet(newBulletRight, "BLASTER");
 		bulletsModel.setBulletSize(newBulletRight, new Dimension(6,6));
 		bulletsModel.setSpeedOfBullet(newBulletRight, 9);
-		bulletsModel.setPowerOfBullet(newBulletRight, 500);
+		bulletsModel.setPowerOfBullet(newBulletRight, playerModel.getWeaponInfo(player, "powerBlaster"));
 		bulletsModel.setDeltasOfBullet(newBulletRight, 0, -1);
 		bulletsModel.setLocationOfBullet(newBulletRight, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);
 		listOfPlayerBullets.add(newBulletRight);
@@ -386,9 +434,10 @@ public class GameModel
 
 	}
 
-	//clears scene from enemies and their bullets, can be used limited amount of times
+	//clears scene from enemies and their bullets, can be used limited amount of time
 	public void setBomb()
 	{
+		//remove bullets from scene
 		ListIterator<Bullet> bulletIterator = listOfEnemyBullets.listIterator();
 		while (bulletIterator.hasNext())
 		{
@@ -396,6 +445,7 @@ public class GameModel
 			bulletIterator.remove();
 		}
 
+		//remove enemies from scene
 		ListIterator<Enemy> enemyIterator = listOfEnemyShips.listIterator();
 		while (enemyIterator.hasNext())
 		{
@@ -463,7 +513,7 @@ public class GameModel
 	//sets new value of enemy ship object after hit by a players bullet
 	public void updateEnemyLife(Enemy enemy, int bulletPower)
 	{
-		enemy.updateLife(bulletPower);
+		enemyModel.updateEnemyLife(enemy, bulletPower);
 	}
 
 	//checks if enemy ship should be destroyed and removed from scene
@@ -532,6 +582,12 @@ public class GameModel
 	public ArrayList<Bullet> getListOfPlayerBullets()
 	{
 		return listOfPlayerBullets;
+	}
+	
+	//gets list of bonuses
+	public ArrayList<Bonus> getListOfBonuses()
+	{
+		return listOfBonuses;
 	}
 
 	//gets lvl of game

@@ -28,6 +28,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 	private int timeCumulated = 0;
 	private int timeCumulatedAsteroidSpawn = 0;
 	private int timeCumulatedBulletSpawn = 0;
+	private int timeCumulatedBonusSpawn = 0;
 	private int rechargeTime = 0; //time between player bullets shoots
 	private int collisionTime = 0; //used just to reduce number of checks through lists ( example-> 10/sec instead 30/sec-> no visual difference)
 
@@ -68,6 +69,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 		checkCollisionStatus();
 		checkSpawnShip();
 		checkSpawnAsteroid();
+		checkSpawnBonus();
 		checkSpawnBullet();
 
 		//repaint scene
@@ -126,6 +128,17 @@ public class GameSessionListener implements ActionListener, KeyListener
 			timeCumulatedAsteroidSpawn = 0;
 		}
 	}
+	
+	public void checkSpawnBonus()
+	{
+		//spawns new bonus
+		if (timeCumulatedBonusSpawn > 5000)
+		{
+			gameModel.setNewBonus();
+			gameSceneView.updateListOfBonuses(gameModel.getListOfBonuses());
+			timeCumulatedBonusSpawn = 0;
+		}
+	}
 
 	//check if can spawn new enemy bullets
 	public void checkSpawnBullet()
@@ -157,6 +170,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 		timeCumulated += timer.getDelay();
 		timeCumulatedAsteroidSpawn += timer.getDelay();
 		timeCumulatedBulletSpawn += timer.getDelay();
+		timeCumulatedBonusSpawn += timer.getDelay();
 		rechargeTime += timer.getDelay();
 		collisionTime += timer.getDelay();
 	}
