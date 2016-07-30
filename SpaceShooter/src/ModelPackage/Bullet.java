@@ -11,6 +11,7 @@ public class Bullet extends Rectangle
 	private int power = 0; //power of bullet (damage)
 	private int speed = 8; //different speed for missiles and blaster, by default speed of blaster
 	private Enemy target; //for missile kind of bullet-> target to follow
+	private Point locationAsLaser; //used for moving laser beam around with Player
 	private String typeOfBullet = "BLASTER";
 	private BufferedImage imageOfBullet;
 	
@@ -26,6 +27,12 @@ public class Bullet extends Rectangle
 	public void setSpeedOfBullet(int speed)
 	{
 		this.speed = speed;
+	}
+	
+	//(ONLY IF LASER) store location of laser beam to Player object ( example-> +10 on X axis to center of player etc)
+	public void setLocationAsLaser(Point locationAsLaser)
+	{
+		this.locationAsLaser = locationAsLaser;
 	}
 	
 	//sets information about type of bullet
@@ -102,5 +109,11 @@ public class Bullet extends Rectangle
 	public int getSpeedOfBullet()
 	{
 		return speed;
+	}
+	
+	//returns location of Laser bullet to Player
+	public Point getLocationAsLaser()
+	{
+		return locationAsLaser;
 	}
 }

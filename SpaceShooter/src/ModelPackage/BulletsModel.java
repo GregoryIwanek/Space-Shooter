@@ -17,11 +17,6 @@ public class BulletsModel
 	{
 		bullet.setSize(size);
 	}
-
-	public void calculateMovementAsBlaster()
-	{
-
-	}
 	
 	//sets speed of bullet ( missiles and blaster bullets have different speed)
 	public void setSpeedOfBullet(Bullet bullet, int speed)
@@ -54,10 +49,11 @@ public class BulletsModel
 			bullet.setDeltasOfBullet(deltaX, deltaY);
 		}
 	}
-
-	public void calculateMovementAsLaser()
+	
+	//(ONLY IF LASER) store location of bullet to Player ( example-> moved 10 on X axis from center of Player)
+	public void setLocationAsLaser(Bullet bullet, Point location)
 	{
-
+		bullet.setLocationAsLaser(location);
 	}
 
 	//sets location of a given bullet object 
@@ -144,5 +140,15 @@ public class BulletsModel
 	public int getSpeedOfBullet(Bullet bullet)
 	{
 		return bullet.getSpeedOfBullet();
+	}
+	
+	public Dimension getSizeOfBullet(Bullet bullet)
+	{
+		return bullet.getSize();
+	}
+	
+	public Point getLocationAsLaser(Bullet bullet)
+	{
+		return bullet.getLocationAsLaser();
 	}
 }

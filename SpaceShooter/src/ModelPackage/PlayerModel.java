@@ -141,22 +141,34 @@ public class PlayerModel
 
 	public void setNumberOfBulletsBlaster(Player player, int number)
 	{
-		player.setNumberOfBulletsBlaster(player.getWeaponInfo("numberOfBlaster")+number);
+		if (player.getWeaponInfo("numberOfBlaster") < 5)
+		{
+			player.setNumberOfBulletsBlaster(player.getWeaponInfo("numberOfBlaster")+number);
+		}
 	}
 
 	public void setNumberOfBulletsMissiles(Player player, int number)
 	{
-		player.setNumberOfBulletsMissiles(player.getWeaponInfo("numberOfMissiles")+number);
+		if (player.getWeaponInfo("numberOfMissiles") < 4)
+		{
+			player.setNumberOfBulletsMissiles(player.getWeaponInfo("numberOfMissiles")+number);	
+		}
 	}
 
 	public void setNumberOfBulletsLaser(Player player, int number)
 	{
-		player.setNumberOfBulletsLaser(player.getWeaponInfo("numberOfLaser")+number);
+		if (player.getWeaponInfo("numberOfLaser") < 3)
+		{
+			player.setNumberOfBulletsLaser(player.getWeaponInfo("numberOfLaser")+number);
+		}
 	}
 
 	public void setNumberOfBombs(Player player, int number)
 	{
-		player.setNumberOfBombs(player.getWeaponInfo("numberOfBombs")+number);
+		if (player.getWeaponInfo("numberOfBombs") < 3)
+		{
+			player.setNumberOfBombs(player.getWeaponInfo("numberOfBombs")+number);
+		}
 	}
 
 	public void setPowerBlaster(Player player, int power)
