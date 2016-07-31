@@ -449,7 +449,7 @@ public class GameModel
 			//define bullet data
 			Bullet newBullet = new Bullet();
 			bulletsModel.setTypeOfBullet(newBullet, "LASER");
-			bulletsModel.setBulletSize(newBullet, new Dimension(6,600));
+			bulletsModel.setBulletSize(newBullet, new Dimension(6,playerModel.getNewPosition(player).y));
 			bulletsModel.setSpeedOfBullet(newBullet, 0);
 			bulletsModel.setPowerOfBullet(newBullet, playerModel.getWeaponInfo(player, "powerLaser"));
 
@@ -536,10 +536,19 @@ public class GameModel
 
 	public void updatePositionAsLaser(Bullet bulletToMove)
 	{
+		resizeLaser(bulletToMove);
+
 		int x = playerModel.getCenter(player).x + bulletsModel.getLocationAsLaser(bulletToMove).x;
 		int y = playerModel.getCenter(player).y + bulletsModel.getLocationAsLaser(bulletToMove).y;
 
 		bulletsModel.setLocationOfBullet(bulletToMove, x, y);
+	}
+
+	public void resizeLaser(Bullet bullet)
+	{
+		bulletsModel.setBulletSize(bullet, new Dimension(6,playerModel.getNewPosition(player).y));
+		bulletsModel.setLocationAsLaser(bullet, new Point(bulletsModel.getLocationAsLaser(bullet).x,
+				-playerModel.getNewPosition(player).y));
 	}
 
 	//checks if bullets of player collide with enemy
@@ -550,24 +559,28 @@ public class GameModel
 
 		while ( bulletIterator.hasNext())
 		{
-			Bullet bulletRectangle =  bulletIterator.next();
+			Bullet bullet =  bulletIterator.next();
 
 			//assign iterator to enemy ships list
 			ListIterator<Enemy> enemyIterator = listOfEnemyShips.listIterator();
 
 			while(enemyIterator.hasNext())
 			{
-				Enemy enemyRectangle = enemyIterator.next();
+				Enemy enemy = enemyIterator.next();
 
 				//if player bullet collide with enemy object
-				if (bulletRectangle.getBounds().intersects(enemyRectangle.getBounds()))
+				if (bullet.getBounds().intersects(enemy.getBounds()))
 				{
+					if (bulletsModel.getTypeOfBullet(bullet) == "LASER")
+					{
+						updateSizeOfLaser(bullet, enemy);
+					}
 					//subtract enemy life by players bullet power
-					updateEnemyLife(enemyRectangle, bulletsModel.getPowerOfBullet(bulletRectangle));
+					updateEnemyLife(enemy, bulletsModel.getPowerOfBullet(bullet));
 					//check if enemy object destroyed, if yes, remove
-					checkIfDestroyEnemy(enemyIterator, enemyRectangle);
+					checkIfDestroyEnemy(enemyIterator, enemy);
 					//remove bullet
-					bulletIterator.remove();
+					//bulletIterator.remove();
 					break;
 				}
 			}
@@ -591,6 +604,19 @@ public class GameModel
 			//update points and shield of player
 			updatePlayerStats();
 		}
+	}
+
+	public void updateSizeOfLaser(Bullet bullet, Enemy enemy)
+	{
+		int distance = (int) enemy.getCenterY();
+		bulletsModel.setBulletSize(bullet, new Dimension(6,bulletsModel.getLocationAsLaser(bullet).y - distance));
+		bulletsModel.setLocationAsLaser(bullet, new Point(bulletsModel.getLocationAsLaser(bullet).x,
+				-bulletsModel.getSizeOfBullet(bullet).height));
+
+		int x = playerModel.getCenter(player).x + bulletsModel.getLocationAsLaser(bullet).x;
+		int y = playerModel.getCenter(player).y + bulletsModel.getLocationAsLaser(bullet).y;
+
+		bulletsModel.setLocationOfBullet(bullet, x, y);
 	}
 
 	//update current lvl of game
