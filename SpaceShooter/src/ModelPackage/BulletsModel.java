@@ -23,6 +23,12 @@ public class BulletsModel
 	{
 		bullet.setSpeedOfBullet(speed);
 	}
+	
+	//(ONLY FOR LASER) sets true/false depending if laser collides with enemy
+	public void setIsInCollision(Bullet bullet, boolean isInCollision)
+	{
+		bullet.setIsInCollision(isInCollision);
+	}
 
 	//sets target for missile kind of bullet to follow
 	public void setTargetForMissile(Bullet bullet, Enemy target)
@@ -150,5 +156,10 @@ public class BulletsModel
 	public Point getLocationAsLaser(Bullet bullet)
 	{
 		return bullet.getLocationAsLaser();
+	}
+	
+	public boolean getIsInCollision(Bullet bullet)
+	{
+		return bullet.getIsInCollision();
 	}
 }

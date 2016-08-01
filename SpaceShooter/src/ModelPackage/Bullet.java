@@ -14,6 +14,7 @@ public class Bullet extends Rectangle
 	private Point locationAsLaser; //used for moving laser beam around with Player
 	private String typeOfBullet = "BLASTER";
 	private BufferedImage imageOfBullet;
+	private boolean isInCollision =false;
 	
 	public Bullet(){}
 	
@@ -23,10 +24,17 @@ public class Bullet extends Rectangle
 		this.power = power;
 	}
 	
-	//gets speed of bullet ( different speed for missiles and blaster)
+	//sets speed of bullet ( different speed for missiles and blaster)
 	public void setSpeedOfBullet(int speed)
 	{
 		this.speed = speed;
+	}
+	
+	/*(ONLY FOR LASER) sets if bullet is in collision with enemy;
+	 * used, to set if resize of bullet is needed or not*/
+	public void setIsInCollision(boolean isInCollision)
+	{
+		this.isInCollision = isInCollision;
 	}
 	
 	//(ONLY IF LASER) store location of laser beam to Player object ( example-> +10 on X axis to center of player etc)
@@ -115,5 +123,11 @@ public class Bullet extends Rectangle
 	public Point getLocationAsLaser()
 	{
 		return locationAsLaser;
+	}
+	
+	//(FOR LASER ONLY) gets if bullet is in collision with enemy
+	public boolean getIsInCollision()
+	{
+		return isInCollision;
 	}
 }

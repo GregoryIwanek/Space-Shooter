@@ -20,7 +20,8 @@ public class GameModel
 	static private ArrayList<Bonus> listOfBonuses;
 
 	static private int lvlOfGame = 1;
-	static private boolean ifContainsMissiles = false;
+	static private boolean ifContainsMissiles = false; //true if there are missiles on a scene
+	static private boolean ifLaserInCollision = false; //true if laser bullet is in collision with target
 
 	public GameModel()
 	{
@@ -449,7 +450,7 @@ public class GameModel
 			//define bullet data
 			Bullet newBullet = new Bullet();
 			bulletsModel.setTypeOfBullet(newBullet, "LASER");
-			bulletsModel.setBulletSize(newBullet, new Dimension(6,playerModel.getNewPosition(player).y));
+			bulletsModel.setBulletSize(newBullet, new Dimension(6,playerModel.getNewPosition(player).y+20));
 			bulletsModel.setSpeedOfBullet(newBullet, 0);
 			bulletsModel.setPowerOfBullet(newBullet, playerModel.getWeaponInfo(player, "powerLaser"));
 
@@ -536,7 +537,7 @@ public class GameModel
 
 	public void updatePositionAsLaser(Bullet bulletToMove)
 	{
-		resizeLaser(bulletToMove);
+		if (bulletToMove.getIsInCollision() == false) resizeLaser(bulletToMove);
 
 		int x = playerModel.getCenter(player).x + bulletsModel.getLocationAsLaser(bulletToMove).x;
 		int y = playerModel.getCenter(player).y + bulletsModel.getLocationAsLaser(bulletToMove).y;
@@ -546,9 +547,9 @@ public class GameModel
 
 	public void resizeLaser(Bullet bullet)
 	{
-		bulletsModel.setBulletSize(bullet, new Dimension(6,playerModel.getNewPosition(player).y));
+		bulletsModel.setBulletSize(bullet, new Dimension(6,playerModel.getNewPosition(player).y+20));
 		bulletsModel.setLocationAsLaser(bullet, new Point(bulletsModel.getLocationAsLaser(bullet).x,
-				-playerModel.getNewPosition(player).y));
+				-playerModel.getNewPosition(player).y-20));
 	}
 
 	//checks if bullets of player collide with enemy
@@ -559,6 +560,8 @@ public class GameModel
 
 		while ( bulletIterator.hasNext())
 		{
+			ifLaserInCollision = false;
+			
 			Bullet bullet =  bulletIterator.next();
 
 			//assign iterator to enemy ships list
@@ -574,14 +577,19 @@ public class GameModel
 					if (bulletsModel.getTypeOfBullet(bullet) == "LASER")
 					{
 						updateSizeOfLaser(bullet, enemy);
+						bullet.setIsInCollision(true);
 					}
 					//subtract enemy life by players bullet power
 					updateEnemyLife(enemy, bulletsModel.getPowerOfBullet(bullet));
 					//check if enemy object destroyed, if yes, remove
 					checkIfDestroyEnemy(enemyIterator, enemy);
 					//remove bullet
-					//bulletIterator.remove();
+					bulletIterator.remove();
 					break;
+				}
+				else if (bulletsModel.getTypeOfBullet(bullet) == "LASER")
+				{
+					bulletsModel.setIsInCollision(bullet, false);
 				}
 			}
 		}
@@ -607,9 +615,9 @@ public class GameModel
 	}
 
 	public void updateSizeOfLaser(Bullet bullet, Enemy enemy)
-	{
+	{	
 		int distance = (int) enemy.getCenterY();
-		bulletsModel.setBulletSize(bullet, new Dimension(6,bulletsModel.getLocationAsLaser(bullet).y - distance));
+		bulletsModel.setBulletSize(bullet, new Dimension(6,playerModel.getNewPosition(player).y+20 - distance));
 		bulletsModel.setLocationAsLaser(bullet, new Point(bulletsModel.getLocationAsLaser(bullet).x,
 				-bulletsModel.getSizeOfBullet(bullet).height));
 

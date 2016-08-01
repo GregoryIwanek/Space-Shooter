@@ -99,13 +99,13 @@ public class GameSessionListener implements ActionListener, KeyListener
 	{
 		/*checks if there is collision between objects on lists;
 		 * "if" just to reduce number of checks per second-> no need to check every timer tick*/
-		if (collisionTime > 100)
-		{
+		//if (collisionTime > 100)
+		//{
 			gameModel.checkIfEnemyInCollision(gameModel.getPlayer());
 			gameModel.checkIfBulletInCollision(gameModel.getPlayer());
 			gameModel.checkIfPlayerBulletInCollision();
 			collisionTime = 0;
-		}
+		//}
 	}
 
 	//check if can spawn new enemy ship
