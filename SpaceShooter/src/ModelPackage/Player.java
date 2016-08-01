@@ -24,7 +24,7 @@ public class Player extends Rectangle
 	private int speedMissile = 6;
 	private Map<String, Integer> weaponsMap; //map contains access to weapons level
 	
-	private BufferedImage imageOfPlayer;
+	private BufferedImage image;
 	private String typeOfWeapon = "BLASTER";
 
 	public Player() 
@@ -133,9 +133,9 @@ public class Player extends Rectangle
 	}
 	
 	//sets image to paint on a scene
-	public void setImageOfPlayer(BufferedImage imageOfPlayer)
+	public void setImage(BufferedImage image)
 	{
-		this.imageOfPlayer = imageOfPlayer;
+		this.image = image;
 	}
 	
 	//sets used type of weapon
@@ -151,9 +151,9 @@ public class Player extends Rectangle
 	}
 
 	//gets image to paint
-	public BufferedImage getImageOfPlayer()
+	public BufferedImage getImage()
 	{
-		return imageOfPlayer;
+		return image;
 	}
 	
 	//information about weapons

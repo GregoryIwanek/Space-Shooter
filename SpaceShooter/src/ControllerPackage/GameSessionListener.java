@@ -52,6 +52,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 		gameSceneView.setPlayer(gameModel.getPlayer());
 		listOfPressedKeys = new ArrayList<Integer>();
 		timer = new Timer(30, this);
+		gameModel.setTimerDelay(timer.getDelay()); //sets timer delay for use in LASER type bullets
 	}
 
 	public void setTimer(boolean turnON)
@@ -87,7 +88,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 	public void setPositionOfObjects()
 	{
 		//sets new position of player, depending on pressed keys
-		playerModel.calculateMovementOfPlayer(gameModel.getPlayer(), listOfPressedKeys);
+		playerModel.calculateMovement(gameModel.getPlayer(), listOfPressedKeys);
 
 		//sets new position of enemy ships and bullets
 		gameModel.setNewPositionOfShips();
@@ -99,20 +100,20 @@ public class GameSessionListener implements ActionListener, KeyListener
 	{
 		/*checks if there is collision between objects on lists;
 		 * "if" just to reduce number of checks per second-> no need to check every timer tick*/
-		//if (collisionTime > 100)
-		//{
+		if (collisionTime > 100)
+		{
 			gameModel.checkIfEnemyInCollision(gameModel.getPlayer());
 			gameModel.checkIfBulletInCollision(gameModel.getPlayer());
 			gameModel.checkIfPlayerBulletInCollision();
 			collisionTime = 0;
-		//}
+		}
 	}
 
 	//check if can spawn new enemy ship
 	public void checkSpawnShip()
 	{
 		//spawns new enemy ship and resets time of spawn, spawn every 1,5 sec
-		if (timeCumulated > 1500)
+		if (timeCumulated > 2000)
 		{
 			gameModel.setNewEnemyShip();
 			gameSceneView.updateListOfEnemyShips(gameModel.getListOfEnemyShips());
@@ -135,7 +136,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 	public void checkSpawnBonus()
 	{
 		//spawns new bonus
-		if (timeCumulatedBonusSpawn > 5000)
+		if (timeCumulatedBonusSpawn > 25000)
 		{
 			gameModel.setNewBonus();
 			gameSceneView.updateListOfBonuses(gameModel.getListOfBonuses());

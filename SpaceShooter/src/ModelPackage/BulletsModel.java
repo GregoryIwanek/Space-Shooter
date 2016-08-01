@@ -18,10 +18,16 @@ public class BulletsModel
 		bullet.setSize(size);
 	}
 	
-	//sets speed of bullet ( missiles and blaster bullets have different speed)
-	public void setSpeedOfBullet(Bullet bullet, int speed)
+	public void setTime(Bullet bullet, int time)
 	{
-		bullet.setSpeedOfBullet(speed);
+		int currentTime = bullet.getTime();
+		bullet.setTime(currentTime+time);
+	}
+	
+	//sets speed of bullet ( missiles and blaster bullets have different speed)
+	public void setSpeed(Bullet bullet, int speed)
+	{
+		bullet.setSpeed(speed);
 	}
 	
 	//(ONLY FOR LASER) sets true/false depending if laser collides with enemy
@@ -37,9 +43,9 @@ public class BulletsModel
 	}
 
 	//defines type of bullet 
-	public void setTypeOfBullet(Bullet bullet, String type)
+	public void setType(Bullet bullet, String type)
 	{
-		bullet.setTypeOfBullet(type);
+		bullet.setType(type);
 	}
 
 	//calculating movement factors for missile weapons ( follows target)
@@ -52,7 +58,7 @@ public class BulletsModel
 			double deltaX = Math.sin(angle);
 			double deltaY = Math.cos(angle);
 			
-			bullet.setDeltasOfBullet(deltaX, deltaY);
+			bullet.setDeltas(deltaX, deltaY);
 		}
 	}
 	
@@ -63,34 +69,34 @@ public class BulletsModel
 	}
 
 	//sets location of a given bullet object 
-	public void setLocationOfBullet(Bullet bullet, int x, int y)
+	public void setLocation(Bullet bullet, int x, int y)
 	{
 		bullet.setLocation(x,y);
 	}
 
 	//sets power of a given bullet object (damage)
-	public void setPowerOfBullet(Bullet bullet, int power)
+	public void setPower(Bullet bullet, int power)
 	{
-		bullet.setPowerOfBullet(power);
+		bullet.setPower(power);
 	}
 
 	//calculate direction/step on X and Y axis for a bullet
-	public void calculateDeltasOfBullet(Bullet bullet, int xEnemy, int yEnemy, int xPlayer, int yPlayer)
+	public void calculateDeltas(Bullet bullet, int xEnemy, int yEnemy, int xPlayer, int yPlayer)
 	{
 		//calculate angle
 		double angle = Math.atan2(xPlayer - xEnemy, yPlayer - yEnemy);
 		//sets deltas for steps on X and Y directions
-		bullet.setDeltasOfBullet(Math.sin(angle), Math.cos(angle));
+		bullet.setDeltas(Math.sin(angle), Math.cos(angle));
 	}
 
 	//sets fixed deltas for bullet ( exm. players blaster bullets)
-	public void setDeltasOfBullet(Bullet bullet, double deltaX, double deltaY)
+	public void setDeltas(Bullet bullet, double deltaX, double deltaY)
 	{
-		bullet.setDeltasOfBullet(deltaX, deltaY);
+		bullet.setDeltas(deltaX, deltaY);
 	}
 
 	//sets image of an bullet object to paint
-	public void setImageOfBullet(Bullet bullet, String path)
+	public void setImage(Bullet bullet, String path)
 	{
 		//initiation of a image variable
 		BufferedImage image = null;
@@ -107,33 +113,33 @@ public class BulletsModel
 	}
 
 	//gets power of a bullet (damage)
-	public int getPowerOfBullet(Bullet bullet)
+	public int getPower(Bullet bullet)
 	{
-		return bullet.getPowerOfBullet();
+		return bullet.getPower();
 	}
 
 	//gets factor for step on X axis
-	public double getDeltaXOfBullet(Bullet bullet)
+	public double getDeltaX(Bullet bullet)
 	{
-		return bullet.getDeltaXOfBullet();
+		return bullet.getDeltaX();
 	}
 
 	//gets factor for step on Y axis
-	public double getDeltaYOfBullet(Bullet bullet)
+	public double getDeltaY(Bullet bullet)
 	{
-		return bullet.getDeltaYBullet();
+		return bullet.getDeltaY();
 	}
 
 	//gets current global location of bullet
-	public Point getLocationOfBullet(Bullet bullet)
+	public Point getLocation(Bullet bullet)
 	{
 		return new Point(bullet.getLocation());
 	}
 
 	//gets type of bullet (blaster, missile, laser)
-	public String getTypeOfBullet(Bullet bullet)
+	public String getType(Bullet bullet)
 	{
-		return bullet.getTypeOfBullet();
+		return bullet.getType();
 	}
 
 	//gets target of missile kind of bullet
@@ -143,12 +149,12 @@ public class BulletsModel
 	}
 	
 	//gets speed of given bullet ( used to calculate step X Y)
-	public int getSpeedOfBullet(Bullet bullet)
+	public int getSpeed(Bullet bullet)
 	{
-		return bullet.getSpeedOfBullet();
+		return bullet.getSpeed();
 	}
 	
-	public Dimension getSizeOfBullet(Bullet bullet)
+	public Dimension getSize(Bullet bullet)
 	{
 		return bullet.getSize();
 	}
@@ -161,5 +167,10 @@ public class BulletsModel
 	public boolean getIsInCollision(Bullet bullet)
 	{
 		return bullet.getIsInCollision();
+	}
+	
+	public int getTime(Bullet bullet)
+	{
+		return bullet.getTime();
 	}
 }

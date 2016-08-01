@@ -44,17 +44,17 @@ public class BonusModel
 		{
 		case 0:
 			//extra blaster power
-			setTypeOfBonus(bonus, "extraBlasterPower");
+			setType(bonus, "extraBlasterPower");
 			break;
 		case 1:
 			//extra laser power
-			setTypeOfBonus(bonus, "extraLaserPower");
+			setType(bonus, "extraLaserPower");
 			break;
 		case 2:
 			//extra missile power
-			setTypeOfBonus(bonus, "extraMissilePower");
+			setType(bonus, "extraMissilePower");
 			break;
-		default: setTypeOfBonus(bonus, "extraBlasterPower");
+		default: setType(bonus, "extraBlasterPower");
 			break;
 		}
 	}
@@ -68,19 +68,19 @@ public class BonusModel
 		{
 		case 0:
 			//add extra blaster bullet
-			setTypeOfBonus(bonus, "extraBulletBlaster");
+			setType(bonus, "extraBulletBlaster");
 			break;
 		case 1:
 			//add extra missile bullet
-			setTypeOfBonus(bonus, "extraBulletMissile");
+			setType(bonus, "extraBulletMissile");
 			break;
 		case 2:
 			//add extra laser beam
-			setTypeOfBonus(bonus, "extraBulletLaser");
+			setType(bonus, "extraBulletLaser");
 			break;
 		case 3:
 			//add extra bomb
-			setTypeOfBonus(bonus, "extraBomb");
+			setType(bonus, "extraBomb");
 			break;
 		default:
 			break;
@@ -96,15 +96,15 @@ public class BonusModel
 		{
 		case 0:
 			//restore number of hp
-			setTypeOfBonus(bonus, "hpRestored");
+			setType(bonus, "hpRestored");
 			break;
 		case 1:
 			//restore number of shield
-			setTypeOfBonus(bonus, "shieldRestored");
+			setType(bonus, "shieldRestored");
 			break;
 		case 2:
 			//increase maximum shield value
-			setTypeOfBonus(bonus, "shieldPernament");
+			setType(bonus, "shieldPernament");
 			break;
 		default:
 			break;
@@ -120,41 +120,41 @@ public class BonusModel
 		{
 		case 0:
 			//increase blaster bullet speed
-			setTypeOfBonus(bonus, "extraBlasterSpeed");
+			setType(bonus, "extraBlasterSpeed");
 			break;
 		case 1:
 			//increase missile bullet speed
-			setTypeOfBonus(bonus, "extraMissileSpeed");
+			setType(bonus, "extraMissileSpeed");
 			break;
 		default:
 			break;
 		}
 	}
 	//assign rolled type of bonus to the object
-	public void setTypeOfBonus(Bonus bonus, String typeOfBonus)
+	public void setType(Bonus bonus, String type)
 	{
-		bonus.setTypeOfBonus(typeOfBonus);
+		bonus.setType(type);
 	}
 	
 	//gets value of upgrade from given bonus object
-	public int getValueOfBonus(Bonus bonus)
+	public int getValue(Bonus bonus)
 	{
-		return bonus.getInformationFromMap(bonus.getTypeOfBonus());
+		return bonus.getInformationFromMap(bonus.getType());
 	}
 	
-	public void setImageOfBonus(Bonus bonus)
+	public void setImage(Bonus bonus)
 	{
 		/*manipulate names of variables to get correct path of image ( example: /bonusShieldRestored instead of /bonusshieldRestored);
 		 names of images are set to fit name of types of bonuses */
-		String path = "/" + bonus.getTypeOfBonus().substring(0, 1).toUpperCase() 
-				+ bonus.getTypeOfBonus().substring(1, bonus.getTypeOfBonus().length()) + ".png";
+		String path = "/" + bonus.getType().substring(0, 1).toUpperCase() 
+				+ bonus.getType().substring(1, bonus.getType().length()) + ".png";
 
 		//assign correct, fixed image, to a bonus object
-		setImageOfBonusToObject(bonus, path);
+		setImageToObject(bonus, path);
 	}
 	
 	//sets image of an object to paint on scene
-	public void setImageOfBonusToObject(Bonus bonus, String path)
+	public void setImageToObject(Bonus bonus, String path)
 	{
 		//initiation of a image variable
 		BufferedImage image = null;
@@ -171,7 +171,7 @@ public class BonusModel
 	}
 	
 	//gets position of bonus on a scene
-	public Point getPositionOfBonus(Bonus bonus)
+	public Point getPosition(Bonus bonus)
 	{
 		return bonus.getLocation();
 	}

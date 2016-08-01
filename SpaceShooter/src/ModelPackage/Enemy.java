@@ -9,7 +9,7 @@ public class Enemy extends Rectangle
 	private int hp = 1000; //life of an enemy
 	private int speed = 1;
 	private boolean isAsteroid = false;
-	private BufferedImage imageOfEnemy;
+	private BufferedImage image;
 
 	public Enemy(){}
 	
@@ -45,15 +45,15 @@ public class Enemy extends Rectangle
 	}
 
 	//sets image of an object to paint
-	public void setImage(BufferedImage imageOfEnemy)
+	public void setImage(BufferedImage image)
 	{
-		this.imageOfEnemy = imageOfEnemy;
+		this.image = image;
 	}
 	
 	//gets image of an object to paint
-	public BufferedImage getImageOfEnemy()
+	public BufferedImage getImage()
 	{
-		return imageOfEnemy;
+		return image;
 	}
 	
 	//gets speed of an object

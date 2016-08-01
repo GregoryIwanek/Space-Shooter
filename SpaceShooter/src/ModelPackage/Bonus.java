@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Bonus extends Rectangle
 {
-	private String typeOfBouns = "NONE";
+	private String type = "NONE";
 
 	private int hpRestored = 10;
 	private int shieldRestored = 20;
@@ -23,7 +23,7 @@ public class Bonus extends Rectangle
 	private int extraMissileSpeed = 1;
 	private Map<String, Integer> informationMap; //map contains access to weapons level
 
-	private BufferedImage imageOfBonus;
+	private BufferedImage image;
 
 	public Bonus()
 	{
@@ -52,15 +52,15 @@ public class Bonus extends Rectangle
 	}
 
 	//sets type of bonus (weapon upgrade, heal, etc)
-	public void setTypeOfBonus(String typeOfBonus)
+	public void setType(String type)
 	{
-		this.typeOfBouns = typeOfBonus;
+		this.type = type;
 	}
 
 	//sets image of this item to paint on scene
-	public void setImage(BufferedImage imageOfBonus)
+	public void setImage(BufferedImage image)
 	{
-		this.imageOfBonus = imageOfBonus;
+		this.image = image;
 	}
 	
 	//gets int value of bonus from map
@@ -70,14 +70,14 @@ public class Bonus extends Rectangle
 	}
 	
 	//gets type of this bonus object
-	public String getTypeOfBonus()
+	public String getType()
 	{
-		return typeOfBouns;
+		return type;
 	}
 	
 	//gets image of bonus for painting it on scene
-	public BufferedImage getImageOfBonus()
+	public BufferedImage getImage()
 	{
-		return imageOfBonus;
+		return image;
 	}
 }

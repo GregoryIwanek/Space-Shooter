@@ -67,12 +67,12 @@ public class GameSceneView extends JPanel
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(colorBullet);
 
-		g2.drawImage(player.getImageOfPlayer(), player.getLocation().x, player.getLocation().y,
+		g2.drawImage(player.getImage(), player.getLocation().x, player.getLocation().y,
 				player.getSize().width, player.getSize().height, null);
 
 		for (Enemy enemy : listOfEnemyShips)
 		{
-			g2.drawImage(enemy.getImageOfEnemy(), enemy.getLocation().x, enemy.getLocation().y,
+			g2.drawImage(enemy.getImage(), enemy.getLocation().x, enemy.getLocation().y,
 					enemy.getSize().width, enemy.getSize().height, null);
 		}
 
@@ -89,7 +89,7 @@ public class GameSceneView extends JPanel
 
 		for (Bonus bonus : listOfBonuses)
 		{
-			g2.drawImage(bonus.getImageOfBonus(), bonus.getLocation().x, bonus.getLocation().y,
+			g2.drawImage(bonus.getImage(), bonus.getLocation().x, bonus.getLocation().y,
 					bonus.getSize().width, bonus.getSize().height, null);
 		}
 	}

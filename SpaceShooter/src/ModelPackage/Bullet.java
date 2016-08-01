@@ -10,24 +10,30 @@ public class Bullet extends Rectangle
 	private double deltaY = 0; //factor for step on Y axis
 	private int power = 0; //power of bullet (damage)
 	private int speed = 8; //different speed for missiles and blaster, by default speed of blaster
+	private int time = 0; //(ONLY FOR LASER)-> to calculate lifetime of laser bullets ( laser bullets are alive for 1sec)
 	private Enemy target; //for missile kind of bullet-> target to follow
 	private Point locationAsLaser; //used for moving laser beam around with Player
-	private String typeOfBullet = "BLASTER";
-	private BufferedImage imageOfBullet;
+	private String type = "BLASTER";
+	private BufferedImage image;
 	private boolean isInCollision =false;
 	
 	public Bullet(){}
 	
 	//sets power of a bullet (damage)
-	public void setPowerOfBullet(int power)
+	public void setPower(int power)
 	{
 		this.power = power;
 	}
 	
 	//sets speed of bullet ( different speed for missiles and blaster)
-	public void setSpeedOfBullet(int speed)
+	public void setSpeed(int speed)
 	{
 		this.speed = speed;
+	}
+	
+	public void setTime(int time)
+	{
+		this.time = time;
 	}
 	
 	/*(ONLY FOR LASER) sets if bullet is in collision with enemy;
@@ -44,9 +50,9 @@ public class Bullet extends Rectangle
 	}
 	
 	//sets information about type of bullet
-	public void setTypeOfBullet(String typeOfBullet)
+	public void setType(String type)
 	{
-		this.typeOfBullet = typeOfBullet;
+		this.type = type;
 	}
 	
 	//sets target to follow for missile kind of bullet
@@ -56,16 +62,16 @@ public class Bullet extends Rectangle
 	}
 	
 	//sets step factor of a bullet ( used for calculating step on X and Y axis on scene)
-	public void setDeltasOfBullet(double deltaX, double deltaY)
+	public void setDeltas(double deltaX, double deltaY)
 	{
 		this.deltaX = deltaX;
 		this.deltaY = deltaY;
 	}
 	
 	//sets image of a bullet to paint on scene
-	public void setImage(BufferedImage imageOfBullet)
+	public void setImage(BufferedImage image)
 	{
-		this.imageOfBullet = imageOfBullet;
+		this.image = image;
 	}
 	
 	//GETTERS
@@ -78,33 +84,33 @@ public class Bullet extends Rectangle
 	}
 	
 	//gets image of a bullet to paint
-	public BufferedImage getImageOfBullet()
+	public BufferedImage getImage()
 	{
-		return imageOfBullet;
+		return image;
 	}
 	
 	//gets power (damage) of a bullet
-	public int getPowerOfBullet()
+	public int getPower()
 	{
 		return power;
 	}
 	
 	//gets factor for step on X axis
-	public double getDeltaXOfBullet()
+	public double getDeltaX()
 	{
 		return deltaX;
 	}
 	
 	//gets factor for step on Y axis
-	public double getDeltaYBullet()
+	public double getDeltaY()
 	{
 		return deltaY;
 	}
 	
 	//gets information about type of bullet
-	public String getTypeOfBullet()
+	public String getType()
 	{
-		return typeOfBullet;
+		return type;
 	}
 	
 	//gets target of missile
@@ -114,7 +120,7 @@ public class Bullet extends Rectangle
 	}
 	
 	//gets speed of bullet ( different speed for missiles and blaster)
-	public int getSpeedOfBullet()
+	public int getSpeed()
 	{
 		return speed;
 	}
@@ -129,5 +135,10 @@ public class Bullet extends Rectangle
 	public boolean getIsInCollision()
 	{
 		return isInCollision;
+	}
+	
+	public int getTime()
+	{
+		return time;
 	}
 }

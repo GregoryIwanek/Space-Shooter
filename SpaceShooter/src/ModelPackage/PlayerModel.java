@@ -62,7 +62,7 @@ public class PlayerModel
 
 	/*calculates movement of player object, 
 	 * based on given list of pressed keys ( list holds max. 2keys pressed at same time)*/
-	public void calculateMovementOfPlayer(Player player, ArrayList<Integer> listOfPressedKeys)
+	public void calculateMovement(Player player, ArrayList<Integer> listOfPressedKeys)
 	{
 		//if list contains LEFT BUTTON 
 		if (listOfPressedKeys.size() < 3 && listOfPressedKeys.contains(37) == true)
@@ -208,7 +208,7 @@ public class PlayerModel
 	//series of possible bonuses, upgrade players stats
 	public void setBonusUpgrade(Bonus bonus, Player player)
 	{		
-		String typeOfBonus = bonus.getTypeOfBonus();
+		String typeOfBonus = bonus.getType();
 		int valueOfBonus = bonus.getInformationFromMap(typeOfBonus);
 
 		switch (typeOfBonus) {
@@ -271,7 +271,7 @@ public class PlayerModel
 	}
 
 	//sets image for a given player object
-	public void setImageOfPlayer(Player player, String path)
+	public void setImage(Player player, String path)
 	{
 		//initiation of image variable
 		BufferedImage image = null;
@@ -284,11 +284,11 @@ public class PlayerModel
 			e.printStackTrace();
 		}
 		//sets image to a player object
-		player.setImageOfPlayer(image);
+		player.setImage(image);
 	}
 
 	//sets size of player object
-	public void setSizeOfPlayer(Player player, Dimension size)
+	public void setSize(Player player, Dimension size)
 	{
 		player.setSize(size);
 	}

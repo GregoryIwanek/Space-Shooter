@@ -69,7 +69,7 @@ public class EnemyModel
 	}
 
 	//sets image of an enemy object to paint
-	public void setImageOfEnemy(Enemy enemy, String path)
+	public void setImage(Enemy enemy, String path)
 	{
 		//initiation of image variable
 		BufferedImage image = null;
@@ -93,19 +93,19 @@ public class EnemyModel
 	}
 
 	//gets center of enemy object in global coordinate system
-	public Point getCenterOfEnemy(Enemy enemy)
+	public Point getCenter(Enemy enemy)
 	{
 		return enemy.getCenter();
 	}
 
 	//gets current position of an enemy in global coordinate system
-	public Point getPositionOfEnemy(Enemy enemy)
+	public Point getPosition(Enemy enemy)
 	{
 		return enemy.getLocation();
 	}
 
 	//gets speed of given enemy object
-	public int getSpeedOfEnemy(Enemy enemy)
+	public int getSpeed(Enemy enemy)
 	{
 		return enemy.getSpeed();
 	}
