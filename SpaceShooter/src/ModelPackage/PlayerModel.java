@@ -11,53 +11,44 @@ public class PlayerModel
 {
 	public PlayerModel(){}
 
-	//calculate current shield power of a player
-	public void setShieldToDisplay(Player player, int points)
+	//calculate current shield power and amount of life of a player
+	public void setShieldAndLife(Player player, int shieldPoints, int hpPoints)
 	{
-		int shield = player.getShield();
-
-		//calculate only if current shield is in range 0-max players shield
-		if (shield >= 0 && shield <= player.getMaxShield())
+		int currentShield = player.getShield();
+		int currentLife = player.getLife();
+		
+		/*calculate only if current shield is in range 0-max players shield AND it's hit by ENEMY/BULLET
+		 *HPPoints given in method is used only when in collision with BONUS*/
+		if (currentShield <= player.getMaxShield() && hpPoints == 0)
 		{
-			shield += points;
-
-			//make sure it stays in range 0-max shield
-			if (shield < 0) shield = 0;
-			else if (shield > player.getMaxShield()) shield = player.getMaxShield();
-		}
-
-		//set calculated value to a player object
-		player.setShield(shield);
-	}
-
-	//calculate current amount of life of a player
-	public void setLifeToDisplay(Player player, int points)
-	{
-		int hp = player.getLife();
-
-		//subtract only if shield power of player is 0
-		if (player.getShield() == 0)
-		{
-			//subtract life value only if given points are < 0 
-			hp -= points;
-
-			//make sure value stays in range 0-100
-			if (hp < 0) hp = 0;
-		}
-		else 
-		{
-			if (points > 0)
+			//add given points to shield ( can add and subtract value)
+			currentShield += shieldPoints;
+			
+			//if result would be below zero, subtract life of player and set shield as minimum (0)
+			if (currentShield < 0)
 			{
-				//add life value only if given points are > 0 
-				hp += points;
-
-				//make sure value stays in range 0-100
-				if (hp > 100) hp = 100;
+				//subtract value of life if calculated shield would be below 0
+				currentLife += currentShield;
+				
+				//make sure it stays more than 0
+				if (currentLife < 0) currentLife = 0;
+				
+				//reset shield to 0, that's minimum value of shield
+				currentShield = 0;
+			}
+			//make sure shield stays below max possible value
+			else if (currentShield > player.getMaxShield())
+			{
+				currentShield = player.getMaxShield();
 			}
 		}
-
-		//set calculated value as a life of a player object
-		player.setLife(hp);
+	
+		//add given BONUS of hpPoints
+		currentLife += hpPoints;
+		
+		//set calculated value to a player object
+		player.setShield(currentShield);
+		player.setLife(currentLife);
 	}
 
 	/*calculates movement of player object, 
@@ -213,10 +204,10 @@ public class PlayerModel
 
 		switch (typeOfBonus) {
 		case "hpRestored":
-			setLifeToDisplay(player, valueOfBonus);
+			setShieldAndLife(player, 0, valueOfBonus);
 			break;
 		case "shieldRestored":
-			setShieldToDisplay(player, valueOfBonus);
+			setShieldAndLife(player, valueOfBonus, 0);
 			break;
 		case "shieldPernament":
 			//increase max value of a shield
@@ -328,7 +319,7 @@ public class PlayerModel
 	{
 		return player.getTypeOfWeapon();
 	}
-	
+
 	public int getWeaponInfo(Player player, String info)
 	{
 		return player.getWeaponInfo(info);

@@ -9,35 +9,40 @@ public class Enemy extends Rectangle
 	private int hp = 1000; //life of an enemy
 	private int speed = 1;
 	private boolean isAsteroid = false;
+	private boolean isDestroyed = false;
 	private BufferedImage image;
 
 	public Enemy(){}
-	
+
 	//sets life of an object
 	public void setLife(int hp)
 	{
 		this.hp = hp;
 	}
-	
+
 	//sets speed of an object
 	public void setSpeed(int speed)
 	{
 		this.speed = speed;
 	}
-	
+
 	//sets if object is asteroid ( fast moving enemy)
 	public void setIfAsteroid(boolean isAsteroid)
 	{
 		this.isAsteroid = isAsteroid;
 	}
-	
-	//gets information if enemy was destroyed and can be removed from scene
-	public boolean isDestroyed()
+
+	public void setIfIsDestroyed(boolean isDestroyed)
 	{
-		if (hp<=0) return true;
-		else return false;
+		this.isDestroyed = isDestroyed;
 	}
-	
+
+	//gets information if enemy was destroyed and can be removed from scene
+	public boolean getIsDestroyed()
+	{
+		return isDestroyed;
+	}
+
 	//gets center of the enemy by global coordinates system, not local center
 	public Point getCenter()
 	{
@@ -49,25 +54,25 @@ public class Enemy extends Rectangle
 	{
 		this.image = image;
 	}
-	
+
 	//gets image of an object to paint
 	public BufferedImage getImage()
 	{
 		return image;
 	}
-	
+
 	//gets speed of an object
 	public int getSpeed()
 	{
 		return speed;
 	}
-	
+
 	//gets if object is an asteroid
 	public boolean getIfAsteroid()
 	{
 		return isAsteroid;
 	}
-	
+
 	public int getEnemyLife()
 	{
 		return hp;

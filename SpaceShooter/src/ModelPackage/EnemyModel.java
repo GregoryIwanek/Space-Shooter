@@ -42,6 +42,19 @@ public class EnemyModel
 		enemy.setLife(enemy.getEnemyLife() - points);
 	}
 	
+	public void setIfIsDestroyed(Enemy enemy)
+	{
+		if (enemy.getEnemyLife() <= 0)
+		{
+			enemy.setIfIsDestroyed(true);
+		}
+	}
+	
+	public boolean getIsDestroyed(Enemy enemy)
+	{
+		return enemy.getIsDestroyed();
+	}
+	
 	//sets if enemy object is asteroid
 	public void setEnemyIfAsteroid(Enemy enemy, boolean isAsteroid)
 	{

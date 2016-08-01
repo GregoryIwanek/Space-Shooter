@@ -245,8 +245,7 @@ public class GameModel
 				enemyIterator.remove();
 
 				//update player stats
-				playerModel.setShieldToDisplay(player, -25);
-				playerModel.setLifeToDisplay(player, 25);
+				playerModel.setShieldAndLife(player, -25, 0);
 			}
 		}
 
@@ -361,8 +360,7 @@ public class GameModel
 			if (player.intersects(bulletRectangle))
 			{
 				bulletIterator.remove();
-				playerModel.setShieldToDisplay(player, -5);
-				playerModel.setLifeToDisplay(player, 5);
+				playerModel.setShieldAndLife(player, -5, 0);
 			}
 		}
 	}
@@ -532,7 +530,7 @@ public class GameModel
 			{
 				updatePositionAsLaser(bulletToMove);
 				bulletsModel.setTime(bulletToMove, timerDelay);
-				if (bulletsModel.getTime(bulletToMove) > 1000)
+				if (bulletsModel.getTime(bulletToMove) > 2000)
 				{
 					bulletIterator.remove();
 				}
@@ -607,7 +605,7 @@ public class GameModel
 						//remove bullet
 						bulletIterator.remove();
 					}
-					else if (bulletsModel.getTime(bullet) > 1000)
+					else if (bulletsModel.getTime(bullet) > 2000)
 					{
 						//remove bullet
 						bulletIterator.remove();
@@ -626,13 +624,14 @@ public class GameModel
 	public void updateEnemyLife(Enemy enemy, int bulletPower)
 	{
 		enemyModel.updateEnemyLife(enemy, bulletPower);
+		enemyModel.setIfIsDestroyed(enemy);
 	}
 
 	//checks if enemy ship should be destroyed and removed from scene
 	public void checkIfDestroyEnemy(ListIterator<Enemy> enemyIterator, Enemy enemy)
 	{
 		//only if enemy life is lower than zero
-		if (enemy.isDestroyed() == true)
+		if (enemyModel.getIsDestroyed(enemy) == true)
 		{
 			//remove enemy object
 			enemyIterator.remove();
@@ -671,7 +670,7 @@ public class GameModel
 	//update stats of player after destruction of an enemy
 	public void updatePlayerStats()
 	{
-		playerModel.setShieldToDisplay(player, 5);
+		playerModel.setShieldAndLife(player, 5, 0);
 		playerModel.updatePoints(player, 1);
 		updateLevelOfGame();
 	}
