@@ -19,6 +19,7 @@ public class GameModel
 	static private ArrayList<Bullet> listOfPlayerBullets;
 	static private ArrayList<Bonus> listOfBonuses;
 
+	static private int bonusCount = 0; //counts number of dropped bonuses
 	static private int lvlOfGame = 1;
 	static private int timerDelay; //(FOR LASER BULLET ONLY) to determine lifetime of laser bullet and when to remove it
 	static private boolean ifContainsMissiles = false; //true if there are missiles on a scene
@@ -167,12 +168,13 @@ public class GameModel
 
 		//sets object data
 		bonusModel.setBonusSize(bonus, new Dimension(35,50));
-		bonusModel.rollTypeOfNumberBonus(bonus);
+		bonusModel.rollNewType(bonus, bonusCount);
 		bonusModel.setNewPosition(bonus, bonusModel.getRandomStartingPos(), 0);
 		bonusModel.setImage(bonus);
 
 		//adds to painting list
 		listOfBonuses.add(bonus);
+		++bonusCount;
 	}
 
 	//sets position of an enemy ships ( triggered by Timer tick from controller)
@@ -450,7 +452,7 @@ public class GameModel
 	public void setLaserBullets()
 	{
 		//sets new blaster bullets-> max number of bullets in one series is 5
-		for (int i=0; i<3; ++i)
+		for (int i=0; i<playerModel.getWeaponInfo(player, "numberOfLaser"); ++i)
 		{
 			//define bullet data
 			Bullet newBullet = new Bullet();
@@ -462,9 +464,9 @@ public class GameModel
 			//sets starting location
 			if (i == 0)
 			{
-				bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x+10,
-						playerModel.getCenter(player).y - bulletsModel.getSize(newBullet).height);
-				bulletsModel.setLocationAsLaser(newBullet, new Point(10,-bulletsModel.getSize(newBullet).height));
+				bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x,
+						playerModel.getCenter(player).y - bulletsModel.getSize(newBullet).height-20);
+				bulletsModel.setLocationAsLaser(newBullet, new Point(0,-bulletsModel.getSize(newBullet).height-20));
 			}
 			else if (i==1)
 			{
@@ -474,9 +476,9 @@ public class GameModel
 			}
 			else if (i==2)
 			{
-				bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x,
-						playerModel.getCenter(player).y - bulletsModel.getSize(newBullet).height-20);
-				bulletsModel.setLocationAsLaser(newBullet, new Point(0,-bulletsModel.getSize(newBullet).height-20));
+				bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x+10,
+						playerModel.getCenter(player).y - bulletsModel.getSize(newBullet).height);
+				bulletsModel.setLocationAsLaser(newBullet, new Point(10,-bulletsModel.getSize(newBullet).height));
 			}
 
 			//adds to list

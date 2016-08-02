@@ -74,7 +74,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 		checkSpawnBonus();
 		checkSpawnBullet();
 		CheckMissilesTarget();
-		
+
 
 		//repaint scene
 		gameSceneView.repaint();
@@ -113,7 +113,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 	public void checkSpawnShip()
 	{
 		//spawns new enemy ship and resets time of spawn, spawn every 1,5 sec
-		if (timeCumulated > 2000)
+		if (timeCumulated > 1750)
 		{
 			gameModel.setNewEnemyShip();
 			gameSceneView.updateListOfEnemyShips(gameModel.getListOfEnemyShips());
@@ -136,7 +136,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 	public void checkSpawnBonus()
 	{
 		//spawns new bonus
-		if (timeCumulatedBonusSpawn > 25000)
+		if (timeCumulatedBonusSpawn > 30000)
 		{
 			gameModel.setNewBonus();
 			gameSceneView.updateListOfBonuses(gameModel.getListOfBonuses());
@@ -173,6 +173,16 @@ public class GameSessionListener implements ActionListener, KeyListener
 		gameInterfaceView.updateLabels("labelShield", playerModel.getPlayersShield(gameModel.getPlayer()));
 		gameInterfaceView.updateLabels("labelPoints", playerModel.getPlayersPoints(gameModel.getPlayer()));
 		gameInterfaceView.updateLabels("labelLevel", gameModel.getLvlOfGame());
+		gameInterfaceView.updateLabels("labelMissileNumber", playerModel.getWeaponInfo(gameModel.getPlayer(), "numberOfMissiles"));
+		gameInterfaceView.updateLabels("labelMissilePower", playerModel.getWeaponInfo(gameModel.getPlayer(), "powerMissile"));
+		gameInterfaceView.updateLabels("labelMissileSpeed", playerModel.getWeaponInfo(gameModel.getPlayer(), "speedMissile"));
+		gameInterfaceView.updateLabels("labelBlasterNumber", playerModel.getWeaponInfo(gameModel.getPlayer(), "numberOfBlaster"));
+		gameInterfaceView.updateLabels("labelBlasterPower", playerModel.getWeaponInfo(gameModel.getPlayer(), "powerBlaster"));
+		gameInterfaceView.updateLabels("labelBlasterSpeed", playerModel.getWeaponInfo(gameModel.getPlayer(), "speedBlaster"));
+		gameInterfaceView.updateLabels("labelLaserNumber", playerModel.getWeaponInfo(gameModel.getPlayer(), "numberOfLaser"));
+		gameInterfaceView.updateLabels("labelLaserPower", playerModel.getWeaponInfo(gameModel.getPlayer(), "powerLaser"));
+		gameInterfaceView.updateLabels("labelBombNumber", playerModel.getWeaponInfo(gameModel.getPlayer(), "numberOfBombs"));
+		gameInterfaceView.updateLabels("labelShieldMax", gameModel.getPlayerModel().getMaxShield(gameModel.getPlayer()));
 	}
 
 	//adds timer tick time to clocks
@@ -219,6 +229,22 @@ public class GameSessionListener implements ActionListener, KeyListener
 		case 40:
 			//down button pressed, move down
 			addCodeToList(code);
+			break;
+		case 81:
+			//Q pressed, weapon changed for missiles
+			setTypeOfWeaponForPlayer("MISSILES");
+			break;
+		case 87:
+			//W pressed, weapon changed for blaster
+			setTypeOfWeaponForPlayer("BLASTER");
+			break;
+		case 69:
+			//E pressed, weapon changed for laser
+			setTypeOfWeaponForPlayer("LASER");
+			break;
+		case 82:
+			//R pressed, weapon changed for bomb
+			setTypeOfWeaponForPlayer("BOMB");
 			break;
 		default:
 			break;
@@ -278,6 +304,12 @@ public class GameSessionListener implements ActionListener, KeyListener
 		//adds to list, if key isn't already on list
 		if (isAlreadyOnList == false) listOfPressedKeys.add(code);
 		else isAlreadyOnList = false;
+	}
+
+	//sets type of weapon depending on clicked button with weapons
+	public void setTypeOfWeaponForPlayer(String typeOfWeapon)
+	{
+		GameController.getGameModel().getPlayerModel().setTypeOfWeapon(GameController.getGameModel().getPlayer(), typeOfWeapon);
 	}
 
 	@Override

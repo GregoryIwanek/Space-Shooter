@@ -18,7 +18,7 @@ public class Player extends Rectangle
 	private int numberOfLaser = 1;
 	private int numberOfBombs = 1;
 	private int powerBlaster = 500;
-	private int powerLaser = 10;
+	private int powerLaser = 100;
 	private int powerMissile = 150;
 	private int speedBlaster = 9;
 	private int speedMissile = 6;

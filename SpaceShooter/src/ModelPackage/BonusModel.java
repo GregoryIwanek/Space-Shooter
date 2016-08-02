@@ -35,8 +35,30 @@ public class BonusModel
 		bonus.setLocation(x, y);
 	}
 	
+	public void rollNewType(Bonus bonus, int bonusCount)
+	{
+		int count = bonusCount%5;
+		switch (count) {
+		case 0:
+			rollTypeOfSpeedBonus(bonus);
+			break;
+		case 1:
+			rollTypeOfNumberBonus(bonus);
+			break;
+		case 2:
+			rollTypeOfPowerBonus(bonus);
+			break;
+		case 3:
+			rollTypeOfLifeBonus(bonus);
+			break;
+		default:
+			rollTypeOfLifeBonus(bonus);
+			break;
+		}
+	}
+	
 	//sets random type of weapon damage upgrade
-	public void rollTypeOfPowerBonus(Bonus bonus)
+	private void rollTypeOfPowerBonus(Bonus bonus)
 	{
 		int type = randomGenerator.nextInt(3);
 		
@@ -60,7 +82,7 @@ public class BonusModel
 	}
 	
 	//sets random type of bullets number upgrade
-	public void rollTypeOfNumberBonus(Bonus bonus)
+	private void rollTypeOfNumberBonus(Bonus bonus)
 	{
 		int type = randomGenerator.nextInt(4);
 		
@@ -88,7 +110,7 @@ public class BonusModel
 	}
 	
 	//sets random type of life upgrade
-	public void rollTypeOfLifeBonus(Bonus bonus)
+	private void rollTypeOfLifeBonus(Bonus bonus)
 	{
 		int type = randomGenerator.nextInt(3);
 		
@@ -112,7 +134,7 @@ public class BonusModel
 	}
 	
 	//sets random type of speed bonus
-	public void rollTypeOfSpeedBonus(Bonus bonus)
+	private void rollTypeOfSpeedBonus(Bonus bonus)
 	{
 		int type = randomGenerator.nextInt(2);
 		

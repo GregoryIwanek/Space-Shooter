@@ -180,7 +180,7 @@ public class PlayerModel
 	public void setSpeedBlaster(Player player, int speed)
 	{
 		//max blaster speed 12
-		if (player.getWeaponInfo("speedBlaster") < 11)
+		if (player.getWeaponInfo("speedBlaster") < 13)
 		{
 			player.setSpeedBlaster(player.getWeaponInfo("speedBlaster")+speed);
 		}
@@ -190,7 +190,7 @@ public class PlayerModel
 	public void setSpeedMissile(Player player, int speed)
 	{
 		//max missile speed 9
-		if (player.getWeaponInfo("speedMissile") < 8)
+		if (player.getWeaponInfo("speedMissile") < 9)
 		{
 			player.setSpeedBlaster(player.getWeaponInfo("speedMissile")+speed);
 		}
@@ -323,5 +323,10 @@ public class PlayerModel
 	public int getWeaponInfo(Player player, String info)
 	{
 		return player.getWeaponInfo(info);
+	}
+	
+	public int getMaxShield(Player player)
+	{
+		return player.getMaxShield();
 	}
 }
