@@ -5,12 +5,11 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
 
 public class BonusModel
 {
-	private Random randomGenerator;
+	static private Random randomGenerator;
 
 	public BonusModel()
 	{
@@ -23,21 +22,22 @@ public class BonusModel
 		bonus.setSize(size);
 	}
 
-	//gets random position of Bonus ( used as X axis)
+	//gets random position of Bonus ( used on X axis)
 	public int getRandomStartingPos()
 	{
 		return randomGenerator.nextInt(600);
 	}
 
-	//set new position of enemy object
+	//set new position of Bonus object
 	public void setNewPosition(Bonus bonus, int x, int y)
 	{
 		bonus.setLocation(x, y);
 	}
 
 	//roll which type of bonus will be spawn
-	public void rollNewType(Bonus bonus, Player player, int bonusCount)
+	public void rollNewType(Bonus bonus, Player player)
 	{
+		//to determine if new type was chosen or not
 		boolean isChosen = false;
 
 		do {
@@ -54,6 +54,7 @@ public class BonusModel
 				isChosen = true;
 				break;
 			case 2:
+				//roll only if statistic max speed of bullets wasn't reached
 				if (player.getIfIsMaxSpeed() == false)
 				{
 					rollTypeOfSpeedBonus(bonus);
@@ -61,13 +62,14 @@ public class BonusModel
 				}
 				break;
 			case 3:
+				//roll only if weapons can have bigger number of bullets
 				if (player.getIfIsMaxNumber() == false)
 				{
 					rollTypeOfNumberBonus(bonus, false);
 					isChosen = true;
 				}
 				else 
-				{
+				{	//if reached, roll bomb bonus instead
 					rollTypeOfNumberBonus(bonus, true);
 					isChosen = true;
 				}
@@ -80,7 +82,7 @@ public class BonusModel
 		while (isChosen != true);
 	}
 
-	//sets random type of weapon damage upgrade
+	//sets random weapon damage upgrade
 	private void rollTypeOfPowerBonus(Bonus bonus)
 	{
 		int type = randomGenerator.nextInt(3);
@@ -104,10 +106,10 @@ public class BonusModel
 		}
 	}
 
-	//sets random type of bullets number upgrade
-	private void rollTypeOfNumberBonus(Bonus bonus, boolean isMaxNumber)
+	//sets random bullets number upgrade
+	private void rollTypeOfNumberBonus(Bonus bonus, boolean isMaxNumberBullets)
 	{
-		if (isMaxNumber == false)
+		if (isMaxNumberBullets == false)
 		{
 			int type = randomGenerator.nextInt(3);
 			switch (type) 
@@ -131,7 +133,7 @@ public class BonusModel
 		else setType(bonus, "extraBomb");
 	}
 
-	//sets random type of life upgrade
+	//sets random life/shield upgrade
 	private void rollTypeOfLifeBonus(Bonus bonus)
 	{
 		int type = randomGenerator.nextInt(3);
@@ -155,7 +157,7 @@ public class BonusModel
 		}
 	}
 
-	//sets random type of speed bonus
+	//sets random bullets speed bonus
 	private void rollTypeOfSpeedBonus(Bonus bonus)
 	{
 		int type = randomGenerator.nextInt(2);
@@ -174,6 +176,7 @@ public class BonusModel
 			break;
 		}
 	}
+	
 	//assign rolled type of bonus to the object
 	public void setType(Bonus bonus, String type)
 	{

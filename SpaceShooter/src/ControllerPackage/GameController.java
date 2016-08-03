@@ -17,14 +17,13 @@ public class GameController
 		//assign given view and model
 		setViewAndModel(gameView, gameModel);
 		
-		//assign listeners
+		//assign action and key listeners
 		setListeners();
 	}
 	
-	//assigning given view and model to those in class
 	public void setViewAndModel(GameView gameView, GameModel gameModel)
 	{
-		//setting main view and main model;
+		//assigning main view and main model;
 		GameController.gameView = gameView;
 		GameController.gameModel = gameModel;
 	}

@@ -18,6 +18,7 @@ public class BulletsModel
 		bullet.setSize(size);
 	}
 	
+	//(ONLY FOR LASER) sets current lifetime of bullet
 	public void setTime(Bullet bullet, int time)
 	{
 		int currentTime = bullet.getTime();
@@ -62,7 +63,7 @@ public class BulletsModel
 		}
 	}
 	
-	//(ONLY IF LASER) store location of bullet to Player ( example-> moved 10 on X axis from center of Player)
+	//(ONLY FOR LASER) store location of bullet to Player ( example-> moved 10 on X axis from center of Player)
 	public void setLocationAsLaser(Bullet bullet, Point location)
 	{
 		bullet.setLocationAsLaser(location);
@@ -154,21 +155,25 @@ public class BulletsModel
 		return bullet.getSpeed();
 	}
 	
+	//gets size of bullet
 	public Dimension getSize(Bullet bullet)
 	{
 		return bullet.getSize();
 	}
 	
+	//(ONLY FOR LASER BULLET) gets location as laser (moved from starting location by height)
 	public Point getLocationAsLaser(Bullet bullet)
 	{
 		return bullet.getLocationAsLaser();
 	}
 	
+	//(ONLY FOR LASER) gets if laser is in collision
 	public boolean getIsInCollision(Bullet bullet)
 	{
 		return bullet.getIsInCollision();
 	}
 	
+	//(ONLY FOR LASER) gets lifetime of laser bullet
 	public int getTime(Bullet bullet)
 	{
 		return bullet.getTime();

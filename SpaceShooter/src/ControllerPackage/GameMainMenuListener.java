@@ -12,13 +12,16 @@ public class GameMainMenuListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		//starts game after START GAME clicked
-		if (((Component) e.getSource()).getName() == "START GAME")
+		//gets name of clicked button
+		String clickedButton = ((Component) e.getSource()).getName();
+		
+		//starts game after START GAME button clicked
+		if (clickedButton == "START GAME")
 		{
 			GameController.getGameView().startEndGameSession();
 		}
-		//exits after QUIT clicked
-		else if (((Component) e.getSource()).getName() == "QUIT")
+		//exits after QUIT button clicked
+		else if (clickedButton == "QUIT")
 		{
 			System.exit(0);
 		}

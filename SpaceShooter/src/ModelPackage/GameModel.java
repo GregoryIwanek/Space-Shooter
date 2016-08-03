@@ -8,22 +8,25 @@ import java.util.ListIterator;
 
 public class GameModel 
 {
+	//sub-models
 	static private PlayerModel playerModel;
 	static private EnemyModel enemyModel;
 	static private BulletsModel bulletsModel;
 	static private BonusModel bonusModel;
 
+	//containers with objects
 	static private Player player;
 	static private ArrayList<Enemy> listOfEnemyShips;
 	static private ArrayList<Bullet> listOfEnemyBullets;
 	static private ArrayList<Bullet> listOfPlayerBullets;
 	static private ArrayList<Bonus> listOfBonuses;
 
-	static private int bonusCount = 0; //counts number of dropped bonuses
+	//variables to define states of few aspects of the game
 	static private int lvlOfGame = 1;
 	static private int timerDelay; //(FOR LASER BULLET ONLY) to determine lifetime of laser bullet and when to remove it
 	static private boolean ifContainsMissiles = false; //true if there are missiles on a scene
 	static private boolean ifLaserInCollision = false; //true if laser bullet is in collision with target
+	static private 	double longestDistance = 1000;//example distance, bigger than a possible length on a scene
 
 	public GameModel()
 	{
@@ -49,12 +52,13 @@ public class GameModel
 		listOfBonuses = new ArrayList<Bonus>();
 	}
 
+	//(USED FOR LASER BULLETS) sets timer delay of Timer ( methods called from GameSessionListener) 
 	public void setTimerDelay(int timerDelay)
 	{
-		this.timerDelay = timerDelay;
+		GameModel.timerDelay = timerDelay;
 	}
 
-	//sets type of chosen by player weapon (missiles, blaster, bomb etc)
+	//sets chosen by player weapon (missiles, blaster, bomb etc)
 	public void setTypeOfPlayerWeapon (String typeOfWeapon)
 	{
 		playerModel.setTypeOfWeapon(player, typeOfWeapon);
@@ -76,14 +80,13 @@ public class GameModel
 		}
 	}
 
-
-	//assign closest enemy object to a missile
+	//assign closest Enemy object to a Missile
 	public void setClosestEnemyToMissile()
 	{
 		//trigger only if missiles are on a list and they are enemies on a scene
 		if (ifContainsMissiles == true && listOfEnemyShips.size()>0)
 		{
-			//reset information about missiles on scene, will determine if they are there inside loop
+			//reset information about missiles on scene, will determine if they are there inside a loop
 			setIfContainsMissiles(false);
 
 			for (Bullet bullet : listOfPlayerBullets)
@@ -101,22 +104,32 @@ public class GameModel
 
 	public void defineClosestEnemy(Bullet bullet)
 	{
+		//try to find closest Enemy ONLY if given bullet is a MISSILE
 		if (bullet.getType() == "MISSILE")
 		{
-			double longestDistance = 2000;
+			//iterate through list of Enemies and find closest one
 			for (Enemy enemy :listOfEnemyShips)
 			{
-				if (enemyModel.getIfEnemyAsteroid(enemy) == false)
-				{
-					double distanceToCheck = Math.sqrt(Math.pow(bullet.getCenterX() - enemy.getCenterX(), 2) +
-							Math.pow(bullet.getCenterY() - enemy.getCenterY(), 2));
+				checkDistanceToEnemy(bullet, enemy);
+			}
+		}
+		//resets changes 
+		longestDistance = 1000;
+	}
 
-					if (longestDistance > distanceToCheck)
-					{
-						longestDistance = distanceToCheck;
-						bulletsModel.setTargetForMissile(bullet, enemy);
-					}
-				}
+	private void checkDistanceToEnemy(Bullet bullet, Enemy enemy)
+	{
+		//check only if Enemy isn't Asteroid ( we don't want missiles to follow that)
+		if (enemyModel.getIfEnemyAsteroid(enemy) == false)
+		{
+			double distanceToCheck = Math.sqrt(Math.pow(bullet.getCenterX() - enemy.getCenterX(), 2) +
+					Math.pow(bullet.getCenterY() - enemy.getCenterY(), 2));
+
+			//sets target Enemy if calculated distance is smaller
+			if (longestDistance > distanceToCheck)
+			{
+				longestDistance = distanceToCheck;
+				bulletsModel.setTargetForMissile(bullet, enemy);
 			}
 		}
 	}
@@ -126,6 +139,7 @@ public class GameModel
 	{
 		playerModel.setImage(player, "/Player.png");
 		playerModel.setSize(player, new Dimension(45,65));
+		playerModel.setNewPosition(player, new Point(300,500));
 	}
 
 	//sets new enemy ship, define information and adds to list of objects to paint
@@ -168,25 +182,24 @@ public class GameModel
 
 		//sets object data
 		bonusModel.setBonusSize(bonus, new Dimension(35,50));
-		bonusModel.rollNewType(bonus, player, bonusCount);
+		bonusModel.rollNewType(bonus, player);
 		bonusModel.setNewPosition(bonus, bonusModel.getRandomStartingPos(), 0);
 		bonusModel.setImage(bonus);
 
 		//adds to painting list
 		listOfBonuses.add(bonus);
-		++bonusCount;
 	}
 
 	//sets position of an enemy ships ( triggered by Timer tick from controller)
-	public void setNewPositionOfShips()
+	public void setNewPositionOfObjects()
 	{
 		//update positions and checks if out of scene
-		updatePositionOfShips();
+		updatePositionOfObjects();
 		checkIfEnemyOutOfScene();
 	}
 
-	//update position of enemy ships after Timers tick
-	public void updatePositionOfShips()
+	//update position of Enemy ships and Bonus objects after Timers tick
+	public void updatePositionOfObjects()
 	{	
 		//update position of every enemy ships on a list 
 		for (Enemy enemy : listOfEnemyShips)
@@ -208,9 +221,10 @@ public class GameModel
 		}
 	}
 
-	//check if enemy ship is out of scene and should be removed
+	//check if Enemy ship or Bonus is out of scene and should be removed
 	public void checkIfEnemyOutOfScene()
 	{
+		//checks if Enemy is out of scene ( on Y axis)
 		ListIterator<Enemy> listOfEnemyShipsIterator = listOfEnemyShips.listIterator();
 		while (listOfEnemyShipsIterator.hasNext())
 		{ 
@@ -221,6 +235,7 @@ public class GameModel
 			}
 		}
 
+		//checks if Bonus is out of scene (Y axis)
 		ListIterator<Bonus> listOfBonusesIterator = listOfBonuses.listIterator();
 		while (listOfBonusesIterator.hasNext())
 		{
@@ -232,7 +247,7 @@ public class GameModel
 		}
 	}
 
-	//checks if enemy ship is in collision with a player object on a scene
+	//checks if Enemy ship or Bonus object is in collision with a Player object on a scene
 	public void checkIfEnemyInCollision(Player player)
 	{
 		ListIterator<Enemy> enemyIterator = listOfEnemyShips.listIterator();
@@ -255,8 +270,11 @@ public class GameModel
 		while (bonusIterator.hasNext())
 		{
 			Bonus bonus = bonusIterator.next();
+
+			//only if player and checked Bonus are on each other
 			if (player.intersects(bonus))
 			{
+				//adds bonus to a player statistics
 				playerModel.setBonusUpgrade(bonus, player);
 
 				//remove bonus object
@@ -265,10 +283,10 @@ public class GameModel
 		}
 	}
 
-	//sets new set of bullets for every enemy ship on a list, triggered by Timer (controller)
+	//sets new set of bullets for every enemy ship on a list, triggered by Timer ( GameSessionListener)
 	public void setNewBullets()
 	{
-		//create bullet for all objects on a list
+		//create bullet for all objects on an Enemy list
 		for (Enemy enemy : listOfEnemyShips)
 		{
 			//enemies create bullets only if they are not asteroids
@@ -291,7 +309,7 @@ public class GameModel
 		}
 	}
 
-	//methods to set new position of a bullets (triggered by Timer)
+	//methods to set new position of a bullets of Enemy(triggered by Timer)
 	public void setNewPositionOfBullets()
 	{
 		//update position of bullets and check if they are inside a scene
@@ -300,7 +318,7 @@ public class GameModel
 		checkIfBulletsOutOfScene();
 	}
 
-	//update position of a bullets of enemy ( triggered every Timer tick)
+	//update position of a bullets of Enemy ( triggered every Timer tick)
 	public void updatePositionOfBullets()
 	{
 		//update for every enemy bullet on a list
@@ -319,7 +337,7 @@ public class GameModel
 		}
 	}
 
-	//checks if enemy and player bullets are inside a scene ( 4 borders)
+	//checks if Enemy and Player Bullets are inside a scene ( 4 borders)
 	public void checkIfBulletsOutOfScene()
 	{
 		//checking bullets of Enemy
@@ -350,7 +368,7 @@ public class GameModel
 
 	}
 
-	//checks if enemy bullets are in collision with player object
+	//checks if Enemy Bullets are in collision with Player object
 	public void checkIfBulletInCollision(Player player)
 	{
 		ListIterator<Bullet> bulletIterator = listOfEnemyBullets.listIterator();
@@ -367,10 +385,12 @@ public class GameModel
 		}
 	}
 
-
+	//sets new Bullets of the Player, depending on chosen weapon
 	public void setNewBulletsOfPlayer()
 	{
+		//gets chosen weapon
 		String type = playerModel.getTypeOfWeapon(player);
+
 		switch (type){
 		case "MISSILES":
 			setMisilesBullets();
@@ -390,27 +410,37 @@ public class GameModel
 		}
 	}
 
+	//define Missile Bullets of Player object
 	public void setMisilesBullets()
 	{
 		//create new missiles only if there are enemies on a scene and sets max number of missiles on scene to 20-30
-		if (listOfEnemyShips.size() > 0 && listOfPlayerBullets.size() < 10+5*playerModel.getWeaponInfo(player, "numberOfMissiles"))
+		if (listOfEnemyShips.size() > 0 && listOfPlayerBullets.size() < 10+5*playerModel.getInfo(player, "numberOfMissiles"))
 		{
-			//sets new missile bullets -> max number of bullets is 4
-			for (int i=0; i<playerModel.getWeaponInfo(player, "numberOfMissiles"); ++i)
+			//sets new missile Bullets -> max number of Bullets in one shot is 4
+			for (int i=0; i<playerModel.getInfo(player, "numberOfMissiles"); ++i)
 			{
 				//define bullet data
 				Bullet newBullet = new Bullet();
 				bulletsModel.setType(newBullet, "MISSILE");
 				bulletsModel.setBulletSize(newBullet, new Dimension(6,6));
 				bulletsModel.setSpeed(newBullet, 6);
-				bulletsModel.setPower(newBullet, playerModel.getWeaponInfo(player, "powerMissile"));
+				bulletsModel.setPower(newBullet, playerModel.getInfo(player, "powerMissile"));
 
-				//sets starting location
-				if (i==0){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);}
-				else if (i==1){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);}
-				else if (i==2){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x, playerModel.getCenter(player).y-20);}
-				else if (i==3){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x, playerModel.getCenter(player).y+20);}
-
+				//sets starting location, depending on "i" (bullets in series have different start location)				
+				switch (i) {
+				case 0:
+					setStartLocation(newBullet, 10, 0);
+					break;
+				case 1:
+					setStartLocation(newBullet, -10, 0);
+					break;
+				case 2:
+					setStartLocation(newBullet, 0, -20);
+					break;
+				case 3:
+					setStartLocation(newBullet, 0, 20);
+					break;
+				}
 				//add to list
 				listOfPlayerBullets.add(newBullet);
 			}
@@ -422,17 +452,24 @@ public class GameModel
 		}
 	}
 
+	//sets start location for Player Bullets
+	private void setStartLocation(Bullet bullet, int deltaX, int deltaY)
+	{
+		bulletsModel.setLocation(bullet, playerModel.getCenter(player).x+deltaX, playerModel.getCenter(player).y+deltaY);
+	}
+
+	//define Blaster Bullets of Player
 	public void setBlasterBullets()
 	{
-		//sets new blaster bullets-> max number of bullets in one series is 5
-		for (int i=0; i<playerModel.getWeaponInfo(player, "numberOfBlaster"); ++i)
+		//sets new blaster bullets-> max number of bullets in one series is 7
+		for (int i=0; i<playerModel.getInfo(player, "numberOfBlaster"); ++i)
 		{
 			//define bullet data
 			Bullet newBullet = new Bullet();
 			bulletsModel.setType(newBullet, "BLASTER");
 			bulletsModel.setBulletSize(newBullet, new Dimension(6,6));
 			bulletsModel.setSpeed(newBullet, 9);
-			bulletsModel.setPower(newBullet, playerModel.getWeaponInfo(player, "powerBlaster"));
+			bulletsModel.setPower(newBullet, playerModel.getInfo(player, "powerBlaster"));
 
 			//define bullets deltas ( X and Y step per Timers tick)
 			if (i<3){bulletsModel.setDeltas(newBullet, 0, -1);}
@@ -440,48 +477,47 @@ public class GameModel
 			else if (i==4){bulletsModel.setDeltas(newBullet, -0.25, -1);}
 			else if (i==5){bulletsModel.setDeltas(newBullet, 0.15, -1);}
 			else if (i==6){bulletsModel.setDeltas(newBullet, -0.15, -1);}
-			
 
 			//sets starting location
-			if (i == 0 || i ==3 || i==5){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);}
-			else if (i==1 || i==4 || i==6){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);}
-			else if (i==2){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x, playerModel.getCenter(player).y-20);}
+			if (i == 0 || i ==3 || i==5){setStartLocation(newBullet, 10, 0);}
+			else if (i==1 || i==4 || i==6){setStartLocation(newBullet, -10, 0);}
+			else if (i==2){setStartLocation(newBullet, 0, -20);}
 
 			//adds to list
 			listOfPlayerBullets.add(newBullet);
 		}
 	}
 
+	//sets new Laser Bullets of Player
 	public void setLaserBullets()
 	{
-		//sets new blaster bullets-> max number of bullets in one series is 5
-		for (int i=0; i<playerModel.getWeaponInfo(player, "numberOfLaser"); ++i)
+		//sets new laser bullets-> max number of bullets in one series is 3
+		for (int i=0; i<playerModel.getInfo(player, "numberOfLaser"); ++i)
 		{
 			//define bullet data
 			Bullet newBullet = new Bullet();
 			bulletsModel.setType(newBullet, "LASER");
 			bulletsModel.setBulletSize(newBullet, new Dimension(6,playerModel.getNewPosition(player).y+20));
 			bulletsModel.setSpeed(newBullet, 0);
-			bulletsModel.setPower(newBullet, playerModel.getWeaponInfo(player, "powerLaser"));
+			bulletsModel.setPower(newBullet, playerModel.getInfo(player, "powerLaser"));
 
+			int height = bulletsModel.getSize(newBullet).height;
 			//sets starting location
-			if (i == 0)
-			{
-				bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x,
-						playerModel.getCenter(player).y - bulletsModel.getSize(newBullet).height-20);
-				bulletsModel.setLocationAsLaser(newBullet, new Point(0,-bulletsModel.getSize(newBullet).height-20));
-			}
-			else if (i==1)
-			{
-				bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x-10,
-						playerModel.getCenter(player).y - bulletsModel.getSize(newBullet).height);
+			switch (i) {
+			case 0:
+				setStartLocation(newBullet, 0, -height);
+				bulletsModel.setLocationAsLaser(newBullet, new Point(0,-bulletsModel.getSize(newBullet).height));
+				break;
+			case 1:
+				setStartLocation(newBullet, -10, -height);
 				bulletsModel.setLocationAsLaser(newBullet, new Point(-10,-bulletsModel.getSize(newBullet).height));
-			}
-			else if (i==2)
-			{
-				bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x+10,
-						playerModel.getCenter(player).y - bulletsModel.getSize(newBullet).height);
+				break;
+			case 2:
+				setStartLocation(newBullet, 10, -height);
 				bulletsModel.setLocationAsLaser(newBullet, new Point(10,-bulletsModel.getSize(newBullet).height));
+				break;
+			default:
+				break;
 			}
 
 			//adds to list
@@ -492,7 +528,8 @@ public class GameModel
 	//clears scene from enemies and their bullets, can be used limited amount of time
 	public void setBomb()
 	{
-		if (playerModel.getWeaponInfo(player, "numberOfBombs") > 0)
+		//only if there are bombs to shoot
+		if (playerModel.getInfo(player, "numberOfBombs") > 0)
 		{
 			//remove bullets from scene
 			ListIterator<Bullet> bulletIterator = listOfEnemyBullets.listIterator();
@@ -515,22 +552,25 @@ public class GameModel
 		}
 	}
 
-	//update position of player bullets
+	//update position of player bullets, type of movement depends on kind of bullet (LASER, MISSILE, BLASTER)
 	public void updatePositionOfPlayerBullets()
 	{
 		ListIterator<Bullet> bulletIterator = listOfPlayerBullets.listIterator();
 		while (bulletIterator.hasNext())
 		{
 			Bullet bulletToMove = bulletIterator.next();
+			//if MISSILE, calculate and update deltas ( they change every timers tick)
 			if (bulletsModel.getType(bulletToMove) == "MISSILE")
 			{
 				bulletsModel.calculateMovementAsAMissile(bulletToMove, bulletsModel.getTargetOfMissile(bulletToMove));
 			}
 
+			//if MISSILE and BLASTER, update position
 			if (bulletsModel.getType(bulletToMove) == "MISSILE" || bulletsModel.getType(bulletToMove) == "BLASTER")
 			{
 				updatePositionAsBlasterMissile(bulletToMove);
 			}
+			//if LASER update position and lifespan time of a bullet
 			else if (bulletsModel.getType(bulletToMove) == "LASER")
 			{
 				updatePositionAsLaser(bulletToMove);
@@ -543,6 +583,7 @@ public class GameModel
 		}
 	}
 
+	//(ONLY FOR MISSILES) sets new position for MISSILE kind of bullet of Player
 	public void updatePositionAsBlasterMissile(Bullet bulletToMove)
 	{
 		//takes into consideration factor step for X and Y axis
@@ -557,16 +598,21 @@ public class GameModel
 		bulletsModel.setLocation(bulletToMove, x, y);
 	}
 
+	//(ONLY FOR LASER) sets new position for LASER bullet of Player
 	public void updatePositionAsLaser(Bullet bulletToMove)
 	{
+		//when it's in collision with Enemy object, decrease size of Laser
 		if (bulletToMove.getIsInCollision() == false) resizeLaser(bulletToMove);
 
+		//calculate next x and y position
 		int x = playerModel.getCenter(player).x + bulletsModel.getLocationAsLaser(bulletToMove).x;
 		int y = playerModel.getCenter(player).y + bulletsModel.getLocationAsLaser(bulletToMove).y;
 
+		//sets position
 		bulletsModel.setLocation(bulletToMove, x, y);
 	}
 
+	//sets new size of LASER bullet of Player
 	public void resizeLaser(Bullet bullet)
 	{
 		bulletsModel.setBulletSize(bullet, new Dimension(6,playerModel.getNewPosition(player).y+20));
@@ -582,6 +628,7 @@ public class GameModel
 
 		while ( bulletIterator.hasNext())
 		{
+			//resets if LASER is in collision, will be determined later
 			ifLaserInCollision = false;
 
 			Bullet bullet =  bulletIterator.next();
@@ -596,14 +643,15 @@ public class GameModel
 				//if player bullet collide with enemy object
 				if (bullet.getBounds().intersects(enemy.getBounds()))
 				{
+					//if collide and is LASER, change size of Bullet
 					if (bulletsModel.getType(bullet) == "LASER")
 					{
 						updateSizeOfLaser(bullet, enemy);
 						bullet.setIsInCollision(true);
 					}
-					//subtract enemy life by players bullet power
+					//subtract enemy life by players Bullet power
 					updateEnemyLife(enemy, bulletsModel.getPower(bullet));
-					//check if enemy object destroyed, if yes, remove
+					//check if enemy object destroyed, if yes, remove from scene and lists
 					checkIfDestroyEnemy(enemyIterator, enemy);
 					if (bulletsModel.getType(bullet) == "BLASTER" || bulletsModel.getType(bullet) == "MISSILE")
 					{
@@ -625,14 +673,14 @@ public class GameModel
 		}
 	}
 
-	//sets new value of enemy ship object after hit by a players bullet
+	//sets new value of life of Enemy ship object after hit by a players bullet
 	public void updateEnemyLife(Enemy enemy, int bulletPower)
 	{
 		enemyModel.updateEnemyLife(enemy, bulletPower);
 		enemyModel.setIfIsDestroyed(enemy);
 	}
 
-	//checks if enemy ship should be destroyed and removed from scene
+	//checks if Enemy ship should be destroyed and removed from a scene
 	public void checkIfDestroyEnemy(ListIterator<Enemy> enemyIterator, Enemy enemy)
 	{
 		//only if enemy life is lower than zero
@@ -645,13 +693,18 @@ public class GameModel
 		}
 	}
 
+	//changes size of laser on collision with Enemy
 	public void updateSizeOfLaser(Bullet bullet, Enemy enemy)
 	{	
+		//gets distance to Enemy center
 		int distance = (int) enemy.getCenterY();
+
+		//sets new size
 		bulletsModel.setBulletSize(bullet, new Dimension(6,playerModel.getNewPosition(player).y+20 - distance));
 		bulletsModel.setLocationAsLaser(bullet, new Point(bulletsModel.getLocationAsLaser(bullet).x,
 				-bulletsModel.getSize(bullet).height));
 
+		//define new x and y position
 		int x = playerModel.getCenter(player).x + bulletsModel.getLocationAsLaser(bullet).x;
 		int y = playerModel.getCenter(player).y + bulletsModel.getLocationAsLaser(bullet).y;
 

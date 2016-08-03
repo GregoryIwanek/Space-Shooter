@@ -32,6 +32,7 @@ public class Enemy extends Rectangle
 		this.isAsteroid = isAsteroid;
 	}
 
+	//sets if object has hp below zero and can be removed form scene
 	public void setIfIsDestroyed(boolean isDestroyed)
 	{
 		this.isDestroyed = isDestroyed;
@@ -73,6 +74,7 @@ public class Enemy extends Rectangle
 		return isAsteroid;
 	}
 
+	//gets hp of this object
 	public int getEnemyLife()
 	{
 		return hp;

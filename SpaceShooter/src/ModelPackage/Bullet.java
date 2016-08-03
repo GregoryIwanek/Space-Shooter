@@ -31,6 +31,7 @@ public class Bullet extends Rectangle
 		this.speed = speed;
 	}
 	
+	//(ONLY FOR LASER) sets lifetime of bullet
 	public void setTime(int time)
 	{
 		this.time = time;
@@ -137,6 +138,7 @@ public class Bullet extends Rectangle
 		return isInCollision;
 	}
 	
+	//(ONLY FOR LASERS) gets lifetime of bullet
 	public int getTime()
 	{
 		return time;

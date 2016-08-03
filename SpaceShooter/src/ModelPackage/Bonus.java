@@ -9,21 +9,22 @@ public class Bonus extends Rectangle
 {
 	private String type = "NONE";
 
-	private int hpRestored = 10;
-	private int shieldRestored = 20;
-	private int shieldPernament = 10;
-	private int extraBulletBlaster = 2;
-	private int extraBulletLaser = 1;
-	private int extraBulletMissile = 1;
-	private int extraBomb = 1;
-	private int extraBlasterPower = 100;
-	private int extraLaserPower = 10;
-	private int extraMissilePower = 50;
-	private int extraBlasterSpeed = 1;
-	private int extraMissileSpeed = 1;
-	private Map<String, Integer> informationMap; //map contains access to weapons level
+	//values of bonuses
+	static private int hpRestored = 10;
+	static private int shieldRestored = 20;
+	static private int shieldPernament = 10;
+	static private int extraBulletBlaster = 2;
+	static private int extraBulletLaser = 1;
+	static private int extraBulletMissile = 1;
+	static private int extraBomb = 1;
+	static private int extraBlasterPower = 100;
+	static private int extraLaserPower = 10;
+	static private int extraMissilePower = 50;
+	static private int extraBlasterSpeed = 1;
+	static private int extraMissileSpeed = 1;
+	static private Map<String, Integer> informationMap; //map contains access to weapons level
 
-	private BufferedImage image;
+	static private BufferedImage image;
 
 	public Bonus()
 	{

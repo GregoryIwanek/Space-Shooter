@@ -7,13 +7,13 @@ public class GameInterfaceListener implements ActionListener
 {
 	public GameInterfaceListener(){}
 
-	//triggered on button click in game interface in game section
+	//action triggered on button click, in game interface in game section
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
 		//get name of clicked button ( names defined in view section)
 		String clickedButton = ((Component) e.getSource()).getName();
-		
+
 		switch (clickedButton) 
 		{
 		case "START":
@@ -25,6 +25,7 @@ public class GameInterfaceListener implements ActionListener
 			GameController.gameSessionListener.setTimer(false);
 			GameController.getGameView().startEndGameSession();
 			break;
+			//buttons for choosing weapon
 		case "MISSILES":
 			setTypeOfWeaponForPlayer("MISSILES");
 			break;
@@ -42,8 +43,8 @@ public class GameInterfaceListener implements ActionListener
 			break;
 		}
 	}
-	
-	//sets type of weapon depending on clicked button with weapons
+
+	//sets type of weapon depending on clicked button
 	public void setTypeOfWeaponForPlayer(String typeOfWeapon)
 	{
 		GameController.getGameModel().getPlayerModel().setTypeOfWeapon(GameController.getGameModel().getPlayer(), typeOfWeapon);

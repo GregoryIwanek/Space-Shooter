@@ -101,10 +101,10 @@ public class GameInterfaceView extends JPanel
 		//initiation of buttons
 		buttonStart = new JButton("START");
 		buttonBack = new JButton("BACK");
-		buttonWeaponMissiles = new JButton("MISSILES");
-		buttonWeaponLaser = new JButton("LASER");
-		buttonWeaponBlaster = new JButton("BLASTER");
-		buttonWeaponBomb = new JButton("BOMB");
+		buttonWeaponMissiles = new JButton("MISSILES (Q)");
+		buttonWeaponLaser = new JButton("LASER (E)");
+		buttonWeaponBlaster = new JButton("BLASTER (W)");
+		buttonWeaponBomb = new JButton("BOMB (R)");
 		
 		//initiate checkBox
 		checkBoxAuto = new JCheckBox("AUTO FIRE OFF");
@@ -253,6 +253,7 @@ public class GameInterfaceView extends JPanel
 		return gameScenePanel;
 	}
 	
+	//gets if checkBox autofire off is checked
 	public boolean getIfCheckboxChecked()
 	{
 		return checkBoxAuto.isSelected();

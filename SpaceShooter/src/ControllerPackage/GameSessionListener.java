@@ -1,35 +1,29 @@
 package ControllerPackage;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.ArrayList;
-
 import javax.swing.Timer;
-
-import ModelPackage.GameModel;
-import ModelPackage.PlayerModel;
-import ViewPackage.GameInterfaceView;
-import ViewPackage.GameSceneView;
+import ModelPackage.*;
+import ViewPackage.*;
 
 public class GameSessionListener implements ActionListener, KeyListener
 {
-	//variables to shorten code ( could type GameController.something..., but it's long)
+	//variables just to shorten code ( could type GameController.something...)
 	private GameModel gameModel;
 	private PlayerModel playerModel;
 	private GameInterfaceView gameInterfaceView;
 	private GameSceneView gameSceneView;
 
+	//list of keys pressed now
 	ArrayList<Integer> listOfPressedKeys;
 
 	//variables used to spawn objects and repaint
 	private Timer timer;
-	private int timeCumulated = 0;
-	private int timeCumulatedAsteroidSpawn = 0;
-	private int timeCumulatedBulletSpawn = 0;
-	private int timeCumulatedBonusSpawn = 0;
-	private int timeCumulatedSetTarget = 0;
+	private int time = 0; //cumulated time
+	private int timeAsteroidSpawn = 0;
+	private int timeBulletSpawn = 0;
+	private int timeBonusSpawn = 0;
+	private int timeSetTarget = 0;
 	private int rechargeTime = 0; //time between player bullets shoots
 	private int collisionTime = 0; //used just to reduce number of checks through lists ( example-> 10/sec instead 30/sec-> no visual difference)
 	private int labelsUpdateTime = 0;
@@ -44,6 +38,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 	//just to make code shorter ( could use GameController.something..., but it'd long)
 	public void setVariablesForUse()
 	{
+		//assign variables
 		gameModel = GameController.getGameModel();
 		playerModel = GameController.getGameModel().getPlayerModel();
 		gameSceneView = GameController.getGameView().getInterface().getScenePanel();
@@ -67,9 +62,9 @@ public class GameSessionListener implements ActionListener, KeyListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		//checks if continue game
+		//checks if continue game, or it's GAME OVER already
 		checkLifeOfPlayer();
-		
+
 		//series of methods to update current situation on a scene ( position, spawn, collision)
 		setPositionOfObjects();
 		checkCollisionStatus();
@@ -80,15 +75,15 @@ public class GameSessionListener implements ActionListener, KeyListener
 		checkSpawnPlayerBullet();
 		CheckMissilesTarget();
 
-
-		//repaint scene
-		gameSceneView.repaint();
-
 		//update information in labels and clocks
 		updateLabelsInGameInterface();
 		updateClocks();
+		
+		//repaint a scene
+		gameSceneView.repaint();
 	}
-	
+
+	//check if life of player is below zero, if yes, stop game
 	private void checkLifeOfPlayer()
 	{
 		if (gameModel.getPlayerModel().getPlayersLife(gameModel.getPlayer()) == 0)
@@ -106,7 +101,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 		playerModel.calculateMovement(gameModel.getPlayer(), listOfPressedKeys);
 
 		//sets new position of enemy ships and bullets
-		gameModel.setNewPositionOfShips();
+		gameModel.setNewPositionOfObjects();
 		gameModel.setNewPositionOfBullets();
 	}
 
@@ -114,8 +109,8 @@ public class GameSessionListener implements ActionListener, KeyListener
 	public void checkCollisionStatus()
 	{
 		/*checks if there is collision between objects on lists;
-		 * "if" just to reduce number of checks per second-> no need to check every timer tick*/
-		if (collisionTime > 100)
+		 * "if" just to reduce number of checks per second-> no need to check every timers tick*/
+		if (collisionTime > 50)
 		{
 			gameModel.checkIfEnemyInCollision(gameModel.getPlayer());
 			gameModel.checkIfBulletInCollision(gameModel.getPlayer());
@@ -128,55 +123,57 @@ public class GameSessionListener implements ActionListener, KeyListener
 	public void checkSpawnShip()
 	{
 		//spawns new enemy ship and resets time of spawn,
-		if (timeCumulated > (2000 - 100*gameModel.getLvlOfGame()))
+		if (time > (2000 - 75*gameModel.getLvlOfGame()))
 		{
 			gameModel.setNewEnemyShip();
 			gameSceneView.updateListOfEnemyShips(gameModel.getListOfEnemyShips());
-			timeCumulated = 0;
+			time = 0;
 		}
 	}
 
-	//check if can spawn asteroid, spawn every 5 sec
+	//check if can spawn Asteroid object
 	public void checkSpawnAsteroid()
 	{
 		//spawns new asteroid
-		if (timeCumulatedAsteroidSpawn > 5000)
+		if (timeAsteroidSpawn > 5000)
 		{
 			gameModel.setNewEnemyShipAsteroid();
 			gameSceneView.updateListOfEnemyShips(gameModel.getListOfEnemyShips());
-			timeCumulatedAsteroidSpawn = 0;
+			timeAsteroidSpawn = 0;
 		}
 	}
 
+	//checks if can spawn new Bonus object
 	public void checkSpawnBonus()
 	{
 		//spawns new bonus
-		if (timeCumulatedBonusSpawn > 25000)
+		if (timeBonusSpawn > 25000)
 		{
 			gameModel.setNewBonus();
 			gameSceneView.updateListOfBonuses(gameModel.getListOfBonuses());
-			timeCumulatedBonusSpawn = 0;
+			timeBonusSpawn = 0;
 		}
 	}
 
 	//check if can spawn new enemy bullets
 	public void checkSpawnBullet()
 	{
-		//spawns new bullets of enemies, resets time between spawns, spawn every 0.8 sec
-		if (timeCumulatedBulletSpawn > 1500)
+		//spawns new bullets of enemies obejcts, resets time between spawns
+		if (timeBulletSpawn > 1500)
 		{
 			gameModel.setNewBullets();
-			gameSceneView.updateListOfBullets(gameModel.getListOfEnemyBullets());
-			timeCumulatedBulletSpawn = 0;
+			gameSceneView.updatelistOfEnemyBullets(gameModel.getListOfEnemyBullets());
+			timeBulletSpawn = 0;
 		}
 	}
 
+	//checks if can spawn Players bullets
 	public void checkSpawnPlayerBullet()
 	{
-		//checks if we allow for auto fire ( checkbox in game interface section)
+		//checks if we allow auto fire ( checkbox in game interface section)
 		if (gameInterfaceView.getIfCheckboxChecked() == false)
 		{
-			//gets type of current chosen weapon
+			//gets type of chosen weapon
 			String typeOfWeapon = gameModel.getPlayerModel().getTypeOfWeapon(gameModel.getPlayer());
 
 			//sets bullets depending on kind of chosen weapon
@@ -193,13 +190,13 @@ public class GameSessionListener implements ActionListener, KeyListener
 		}
 	}
 
-	//sets closest enemy ship to a missiles on a scene, every 0.5sec
+	//sets closest enemy ship as a target of a missiles on a scene, every 0.5sec
 	public void CheckMissilesTarget()
 	{
-		if (timeCumulatedSetTarget > 500) 
+		if (timeSetTarget > 500) 
 		{
 			gameModel.setClosestEnemyToMissile();
-			timeCumulatedSetTarget = 0;
+			timeSetTarget = 0;
 		}
 	}
 
@@ -208,33 +205,44 @@ public class GameSessionListener implements ActionListener, KeyListener
 	{
 		if (labelsUpdateTime > 200)
 		{
+			//update player stats
 			gameInterfaceView.updateLabels("labelHP", "HP", playerModel.getPlayersLife(gameModel.getPlayer()));
 			gameInterfaceView.updateLabels("labelShield", "Shield", playerModel.getPlayersShield(gameModel.getPlayer()));
 			gameInterfaceView.updateLabels("labelPoints", "Points", playerModel.getPlayersPoints(gameModel.getPlayer()));
 			gameInterfaceView.updateLabels("labelLevel", "Level", gameModel.getLvlOfGame());
-			gameInterfaceView.updateLabels("labelMissileNumber", "Missile", playerModel.getWeaponInfo(gameModel.getPlayer(), "numberOfMissiles"));
-			gameInterfaceView.updateLabels("labelMissilePower", "Missile power", playerModel.getWeaponInfo(gameModel.getPlayer(), "powerMissile"));
-			gameInterfaceView.updateLabels("labelMissileSpeed", "Missile speed", playerModel.getWeaponInfo(gameModel.getPlayer(), "speedMissile"));
-			gameInterfaceView.updateLabels("labelBlasterNumber", "Blaster", playerModel.getWeaponInfo(gameModel.getPlayer(), "numberOfBlaster"));
-			gameInterfaceView.updateLabels("labelBlasterPower", "Blaster power", playerModel.getWeaponInfo(gameModel.getPlayer(), "powerBlaster"));
-			gameInterfaceView.updateLabels("labelBlasterSpeed", "Blaster speed", playerModel.getWeaponInfo(gameModel.getPlayer(), "speedBlaster"));
-			gameInterfaceView.updateLabels("labelLaserNumber", "Laser", playerModel.getWeaponInfo(gameModel.getPlayer(), "numberOfLaser"));
-			gameInterfaceView.updateLabels("labelLaserPower", "Laser power", playerModel.getWeaponInfo(gameModel.getPlayer(), "powerLaser"));
-			gameInterfaceView.updateLabels("labelBombNumber", "Bomb", playerModel.getWeaponInfo(gameModel.getPlayer(), "numberOfBombs"));
-			gameInterfaceView.updateLabels("labelShieldMax", "Shield max", gameModel.getPlayerModel().getMaxShield(gameModel.getPlayer()));
 
+			//update weapons stats
+			updateLabelsWeaponInfo("labelMissileNumber", "Missile", "numberOfMissiles");
+			updateLabelsWeaponInfo("labelMissilePower", "Missile power", "powerMissile");
+			updateLabelsWeaponInfo("labelMissileSpeed", "Missile speed", "speedMissile");
+			updateLabelsWeaponInfo("labelBlasterNumber", "Blaster", "numberOfBlaster");
+			updateLabelsWeaponInfo("labelBlasterPower", "Blaster power", "powerBlaster");
+			updateLabelsWeaponInfo("labelBlasterSpeed", "Blaster speed", "speedBlaster");
+			updateLabelsWeaponInfo("labelLaserNumber", "Laser", "numberOfLaser");
+			updateLabelsWeaponInfo("labelLaserPower", "Laser power", "powerLaser");
+			updateLabelsWeaponInfo("labelBombNumber", "Bomb", "numberOfBombs");
+			updateLabelsWeaponInfo("labelShieldMax", "Shield max", "maxShield");
+
+			//reset time
 			labelsUpdateTime = 0;
 		}
+	}
+
+	//update pointed label in game interface, to shorten code
+	private void updateLabelsWeaponInfo(String nameOfLabel, String textToDisplay, String valueToGet)
+	{
+		int value = playerModel.getInfo(gameModel.getPlayer(), valueToGet);
+		gameInterfaceView.updateLabels(nameOfLabel, textToDisplay, value);
 	}
 
 	//adds timer tick time to clocks
 	public void updateClocks()
 	{
-		timeCumulated += timer.getDelay();
-		timeCumulatedAsteroidSpawn += timer.getDelay();
-		timeCumulatedBulletSpawn += timer.getDelay();
-		timeCumulatedBonusSpawn += timer.getDelay();
-		timeCumulatedSetTarget += timer.getDelay();
+		time += timer.getDelay();
+		timeAsteroidSpawn += timer.getDelay();
+		timeBulletSpawn += timer.getDelay();
+		timeBonusSpawn += timer.getDelay();
+		timeSetTarget += timer.getDelay();
 		rechargeTime += timer.getDelay();
 		collisionTime += timer.getDelay();
 		labelsUpdateTime += timer.getDelay();
@@ -251,7 +259,7 @@ public class GameSessionListener implements ActionListener, KeyListener
 		switch (code) 
 		{
 		case 32:
-			//space pressed, player shoots bullets (missile, blaster, laser, bomb)
+			//SPACE pressed, player shoots bullets (missile, blaster, laser, bomb)
 			if (rechargeTime > 350 && gameModel.getPlayerModel().getTypeOfWeapon(gameModel.getPlayer()) != "LASER"){
 				gameModel.setNewBulletsOfPlayer();
 				gameSceneView.updateListOfPlayerBullets(gameModel.getListOfPlayerBullets());
@@ -265,19 +273,19 @@ public class GameSessionListener implements ActionListener, KeyListener
 			}
 			break;
 		case 37:
-			//left button pressed, move left
+			//LEFT arrow pressed, move left
 			addCodeToList(code);
 			break;
 		case 38:
-			//up button pressed, move up
+			//UP arrow pressed, move up
 			addCodeToList(code);
 			break;
 		case 39:
-			//right button pressed, move right
+			//RIGHT arrow pressed, move right
 			addCodeToList(code);
 			break;
 		case 40:
-			//down button pressed, move down
+			//DOWN arrow pressed, move down
 			addCodeToList(code);
 			break;
 		case 81:
@@ -311,19 +319,19 @@ public class GameSessionListener implements ActionListener, KeyListener
 		//depending on released key perform action
 		switch (code) {
 		case 37:
-			//left button released
+			//left arrow released
 			removeCodeFromList(code);
 			break;
 		case 38:
-			//up button released
+			//up arrow released
 			removeCodeFromList(code);
 			break;
 		case 39:
-			//right button released
+			//right arrow released
 			removeCodeFromList(code);
 			break;
 		case 40:
-			//down button released
+			//down arrow released
 			removeCodeFromList(code);
 			break;
 		default:

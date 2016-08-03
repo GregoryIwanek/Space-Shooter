@@ -42,17 +42,13 @@ public class EnemyModel
 		enemy.setLife(enemy.getEnemyLife() - points);
 	}
 	
+	//sets if, depending on object hp, can be removed from scene or not
 	public void setIfIsDestroyed(Enemy enemy)
 	{
 		if (enemy.getEnemyLife() <= 0)
 		{
 			enemy.setIfIsDestroyed(true);
 		}
-	}
-	
-	public boolean getIsDestroyed(Enemy enemy)
-	{
-		return enemy.getIsDestroyed();
 	}
 	
 	//sets if enemy object is asteroid
@@ -64,7 +60,6 @@ public class EnemyModel
 	//sets speed of an enemy
 	public void setEnemySpeed(Enemy enemy, int speed, boolean isAsteroid)
 	{
-		//if speed 
 		if (isAsteroid == true)
 		{
 			//for fast enemies, not depending on lvl of game
@@ -127,5 +122,11 @@ public class EnemyModel
 	public boolean getIfEnemyAsteroid(Enemy enemy)
 	{
 		return enemy.getIfAsteroid();
+	}
+	
+	//gets if object can be removed from a scene
+	public boolean getIsDestroyed(Enemy enemy)
+	{
+		return enemy.getIsDestroyed();
 	}
 }

@@ -117,19 +117,21 @@ public class PlayerModel
 		}
 	}
 
+	//sets if max number of bullets for weapons is reached
 	public void setIfMaxNumber(Player player)
 	{
 		//checks if all weapons have max number of bullets
-		if (player.getWeaponInfo("numberOfBlaster") >= 7 && player.getWeaponInfo("numberOfMissiles") >= 4 
-				&& player.getWeaponInfo("numberOfLaser") >= 3)
+		if (player.getInfo("numberOfBlaster") >= 7 && player.getInfo("numberOfMissiles") >= 4 
+				&& player.getInfo("numberOfLaser") >= 3)
 		{
 			player.setIfMaxNumber(true);
 		}
 	}
 
+	//sets if max bullets speed is reached
 	public void setIfMaxSpeed(Player player)
 	{
-		if (player.getWeaponInfo("speedBlaster") >= 13 && player.getWeaponInfo("speedMissile") >= 9)
+		if (player.getInfo("speedBlaster") >= 13 && player.getInfo("speedMissile") >= 9)
 		{
 			player.setIfMaxSpeed(true);
 		}
@@ -144,63 +146,64 @@ public class PlayerModel
 	//sets new maximum shield value
 	public void setMaxShield(Player player, int points)
 	{
-		int newShield = player.getMaxShield();
-		player.setMaxShield(newShield + points);
+		player.setMaxShield(player.getInfo("maxShield") + points);
 	}
 
+	//methods for update values of player and weapon stats ( after Bonus object touched by player)
+	//______________________________________
 	public void setNumberOfBulletsBlaster(Player player, int number)
 	{
-		if (player.getWeaponInfo("numberOfBlaster") < 7)
+		if (player.getInfo("numberOfBlaster") < 7)
 		{
-			player.setNumberOfBulletsBlaster(player.getWeaponInfo("numberOfBlaster")+number);
+			player.setNumberOfBulletsBlaster(player.getInfo("numberOfBlaster")+number);
 		}
 	}
 
 	public void setNumberOfBulletsMissiles(Player player, int number)
 	{
-		if (player.getWeaponInfo("numberOfMissiles") < 4)
+		if (player.getInfo("numberOfMissiles") < 4)
 		{
-			player.setNumberOfBulletsMissiles(player.getWeaponInfo("numberOfMissiles")+number);	
+			player.setNumberOfBulletsMissiles(player.getInfo("numberOfMissiles")+number);	
 		}
 	}
 
 	public void setNumberOfBulletsLaser(Player player, int number)
 	{
-		if (player.getWeaponInfo("numberOfLaser") < 3)
+		if (player.getInfo("numberOfLaser") < 3)
 		{
-			player.setNumberOfBulletsLaser(player.getWeaponInfo("numberOfLaser")+number);
+			player.setNumberOfBulletsLaser(player.getInfo("numberOfLaser")+number);
 		}
 	}
 
 	public void setNumberOfBombs(Player player, int number)
 	{
-		if (player.getWeaponInfo("numberOfBombs") < 4)
+		if (player.getInfo("numberOfBombs") < 4)
 		{
-			player.setNumberOfBombs(player.getWeaponInfo("numberOfBombs")+number);
+			player.setNumberOfBombs(player.getInfo("numberOfBombs")+number);
 		}
 	}
 
 	public void setPowerBlaster(Player player, int power)
 	{
-		player.setPowerBlaster(player.getWeaponInfo("powerBlaster")+power);
+		player.setPowerBlaster(player.getInfo("powerBlaster")+power);
 	}
 
 	public void setPowerMissiles(Player player, int power)
 	{
-		player.setPowerMissiles(player.getWeaponInfo("powerMissile")+power);
+		player.setPowerMissiles(player.getInfo("powerMissile")+power);
 	}
 
 	public void setPowerLaser(Player player, int power)
 	{
-		player.setPowerLaser(player.getWeaponInfo("powerLaser")+power);
+		player.setPowerLaser(player.getInfo("powerLaser")+power);
 	}
 
 	public void setSpeedBlaster(Player player, int speed)
 	{
 		//max blaster speed 13
-		if (player.getWeaponInfo("speedBlaster") < 13)
+		if (player.getInfo("speedBlaster") < 13)
 		{
-			player.setSpeedBlaster(player.getWeaponInfo("speedBlaster")+speed);
+			player.setSpeedBlaster(player.getInfo("speedBlaster")+speed);
 		}
 
 	}
@@ -208,9 +211,9 @@ public class PlayerModel
 	public void setSpeedMissile(Player player, int speed)
 	{
 		//max missile speed 9
-		if (player.getWeaponInfo("speedMissile") < 9)
+		if (player.getInfo("speedMissile") < 9)
 		{
-			player.setSpeedMissile(player.getWeaponInfo("speedMissile")+speed);
+			player.setSpeedMissile(player.getInfo("speedMissile")+speed);
 		}
 	}
 
@@ -302,6 +305,12 @@ public class PlayerModel
 	{
 		player.setSize(size);
 	}
+	
+	//sets new, fixed location of player
+	public void setNewPosition(Player player, Point point)
+	{
+		player.setLocation(point);
+	}
 
 	//gets position in global coordinates system of a player object
 	public Point getNewPosition(Player player)
@@ -339,11 +348,13 @@ public class PlayerModel
 		return player.getTypeOfWeapon();
 	}
 
-	public int getWeaponInfo(Player player, String info)
+	//gets information about statistic from map
+	public int getInfo(Player player, String info)
 	{
-		return player.getWeaponInfo(info);
+		return player.getInfo(info);
 	}
 
+	//gets max limit of shield
 	public int getMaxShield(Player player)
 	{
 		return player.getMaxShield();

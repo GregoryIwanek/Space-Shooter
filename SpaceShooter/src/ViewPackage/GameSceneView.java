@@ -1,27 +1,17 @@
 package ViewPackage;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
-
-import javax.sound.sampled.Line;
 import javax.swing.JPanel;
-
-import ModelPackage.Bonus;
-import ModelPackage.Bullet;
-import ModelPackage.Enemy;
-import ModelPackage.Player;
+import ModelPackage.*;
 
 public class GameSceneView extends JPanel
 {
+	//variables and containers for painted objects on a scene (panel)
 	static private Player player;
 	static private String gameOver;
 	static private ArrayList<Enemy> listOfEnemyShips;
-	static private ArrayList<Bullet> listOfBullets;
+	static private ArrayList<Bullet> listOfEnemyBullets;
 	static private ArrayList<Bullet> listOfPlayerBullets;
 	static private ArrayList<Bonus> listOfBonuses;
 	static private Color colorBullet;
@@ -31,25 +21,28 @@ public class GameSceneView extends JPanel
 	{
 		setPreferredSize(new Dimension(width, height));
 
+		//initiate colors for painting
 		colorBullet = new Color(255,0,0);
 		colorBulletPlayer = new Color(255,255,0);
 		gameOver = "";
 
 		player = new Player();
 
+		//initiate lists with objects
 		listOfEnemyShips = new ArrayList<Enemy>();
-		listOfBullets = new ArrayList<Bullet>();
+		listOfEnemyBullets = new ArrayList<Bullet>();
 		listOfPlayerBullets = new ArrayList<Bullet>();
 		listOfBonuses = new ArrayList<Bonus>();
 	}
 
+	//methods for updating status of objects on a list
 	public void updateListOfEnemyShips(ArrayList<Enemy> listOfEnemyShips)
 	{
 		GameSceneView.listOfEnemyShips = listOfEnemyShips;
 	}
-	public void updateListOfBullets(ArrayList<Bullet> listOfBullets)
+	public void updatelistOfEnemyBullets(ArrayList<Bullet> listOfEnemyBullets)
 	{
-		GameSceneView.listOfBullets = listOfBullets;
+		GameSceneView.listOfEnemyBullets = listOfEnemyBullets;
 	}
 	public void updateListOfPlayerBullets(ArrayList<Bullet> listOfPlayerBullets)
 	{
@@ -68,34 +61,41 @@ public class GameSceneView extends JPanel
 		GameSceneView.gameOver = string;
 	}
 
-	@Override public void paintComponent(Graphics g){
-
+	//method for drawing current status on a scene
+	@Override public void paintComponent(Graphics g)
+	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(colorBullet);
 
+		//paint player
 		g2.drawImage(player.getImage(), player.getLocation().x, player.getLocation().y,
 				player.getSize().width, player.getSize().height, null);
-		
+
+		//draw text "GAME OVER"- string isn't empty only if players HP is equal zero
 		g2.drawString(gameOver, this.getSize().width/2-25, this.getSize().height/2);
 
+		//paint enemy ships
 		for (Enemy enemy : listOfEnemyShips)
 		{
 			g2.drawImage(enemy.getImage(), enemy.getLocation().x, enemy.getLocation().y,
 					enemy.getSize().width, enemy.getSize().height, null);
 		}
 
-		for (Bullet bullet : listOfBullets)
+		//paint enemy bullets
+		for (Bullet bullet : listOfEnemyBullets)
 		{
 			g2.fillRect(bullet.getLocation().x, bullet.getLocation().y, bullet.getSize().width, bullet.getSize().height);
 		}
 
+		//paint player bullets
 		g2.setColor(colorBulletPlayer);
 		for (Bullet bullet : listOfPlayerBullets)
 		{
 			g2.fillRect(bullet.getLocation().x, bullet.getLocation().y, bullet.getSize().width, bullet.getSize().height);
 		}
 
+		//paint bonuses
 		for (Bonus bonus : listOfBonuses)
 		{
 			g2.drawImage(bonus.getImage(), bonus.getLocation().x, bonus.getLocation().y,

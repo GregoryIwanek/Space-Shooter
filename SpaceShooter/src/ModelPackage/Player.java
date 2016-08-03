@@ -8,24 +8,23 @@ import java.util.Map;
 
 public class Player extends Rectangle
 {
-	private int shield = 100, hp = 100; //default players shield and life
-	private int maxShield = 100; //default max value of shield
-	private int points = 0; //default points
-
-
-	private int numberOfBlaster = 3;
-	private int numberOfMissiles = 2;
-	private int numberOfLaser = 1;
-	private int numberOfBombs = 3;
-	private int powerBlaster = 400;
-	private int powerLaser = 200;
-	private int powerMissile = 175;
-	private int speedBlaster = 9;
-	private int speedMissile = 6;
-	private Map<String, Integer> weaponsMap; //map contains access to weapons level
-	private Map<String, Integer> weaponsMaxMap; //map contains information about max statistics for weapons
-	private boolean isNumberMax = false;//if bullets max number for all weapons is already reached
-	private boolean isSpeedMax = false; //if bullets max speed for all weapons is already reached
+	//statistics of a player and his weapons
+	static private int shield = 100, hp = 100; //default players shield and life
+	static private int maxShield = 100; //default max value of shield
+	static private int points = 0; //default points
+	static private int numberOfBlaster = 3;
+	static private int numberOfMissiles = 2;
+	static private int numberOfLaser = 1;
+	static private int numberOfBombs = 3;
+	static private int powerBlaster = 400;
+	static private int powerLaser = 200;
+	static private int powerMissile = 175;
+	static private int speedBlaster = 9;
+	static private int speedMissile = 6;
+	static private Map<String, Integer> weaponsMap; //map contains access to weapons level
+	static private Map<String, Integer> weaponsMaxMap; //map contains information about max statistics for weapons
+	static private boolean isNumberMax = false;//if bullets max number for all weapons is already reached
+	static private boolean isSpeedMax = false; //if bullets max speed for all weapons is already reached
 
 	private BufferedImage image;
 	private String typeOfWeapon = "BLASTER";
@@ -52,6 +51,7 @@ public class Player extends Rectangle
 		weaponsMap.put("powerMissile", powerMissile);
 		weaponsMap.put("speedBlaster", speedBlaster);
 		weaponsMap.put("speedMissile", speedMissile);
+		weaponsMap.put("maxShield", maxShield);
 
 		//sets information about few max statistics
 		weaponsMaxMap.put("numberOfBlaster", 7);
@@ -61,98 +61,102 @@ public class Player extends Rectangle
 		weaponsMaxMap.put("speedBlaster", 13);
 		weaponsMaxMap.put("speedMissile", 9);
 	}
-	
+
+	//sets if max number of bullets is reached
 	public void setIfMaxNumber(boolean isMax)
 	{
-		this.isNumberMax = isMax;
-		System.out.println(isNumberMax);
-	}
-	
-	public void setIfMaxSpeed(boolean isMax)
-	{
-		this.isSpeedMax = isMax;
+		Player.isNumberMax = isMax;
 	}
 
+	//sets if max speed of bullets is reached
+	public void setIfMaxSpeed(boolean isMax)
+	{
+		Player.isSpeedMax = isMax;
+	}
+
+	//overrides value in a map
 	private void overrideMapValue(String key, int value)
 	{
 		weaponsMap.put(key, value);
 	}
 
+	//methods for overriding values in a map and update values of variables
 	public void setNumberOfBulletsBlaster(int number)
 	{
-		this.numberOfBlaster = number;
+		Player.numberOfBlaster = number;
 		overrideMapValue("numberOfBlaster", number);
 	}
 
 	public void setNumberOfBulletsMissiles(int number)
 	{
-		this.numberOfMissiles = number;
+		Player.numberOfMissiles = number;
 		overrideMapValue("numberOfMissiles", number);
 	}
 
 	public void setNumberOfBulletsLaser(int number)
 	{
-		this.numberOfLaser = number;
+		Player.numberOfLaser = number;
 		overrideMapValue("numberOfLaser", number);
 	}
 
 	public void setNumberOfBombs(int number)
 	{
-		this.numberOfBombs = number;
+		Player.numberOfBombs = number;
 		overrideMapValue("numberOfBombs", number);
 	}
 
 	public void setPowerBlaster(int power)
 	{
-		this.powerBlaster = power;
+		Player.powerBlaster = power;
 		overrideMapValue("powerBlaster", power);
 	}
 
 	public void setPowerMissiles(int power)
 	{
-		this.powerMissile = power;
+		Player.powerMissile = power;
 		overrideMapValue("powerMissile", power);
 	}
 
 	public void setPowerLaser(int power)
 	{
-		this.powerLaser = power;
+		Player.powerLaser = power;
 		overrideMapValue("powerLaser", power);
 	}
 
 	public void setSpeedBlaster(int speed)
 	{
-		this.speedBlaster = speed;
+		Player.speedBlaster = speed;
 		overrideMapValue("speedBlaster", speed);
 	}
 
 	public void setSpeedMissile(int speed)
 	{
-		this.speedMissile = speed;
+		Player.speedMissile = speed;
 		overrideMapValue("speedMissile", speed);
 	}
 
+	//sets new max shield
 	public void setMaxShield(int newShield)
 	{
-		this.maxShield = newShield;
+		Player.maxShield = newShield;
 	}
 
 	//sets shield
 	public void setShield(int shield)
 	{
-		this.shield = shield;
+		Player.shield = shield;
 	}
 
 	//sets life
 	public void setLife(int hp)
 	{
-		this.hp = hp;
+		Player.hp = hp;
 	}
 
 	//sets result 
 	public void setPoints(int points)
 	{
-		this.points = points;
+		Player.points = points;
 	}
 
 	//sets image to paint on a scene
@@ -180,7 +184,7 @@ public class Player extends Rectangle
 	}
 
 	//information about weapons
-	public int getWeaponInfo(String infoName)
+	public int getInfo(String infoName)
 	{
 		return weaponsMap.get(infoName);
 	}
@@ -191,12 +195,13 @@ public class Player extends Rectangle
 		return weaponsMaxMap.get(infoName);
 	}
 
+	//gets max shield value
 	public int getMaxShield()
 	{
 		return maxShield;
 	}
 
-	//gets power of shield
+	//gets current shield value
 	public int getShield()
 	{
 		return shield;
@@ -219,12 +224,14 @@ public class Player extends Rectangle
 	{
 		return typeOfWeapon;
 	}
-	
+
+	//gets if max number of bullets reached
 	public boolean getIfIsMaxNumber()
 	{
 		return isNumberMax;
 	}
-	
+
+	//gets if bullets max speed reached
 	public boolean getIfIsMaxSpeed()
 	{
 		return isSpeedMax;
