@@ -12,7 +12,7 @@ public class Bonus extends Rectangle
 	private int hpRestored = 10;
 	private int shieldRestored = 20;
 	private int shieldPernament = 10;
-	private int extraBulletBlaster = 1;
+	private int extraBulletBlaster = 2;
 	private int extraBulletLaser = 1;
 	private int extraBulletMissile = 1;
 	private int extraBomb = 1;

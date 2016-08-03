@@ -137,7 +137,7 @@ public class GameModel
 		enemyModel.setEnemySize(newEnemy, new Dimension(35,50));
 		enemyModel.setImage(newEnemy, "/Enemy_ship_1.png");
 		enemyModel.setNewPosition(newEnemy, enemyModel.getRandomStartingPos(), 0);
-		enemyModel.setEnemyLife(newEnemy, 800+lvlOfGame*200);
+		enemyModel.setEnemyLife(newEnemy, 800+lvlOfGame*300);
 		enemyModel.setEnemySpeed(newEnemy, 1, false);
 
 		//adds to painting list 
@@ -168,7 +168,7 @@ public class GameModel
 
 		//sets object data
 		bonusModel.setBonusSize(bonus, new Dimension(35,50));
-		bonusModel.rollNewType(bonus, bonusCount);
+		bonusModel.rollNewType(bonus, player, bonusCount);
 		bonusModel.setNewPosition(bonus, bonusModel.getRandomStartingPos(), 0);
 		bonusModel.setImage(bonus);
 
@@ -438,10 +438,13 @@ public class GameModel
 			if (i<3){bulletsModel.setDeltas(newBullet, 0, -1);}
 			else if (i==3){bulletsModel.setDeltas(newBullet, 0.25, -1);}
 			else if (i==4){bulletsModel.setDeltas(newBullet, -0.25, -1);}
+			else if (i==5){bulletsModel.setDeltas(newBullet, 0.15, -1);}
+			else if (i==6){bulletsModel.setDeltas(newBullet, -0.15, -1);}
+			
 
 			//sets starting location
-			if (i == 0 || i ==3){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);}
-			else if (i==1 || i==4){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);}
+			if (i == 0 || i ==3 || i==5){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x+10, playerModel.getCenter(player).y);}
+			else if (i==1 || i==4 || i==6){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x-10, playerModel.getCenter(player).y);}
 			else if (i==2){bulletsModel.setLocation(newBullet, playerModel.getCenter(player).x, playerModel.getCenter(player).y-20);}
 
 			//adds to list

@@ -11,57 +11,80 @@ import javax.imageio.ImageIO;
 public class BonusModel
 {
 	private Random randomGenerator;
-	
+
 	public BonusModel()
 	{
 		randomGenerator = new Random();
 	}
-	
+
 	//sets size of an bonus object
 	public void setBonusSize(Bonus bonus, Dimension size)
 	{
 		bonus.setSize(size);
 	}
-	
+
 	//gets random position of Bonus ( used as X axis)
 	public int getRandomStartingPos()
 	{
 		return randomGenerator.nextInt(600);
 	}
-	
+
 	//set new position of enemy object
 	public void setNewPosition(Bonus bonus, int x, int y)
 	{
 		bonus.setLocation(x, y);
 	}
-	
-	public void rollNewType(Bonus bonus, int bonusCount)
+
+	//roll which type of bonus will be spawn
+	public void rollNewType(Bonus bonus, Player player, int bonusCount)
 	{
-		int count = bonusCount%5;
-		switch (count) {
-		case 0:
-			rollTypeOfSpeedBonus(bonus);
-			break;
-		case 1:
-			rollTypeOfNumberBonus(bonus);
-			break;
-		case 2:
-			rollTypeOfPowerBonus(bonus);
-			break;
-		case 3:
-			rollTypeOfLifeBonus(bonus);
-			break;
-		default:
-			rollTypeOfLifeBonus(bonus);
-			break;
+		boolean isChosen = false;
+
+		do {
+			int count = randomGenerator.nextInt(4);
+
+			switch (count) 
+			{
+			case 0:
+				rollTypeOfLifeBonus(bonus);
+				isChosen = true;
+				break;
+			case 1:
+				rollTypeOfPowerBonus(bonus);
+				isChosen = true;
+				break;
+			case 2:
+				if (player.getIfIsMaxSpeed() == false)
+				{
+					rollTypeOfSpeedBonus(bonus);
+					isChosen = true;
+				}
+				break;
+			case 3:
+				if (player.getIfIsMaxNumber() == false)
+				{
+					rollTypeOfNumberBonus(bonus, false);
+					isChosen = true;
+				}
+				else 
+				{
+					rollTypeOfNumberBonus(bonus, true);
+					isChosen = true;
+				}
+				break;
+			default:
+				rollTypeOfLifeBonus(bonus);
+				break;
+			}	
 		}
+		while (isChosen != true);
 	}
-	
+
 	//sets random type of weapon damage upgrade
 	private void rollTypeOfPowerBonus(Bonus bonus)
 	{
 		int type = randomGenerator.nextInt(3);
-		
+
 		switch (type) 
 		{
 		case 0:
@@ -77,43 +100,42 @@ public class BonusModel
 			setType(bonus, "extraMissilePower");
 			break;
 		default: setType(bonus, "extraBlasterPower");
-			break;
+		break;
 		}
 	}
-	
+
 	//sets random type of bullets number upgrade
-	private void rollTypeOfNumberBonus(Bonus bonus)
+	private void rollTypeOfNumberBonus(Bonus bonus, boolean isMaxNumber)
 	{
-		int type = randomGenerator.nextInt(4);
-		
-		switch (type) 
+		if (isMaxNumber == false)
 		{
-		case 0:
-			//add extra blaster bullet
-			setType(bonus, "extraBulletBlaster");
-			break;
-		case 1:
-			//add extra missile bullet
-			setType(bonus, "extraBulletMissile");
-			break;
-		case 2:
-			//add extra laser beam
-			setType(bonus, "extraBulletLaser");
-			break;
-		case 3:
-			//add extra bomb
-			setType(bonus, "extraBomb");
-			break;
-		default:
-			break;
+			int type = randomGenerator.nextInt(3);
+			switch (type) 
+			{
+			case 0:
+				//add extra blaster bullet
+				setType(bonus, "extraBulletBlaster");
+				break;
+			case 1:
+				//add extra missile bullet
+				setType(bonus, "extraBulletMissile");
+				break;
+			case 2:
+				//add extra laser beam
+				setType(bonus, "extraBulletLaser");
+				break;
+			default:
+				break;
+			}
 		}
+		else setType(bonus, "extraBomb");
 	}
-	
+
 	//sets random type of life upgrade
 	private void rollTypeOfLifeBonus(Bonus bonus)
 	{
 		int type = randomGenerator.nextInt(3);
-		
+
 		switch (type) 
 		{
 		case 0:
@@ -132,12 +154,12 @@ public class BonusModel
 			break;
 		}
 	}
-	
+
 	//sets random type of speed bonus
 	private void rollTypeOfSpeedBonus(Bonus bonus)
 	{
 		int type = randomGenerator.nextInt(2);
-		
+
 		switch (type) 
 		{
 		case 0:
@@ -157,13 +179,13 @@ public class BonusModel
 	{
 		bonus.setType(type);
 	}
-	
+
 	//gets value of upgrade from given bonus object
 	public int getValue(Bonus bonus)
 	{
 		return bonus.getInformationFromMap(bonus.getType());
 	}
-	
+
 	public void setImage(Bonus bonus)
 	{
 		/*manipulate names of variables to get correct path of image ( example: /bonusShieldRestored instead of /bonusshieldRestored);
@@ -174,7 +196,7 @@ public class BonusModel
 		//assign correct, fixed image, to a bonus object
 		setImageToObject(bonus, path);
 	}
-	
+
 	//sets image of an object to paint on scene
 	public void setImageToObject(Bonus bonus, String path)
 	{
@@ -191,7 +213,7 @@ public class BonusModel
 		//assigns image to an bonus object
 		bonus.setImage(image);
 	}
-	
+
 	//gets position of bonus on a scene
 	public Point getPosition(Bonus bonus)
 	{

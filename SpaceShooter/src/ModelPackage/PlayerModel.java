@@ -16,24 +16,24 @@ public class PlayerModel
 	{
 		int currentShield = player.getShield();
 		int currentLife = player.getLife();
-		
-		/*calculate only if current shield is in range 0-max players shield AND it's hit by ENEMY/BULLET
-		 *HPPoints given in method is used only when in collision with BONUS*/
+
+		/*calculate only if current shield is in range 0-maxPlayerShield AND player hit by ENEMY/BULLET object
+		 *hpPoints different than 0 and given to this method only when called from collision with BONUS object*/
 		if (currentShield <= player.getMaxShield() && hpPoints == 0)
 		{
 			//add given points to shield ( can add and subtract value)
 			currentShield += shieldPoints;
-			
+
 			//if result would be below zero, subtract life of player and set shield as minimum (0)
 			if (currentShield < 0)
 			{
-				//subtract value of life if calculated shield would be below 0
+				//subtract value of life if calculated shield is below 0
 				currentLife += currentShield;
-				
-				//make sure it stays more than 0
+
+				//make sure life stays more than 0
 				if (currentLife < 0) currentLife = 0;
-				
-				//reset shield to 0, that's minimum value of shield
+
+				//reset shield to 0, that's minimum, possible value of a shield
 				currentShield = 0;
 			}
 			//make sure shield stays below max possible value
@@ -42,10 +42,10 @@ public class PlayerModel
 				currentShield = player.getMaxShield();
 			}
 		}
-	
+
 		//add given BONUS of hpPoints
 		currentLife += hpPoints;
-		
+
 		//set calculated value to a player object
 		player.setShield(currentShield);
 		player.setLife(currentLife);
@@ -117,6 +117,24 @@ public class PlayerModel
 		}
 	}
 
+	public void setIfMaxNumber(Player player)
+	{
+		//checks if all weapons have max number of bullets
+		if (player.getWeaponInfo("numberOfBlaster") >= 7 && player.getWeaponInfo("numberOfMissiles") >= 4 
+				&& player.getWeaponInfo("numberOfLaser") >= 3)
+		{
+			player.setIfMaxNumber(true);
+		}
+	}
+
+	public void setIfMaxSpeed(Player player)
+	{
+		if (player.getWeaponInfo("speedBlaster") >= 13 && player.getWeaponInfo("speedMissile") >= 9)
+		{
+			player.setIfMaxSpeed(true);
+		}
+	}
+
 	//sets type of weapon used by player
 	public void setTypeOfWeapon(Player player, String typeOfWeapon)
 	{
@@ -132,7 +150,7 @@ public class PlayerModel
 
 	public void setNumberOfBulletsBlaster(Player player, int number)
 	{
-		if (player.getWeaponInfo("numberOfBlaster") < 5)
+		if (player.getWeaponInfo("numberOfBlaster") < 7)
 		{
 			player.setNumberOfBulletsBlaster(player.getWeaponInfo("numberOfBlaster")+number);
 		}
@@ -156,7 +174,7 @@ public class PlayerModel
 
 	public void setNumberOfBombs(Player player, int number)
 	{
-		if (player.getWeaponInfo("numberOfBombs") < 3)
+		if (player.getWeaponInfo("numberOfBombs") < 4)
 		{
 			player.setNumberOfBombs(player.getWeaponInfo("numberOfBombs")+number);
 		}
@@ -179,7 +197,7 @@ public class PlayerModel
 
 	public void setSpeedBlaster(Player player, int speed)
 	{
-		//max blaster speed 12
+		//max blaster speed 13
 		if (player.getWeaponInfo("speedBlaster") < 13)
 		{
 			player.setSpeedBlaster(player.getWeaponInfo("speedBlaster")+speed);
@@ -192,7 +210,7 @@ public class PlayerModel
 		//max missile speed 9
 		if (player.getWeaponInfo("speedMissile") < 9)
 		{
-			player.setSpeedBlaster(player.getWeaponInfo("speedMissile")+speed);
+			player.setSpeedMissile(player.getWeaponInfo("speedMissile")+speed);
 		}
 	}
 
@@ -216,18 +234,17 @@ public class PlayerModel
 		case "extraBulletBlaster":
 			//adds extra blaster bullet
 			setNumberOfBulletsBlaster(player, valueOfBonus);
+			setIfMaxNumber(player);
 			break;
 		case "extraBulletLaser":
 			//adds extra laser beam
 			setNumberOfBulletsLaser(player, valueOfBonus);
+			setIfMaxNumber(player);
 			break;
 		case "extraBulletMissile":
 			//adds extra missile bullet
 			setNumberOfBulletsMissiles(player, valueOfBonus);
-			break;
-		case "extraBomb":
-			//adds extra bomb to use
-			setNumberOfBombs(player, valueOfBonus);
+			setIfMaxNumber(player);
 			break;
 		case "extraBlasterPower":
 			//increase power of blaster bullets
@@ -244,10 +261,12 @@ public class PlayerModel
 		case "extraBlasterSpeed":
 			//increase speed of blaster bullets
 			setSpeedBlaster(player, valueOfBonus);
+			setIfMaxSpeed(player);
 			break;
 		case "extraMissileSpeed":
 			//increase speed of missile bullets
 			setSpeedMissile(player, valueOfBonus);
+			setIfMaxSpeed(player);
 			break;
 		default:
 			break;
@@ -324,7 +343,7 @@ public class PlayerModel
 	{
 		return player.getWeaponInfo(info);
 	}
-	
+
 	public int getMaxShield(Player player)
 	{
 		return player.getMaxShield();

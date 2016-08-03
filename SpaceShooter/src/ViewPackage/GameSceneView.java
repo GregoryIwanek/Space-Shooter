@@ -2,6 +2,7 @@ package ViewPackage;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -18,6 +19,7 @@ import ModelPackage.Player;
 public class GameSceneView extends JPanel
 {
 	static private Player player;
+	static private String gameOver;
 	static private ArrayList<Enemy> listOfEnemyShips;
 	static private ArrayList<Bullet> listOfBullets;
 	static private ArrayList<Bullet> listOfPlayerBullets;
@@ -31,6 +33,7 @@ public class GameSceneView extends JPanel
 
 		colorBullet = new Color(255,0,0);
 		colorBulletPlayer = new Color(255,255,0);
+		gameOver = "";
 
 		player = new Player();
 
@@ -60,6 +63,10 @@ public class GameSceneView extends JPanel
 	{
 		GameSceneView.player = player;
 	}
+	public void setGameOverString(String string)
+	{
+		GameSceneView.gameOver = string;
+	}
 
 	@Override public void paintComponent(Graphics g){
 
@@ -69,6 +76,8 @@ public class GameSceneView extends JPanel
 
 		g2.drawImage(player.getImage(), player.getLocation().x, player.getLocation().y,
 				player.getSize().width, player.getSize().height, null);
+		
+		g2.drawString(gameOver, this.getSize().width/2-25, this.getSize().height/2);
 
 		for (Enemy enemy : listOfEnemyShips)
 		{
