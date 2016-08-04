@@ -4,7 +4,7 @@ My first project in JAVA language. Done as an exercise, before more serious one.
 Space Shooter is a small game, in which I tried implement MVC (Model-View-Controller). Project written and compiled in Eclipse framework.
 
 ##Used technologies
-- Java 8
+- Java 7/8
 - Swing
 - Eclipse IDE
 
