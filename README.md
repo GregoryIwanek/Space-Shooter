@@ -27,9 +27,6 @@ Game session panel. Game will start after START button clicked. Weapons can be c
 Controller section consist one main class (GameController) and bunch of listeners (InterfaceListener, MainMenuListener, SessionListener) which are responsible for getting signals and actions of a Player. Therefore, they connect changes in state of game during a session.
 The most important one is SessionListenere, which have one Timer instance, which ticks trigger series of methods changing and updating state of game.
 
-Classes:
-- GameControllorer 
-
 ##Model section
 Model section consist bunch of classes, mainly responsible for calculating state of a game and defining changes in connection to Players actions.
 The top level class is GameModel, which is responsible for ordering or doing calculations of every aspects of a game ( setting new Enemies, Bullets, update their position, checking collision etc.). 

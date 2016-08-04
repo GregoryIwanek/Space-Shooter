@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import ModelPackage.*;
 
-public class GameSceneView extends JPanel
+public class SceneView extends JPanel
 {
 	//variables and containers for painted objects on a scene (panel)
 	static private Player player;
@@ -17,7 +17,7 @@ public class GameSceneView extends JPanel
 	static private Color colorBullet;
 	static private Color colorBulletPlayer;
 
-	public GameSceneView(int width, int height) 
+	public SceneView(int width, int height) 
 	{
 		setPreferredSize(new Dimension(width, height));
 
@@ -38,27 +38,27 @@ public class GameSceneView extends JPanel
 	//methods for updating status of objects on a list
 	public void updateListOfEnemyShips(ArrayList<Enemy> listOfEnemyShips)
 	{
-		GameSceneView.listOfEnemyShips = listOfEnemyShips;
+		SceneView.listOfEnemyShips = listOfEnemyShips;
 	}
 	public void updatelistOfEnemyBullets(ArrayList<Bullet> listOfEnemyBullets)
 	{
-		GameSceneView.listOfEnemyBullets = listOfEnemyBullets;
+		SceneView.listOfEnemyBullets = listOfEnemyBullets;
 	}
 	public void updateListOfPlayerBullets(ArrayList<Bullet> listOfPlayerBullets)
 	{
-		GameSceneView.listOfPlayerBullets = listOfPlayerBullets;
+		SceneView.listOfPlayerBullets = listOfPlayerBullets;
 	}
 	public void updateListOfBonuses(ArrayList<Bonus> listOfBonuses)
 	{
-		GameSceneView.listOfBonuses = listOfBonuses;
+		SceneView.listOfBonuses = listOfBonuses;
 	}
 	public void setPlayer (Player player)
 	{
-		GameSceneView.player = player;
+		SceneView.player = player;
 	}
 	public void setGameOverString(String string)
 	{
-		GameSceneView.gameOver = string;
+		SceneView.gameOver = string;
 	}
 
 	//method for drawing current status on a scene

@@ -3,10 +3,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameMainMenuListener implements ActionListener 
+public class MainMenuListener implements ActionListener 
 {
 	
-	public GameMainMenuListener(){}
+	public MainMenuListener(){}
 	
 	//triggered on button click in main menu
 	@Override

@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 public class GameView extends JFrame
 {
 	private static MainMenuView mainMenuView; //view of main menu
-	private static GameInterfaceView gameInterfaceView; //view of game interface and sub-panels
+	private static InterfaceView interfaceView; //view of game interface and sub-panels
 	private static Dimension dimension;
 
 	public GameView() 
@@ -51,14 +51,14 @@ public class GameView extends JFrame
 	//sets game interface panel ( and sub-panels with buttons and labels)
 	public void setGameInterface()
 	{
-		gameInterfaceView = new GameInterfaceView();
-		gameInterfaceView.setVisible(false);
+		interfaceView = new InterfaceView();
+		interfaceView.setVisible(false);
 	}
 
 	//sets action listener for game interface
 	public void addActionListenerGameInterface (ActionListener actionListenerMainMenu)
 	{
-		gameInterfaceView.addActionListenerGameInterface(actionListenerMainMenu);
+		interfaceView.addActionListenerGameInterface(actionListenerMainMenu);
 	}
 
 	//set action listener for main menu
@@ -77,24 +77,24 @@ public class GameView extends JFrame
 	public void startEndGameSession()
 	{
 		//if game section invisible, set it visible and hide main menu
-		if (gameInterfaceView.isVisible() == false)
+		if (interfaceView.isVisible() == false)
 		{
-			this.add(gameInterfaceView);
+			this.add(interfaceView);
 			mainMenuView.setVisible(false);
-			gameInterfaceView.setVisible(true);
+			interfaceView.setVisible(true);
 		}
 		//if game section visible, set it invisible, show main menu ( timer is stopped)
 		else 
 		{
-			gameInterfaceView.setVisible(false);
-			this.remove(gameInterfaceView);
+			interfaceView.setVisible(false);
+			this.remove(interfaceView);
 			mainMenuView.setVisible(true);
 		}
 	}
 
 	//gets game interface
-	public GameInterfaceView getInterface()
+	public InterfaceView getInterface()
 	{
-		return gameInterfaceView;
+		return interfaceView;
 	}
 }

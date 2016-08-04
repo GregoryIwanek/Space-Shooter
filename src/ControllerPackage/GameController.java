@@ -8,9 +8,9 @@ public class GameController
 	static private GameView gameView;
 	static private GameModel gameModel;
 	
-	static public GameMainMenuListener gameMainMenuListener; //listener which gets clicks events from main menu
-	static public GameInterfaceListener gameInterfaceListener; //listener which gets clicks events from game interface
-	static public GameSessionListener gameSessionListener; //key listener which contains Timer and is responsible for a game session
+	static public MainMenuListener mainMenuListener; //listener which gets clicks events from main menu
+	static public InterfaceListener interfaceListener; //listener which gets clicks events from game interface
+	static public SessionListener sessionListener; //key listener which contains Timer and is responsible for a game session
 	
 	public GameController(GameView gameView, GameModel gameModel) 
 	{
@@ -32,16 +32,16 @@ public class GameController
 	public void setListeners()
 	{
 		//setting and assigning main menu listener
-		gameMainMenuListener = new GameMainMenuListener();
-		GameController.gameView.addActionListenerMainMenu(gameMainMenuListener);
+		mainMenuListener = new MainMenuListener();
+		GameController.gameView.addActionListenerMainMenu(mainMenuListener);
 		
 		//setting and assigning game interface listener
-		gameInterfaceListener = new GameInterfaceListener();
-		GameController.gameView.addActionListenerGameInterface(gameInterfaceListener);
+		interfaceListener = new InterfaceListener();
+		GameController.gameView.addActionListenerGameInterface(interfaceListener);
 		
 		//setting and assigning game session listener
-		gameSessionListener = new GameSessionListener();
-		GameController.gameView.addKeyListenerGame(gameSessionListener);
+		sessionListener = new SessionListener();
+		GameController.gameView.addKeyListenerGame(sessionListener);
 	}
 	
 	static public GameView getGameView()

@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import javax.swing.*;
 
-public class GameInterfaceView extends JPanel
+public class InterfaceView extends JPanel
 {
 	//DATA
 	//------------------------------------------------------------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ public class GameInterfaceView extends JPanel
 	private JPanel weaponsInfoPanel;
 	private JPanel statusPanel;
 	private JPanel menuPanel;
-	private GameSceneView gameScenePanel;
+	private SceneView gameScenePanel;
 
 	//buttons
 	private JButton buttonStart;
@@ -56,7 +56,7 @@ public class GameInterfaceView extends JPanel
 
 	//IMPLEMENTATION
 	//------------------------------------------------------------------------------------------------------------------------------------
-	public GameInterfaceView()
+	public InterfaceView()
 	{
 		//sets size of parent panel
 		this.setPreferredSize(new Dimension(800,800));
@@ -207,7 +207,7 @@ public class GameInterfaceView extends JPanel
 		menuPanel.add(buttonBack);
 
 		//game scene panel, here we pain our game
-		gameScenePanel = new GameSceneView(630, 650);
+		gameScenePanel = new SceneView(630, 650);
 		gameScenePanel.setPreferredSize(new Dimension(630, 650));
 		gameScenePanel.setBackground(new Color(8445951));
 	}
@@ -248,7 +248,7 @@ public class GameInterfaceView extends JPanel
 	}
 
 	//gets scene of a game
-	public GameSceneView getScenePanel()
+	public SceneView getScenePanel()
 	{
 		return gameScenePanel;
 	}

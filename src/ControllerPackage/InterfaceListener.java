@@ -3,9 +3,9 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameInterfaceListener implements ActionListener
+public class InterfaceListener implements ActionListener
 {
-	public GameInterfaceListener(){}
+	public InterfaceListener(){}
 
 	//action triggered on button click, in game interface in game section
 	@Override
@@ -18,11 +18,11 @@ public class GameInterfaceListener implements ActionListener
 		{
 		case "START":
 			//triggered after START clicked, starts timer and game
-			GameController.gameSessionListener.setTimer(true);
+			GameController.sessionListener.setTimer(true);
 			break;
 		case "BACK":
 			//triggered after BACK clicked, stops game and hides game section
-			GameController.gameSessionListener.setTimer(false);
+			GameController.sessionListener.setTimer(false);
 			GameController.getGameView().startEndGameSession();
 			break;
 			//buttons for choosing weapon
