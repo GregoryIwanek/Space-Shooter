@@ -17,7 +17,7 @@ Main menu consisting two options: Start game session or Quit
 
 Game session panel. Game will start after START button clicked. Weapons can be chosen by clicking corresponding button, or QWER buttons. By default, Players ship use AutoFire, but it can be turned-off by checking check box. Informations about Player and game status are updated dynamically.
 
-##Player control:
+##Player control
 -keys: right/up/left/down arrows
 -space button for shooting bullets ( if auto fire turned off) and Bombs ( bombs can be shoot only by using space key)
 -keys QWER for changing weapons
